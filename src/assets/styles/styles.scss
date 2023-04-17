@@ -3,12 +3,10 @@
 @import "setup/variables";
 @import "setup/mixins";
 @import "setup/functions";
-
 // BASICS
 @import "basics/helpers";
 @import "basics/base";
 @import "basics/layout";
-
 // COMPONENTS
 @import "components/app-nav";
 @import "components/app-header";
@@ -18,10 +16,4 @@
 @import "components/story-list";
 @import "components/post-list";
 @import "components/user-dashboard";
-
 // views
-@import "views/app-feed";
-@import "views/user-area";
-@import "views/post-details";
-@import "views/login";
-@import "views/user-Story";

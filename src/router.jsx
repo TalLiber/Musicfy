@@ -1,28 +1,35 @@
 // routes.js
 import { Outlet, createBrowserRouter } from 'react-router-dom';
-import AppIndex from './views/AppIndex';
-import AppSearch from './views/AppSearch';
-import StationLibrary from './views/StationLibrary.jsx';
-import StatsView from './views/StatsView.jsx';
+import {AppIndex} from './views/AppIndex';
+
+import {Home}  from './views/Home';
+import {Search} from './views/Search';
+import {PlaylistLibrary} from './views/PlaylistLibrary';
+
 
 const routes = [
  {
   path: '/',
   element: <AppIndex />,
   // guard: requireAuth,
- },
- {
-  path: '/about',
-  element: < AppSearch />,
-  // guard: requireAuth,
- },
- {
-  path: '/contact',
-  element: <StationLibrary />,
- },
- {
-  path: '/stats',
-  element: <StatsView />,
+  children: [
+    {
+      path: '',
+      element: <Home/>
+    },
+    {
+      path: 'Search',
+      element: <Search/>
+    },
+    {
+      path: 'PlaylistLibrary',
+      element: <PlaylistLibrary/>
+    },
+    // {
+    //   path: 'Playlist/:id',
+    //   element: <Playlist/>
+    // },
+  ]
  },
  {
   path: '*',
@@ -41,6 +48,6 @@ function requireAuth(currentLocation, nextLocation) {
  return true;
 }
 
-export const router = createBrowserRouter(routes);
+export const router =  createBrowserRouter(routes);
 
 

@@ -1,37 +1,21 @@
 .main-layout {
+    background-color: pink;
+    width: 100vw;
+    height: 100vh;
     display: grid;
-    grid-template-columns: $layoutPadding 1fr $layoutPadding;
-
-    > * {
-        grid-column: 2;
+    grid-template-columns: 270px 1fr;
+    grid-template-rows: 64px 1fr 90px;
+    grid-template-areas: 'side header' 'side main' 'player player';
+    .header-container {
+        grid-area: header;
     }
-
-    > *.full {
-        grid-column: 1 / -1;
+    .side-nav-container {
+        grid-area: side;
     }
-
-    > *:not(.full) {
-        // display: grid;
-        // grid-auto-flow: dense;
-        // grid-template-columns: repeat(6, 1fr);
+    // .home-container {
+    //     grid-area: main;
+    // }
+    .player-container {
+        grid-area: player;
     }
-
-    @include for-narrow-layout {
-        @include layoutGTC($break-narrow);
-    }
-
-    @include for-normal-layout {
-        @include layoutGTC($break-normal);
-    }
-
-    @include for-wide-layout {
-        @include layoutGTC($break-wide);
-    }
-}
-
-.main-text {
-    margin-bottom: rem(90px);
-}
-.grid {
-    display: grid;
 }

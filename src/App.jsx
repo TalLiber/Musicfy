@@ -35,15 +35,7 @@ const App = () => {
   if (!value) return <div>Loading...</div>
   return (
     <>
-      <header>
-        app header
-        {/* <SvgIcon iconName='logo' /> */}
-        {/* {value} */}
-      </header>
       <RouterProvider router={router} />
-      <footer>
-        app footer
-      </footer>
     </>
   )
 }
