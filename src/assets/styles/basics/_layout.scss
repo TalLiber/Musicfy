@@ -6,15 +6,16 @@
     grid-template-columns: 270px 1fr;
     grid-template-rows: 64px 1fr 90px;
     grid-template-areas: 'side header' 'side main' 'player player';
+    overflow: hidden;
     .header-container {
         grid-area: header;
     }
     .side-nav-container {
         grid-area: side;
     }
-    // .home-container {
-    //     grid-area: main;
-    // }
+    .home-container {
+        overflow-y: scroll;
+    }
     .player-container {
         grid-area: player;
     }
