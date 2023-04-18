@@ -5,7 +5,7 @@
     display: grid;
     grid-template-columns: 270px 1fr;
     grid-template-rows: 64px 1fr 90px;
-    grid-template-areas: 'side header' 'side main' 'player player';
+    grid-template-areas: 'side main' 'side main' 'player player';
     overflow: hidden;
     .header-container {
         grid-area: header;
