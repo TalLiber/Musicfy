@@ -19,6 +19,11 @@ body {
     height: 8vh;
     // background: lightcoral;
 }
+
+button{
+ cursor: pointer;
+}
+
 .app-main {
     // background: lightblue;
     height: 84vh;
@@ -111,3 +116,7 @@ i {
       width: max-content;
       left: 12px;
     }
+
+.svg-icon{
+    fill: currentColor;
+}
