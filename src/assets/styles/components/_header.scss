@@ -1,0 +1,24 @@
+.header-container{
+    background-color: $bg-base;
+    padding: 16px 32px;
+    
+    .action{
+        align-self: center;
+        gap: 16px;
+        
+        .btn-action{
+            display: inline-flex;
+            align-items: center;
+            height: 32px;
+            width: 32px;
+            border: 1px solid $bg-base;
+            border-radius: 50%;
+            background-color: $bg-base;
+            color: $clr1;
+
+            &:disabled{
+                cursor:not-allowed;
+            }
+        }
+    }
+}
