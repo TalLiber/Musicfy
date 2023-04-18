@@ -23,6 +23,10 @@ body {
     // background: lightcoral;
 }
 
+button {
+    cursor: pointer;
+}
+
 .app-main {
     // background: lightblue;
     height: 84vh;
@@ -106,4 +110,8 @@ i {
     bottom: -25px;
     width: max-content;
     left: 12px;
+}
+
+.svg-icon {
+    fill: currentColor;
 }
