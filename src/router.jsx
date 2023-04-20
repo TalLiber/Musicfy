@@ -4,7 +4,7 @@ import {AppIndex} from './views/AppIndex';
 
 import {Home}  from './views/Home';
 import {Search} from './views/Search';
-import {PlaylistLibrary} from './views/PlaylistLibrary';
+import {Lib} from './views/Lib';
 
 
 const routes = [
@@ -22,8 +22,8 @@ const routes = [
       element: <Search/>
     },
     {
-      path: 'PlaylistLibrary',
-      element: <PlaylistLibrary/>
+      path: 'lib',
+      element: <Lib/>
     },
     // {
     //   path: 'Playlist/:id',
