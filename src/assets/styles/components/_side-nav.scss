@@ -4,4 +4,14 @@
     .logo {
         color: #fff;
     }
+    .nav-categ {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding-inline: 16px;
+    }
+    .active {
+        color: #fff;
+    }
 }

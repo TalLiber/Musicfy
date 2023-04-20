@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const PlaylistLibrary = () => {
+export const Lib = () => {
  return (
   <div>PlaylistLibrary</div>
  )
