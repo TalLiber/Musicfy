@@ -8,7 +8,9 @@
 @import "basics/base";
 @import "basics/layout";
 // COMPONENTS
-@import "components/app-nav";
+@import "components/side-nav";
+@import "components/media-player";
+@import "components/home";
 // @import "components/app-header";
 @import "components/user-preview";
 @import "components/post-preview";
@@ -16,5 +18,4 @@
 @import "components/story-list";
 @import "components/post-list";
 @import "components/user-dashboard";
-@import "components/header" 
-// views
+@import "components/header" // views

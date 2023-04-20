@@ -1,12 +1,10 @@
-.header-container{
+.header-container {
     background-color: $bg-base;
     padding: 16px 32px;
-    
-    .action{
+    .action {
         align-self: center;
         gap: 16px;
-        
-        .btn-action{
+        .btn-action {
             display: inline-flex;
             align-items: center;
             height: 32px;
@@ -15,9 +13,8 @@
             border-radius: 50%;
             background-color: $bg-base;
             color: $clr1;
-
-            &:disabled{
-                cursor:not-allowed;
+            &:disabled {
+                cursor: not-allowed;
             }
         }
     }

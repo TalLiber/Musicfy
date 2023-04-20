@@ -34,7 +34,7 @@ export const Header = (props) => {
                 <button className='btn-signup'>Sign up</button>
                 <button className='btn-login'>Log in</button>
             </div>
-            {/* <NavLink to="/search">Search</NavLink>   */}
+            <NavLink to="/search">Search</NavLink>  
         </section>
     )
 }

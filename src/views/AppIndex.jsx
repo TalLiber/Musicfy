@@ -8,9 +8,11 @@ import { MediaPlayer } from '../cmps/MediaPlayer'
 export const AppIndex = () => {
  return (
   <section className='main-layout'>
-    <Header/>
     <SideNav/>
-    <Outlet/>
+    <section className='content-container'>
+      <Header/>
+      <Outlet/>
+    </section>
     <MediaPlayer/>
   </section>
  )
