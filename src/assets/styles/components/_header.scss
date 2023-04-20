@@ -1,6 +1,9 @@
 .header-container {
-    background-color: $bg-base;
+    background-color: rgba(0,0,0,.5);
     padding: 16px 32px;
+    gap: 16px;
+    height: 64px;
+    align-items: center;
     .action {
         align-self: center;
         gap: 16px;
@@ -15,6 +18,56 @@
             color: $clr1;
             &:disabled {
                 cursor: not-allowed;
+            }
+        }
+    }
+
+    .content-container{
+        flex-grow: 1;
+        background-color: #a7a7a7;
+    }
+
+    .login-container{
+        &> *{
+            background-color: transparent;
+            border: 0px;
+            transition-duration: 33ms;
+            font-weight: 700;
+            font-size: 1rem;
+            
+        }
+        
+        .btn-login{
+            color: $bg-base;
+            transform: translate3d(0px, 0px, 0px);
+            padding: 0px;
+            min-inline-size: 0px;
+            
+            span{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 500px;
+                background-color: $clr1;
+                font-size: inherit;
+                padding: 8px 32px;
+                min-block-size: 48px;
+            }
+            
+            &:hover span{
+                transform: scale(1.04);
+                background-color: #f6f6f6;
+            }
+            
+        }
+
+        .btn-signup{
+            color: #a7a7a7;
+            padding: 8px 32px; 
+            padding-block: 8px;
+            
+            &:hover{
+                color: $clr1;
             }
         }
     }
