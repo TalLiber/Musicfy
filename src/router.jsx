@@ -5,13 +5,14 @@ import {AppIndex} from './views/AppIndex';
 import {Home}  from './views/Home';
 import {Search} from './views/Search';
 import {Lib} from './views/Lib';
+import {Playlist} from './views/Playlist';
 
 
 const routes = [
  {
   path: '/',
   element: <AppIndex />,
-  // guard: requireAuth,
+  canActivate: requireAuth(),
   children: [
     {
       path: '',
@@ -19,16 +20,16 @@ const routes = [
     },
     {
       path: 'Search',
-      element: <Search/>
+      element: <Search/>,
     },
     {
       path: 'lib',
       element: <Lib/>
     },
-    // {
-    //   path: 'Playlist/:id',
-    //   element: <Playlist/>
-    // },
+    {
+      path: 'Playlist/:id',
+      element: <Playlist/>
+    },
   ]
  },
  {
@@ -39,15 +40,15 @@ const routes = [
 
 // navigation guard
 function requireAuth(currentLocation, nextLocation) {
+  // console.log('c',currentLocation, nextLocation);
  // Check if the user is authenticated
- if (!isAuthenticated) {
-  // Redirect to login page with a query parameter to indicate the intended route
-  navigate('/login?redirect=' + nextLocation.pathname);
-  return false;
- }
- return true;
+//  if (!isAuthenticated) {
+//   Redirect to login page with a query parameter to indicate the intended route
+//   navigate('/login?redirect=' + nextLocation.pathname);
+//   return false;
+//  }
+//  return true;
 }
-
 export const router =  createBrowserRouter(routes);
 
 

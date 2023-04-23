@@ -10,8 +10,45 @@
         align-items: center;
         gap: 16px;
         padding-inline: 16px;
-    }
-    .active {
+        cursor: pointer;
         color: #fff;
+        opacity: .7;
+        &.selected {
+            opacity: 1;
+        }
+        .side-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 2px;
+        }
+        &:hover {
+            opacity: 1;
+            transition: opacity 0.2s linear;
+        }
+        &.heart {
+            .side-icon {
+                background: linear-gradient(135deg, #450af5, #c4efd9);
+            }
+        }
+        &.plus {
+            .side-icon {
+                color: #000;
+            }
+        }
+    }
+    .upper-container {
+        display: flex;
+        flex-direction: column;
+    }
+    .plus {
+        margin-top: 24px;
+        i {
+            background-color: #fff;
+        }
     }
 }
+
+// linear-gradient(135deg,#450af5,#c4efd9)
