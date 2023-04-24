@@ -5,7 +5,7 @@ export function loadItem() {
     return async (dispatch, getState) => {
         try {
             console.log('getting items');
-            const filterBy = getState().itemModule.filterBy
+            const filterBy = getState().playlistModule.filterBy
             const items = await playlistService.query(filterBy)
             console.log('items:', items)
             dispatch({ type: 'SET_ITEMS', items })

@@ -21,7 +21,7 @@ const App = () => {
 
   const [items, setItems] = useState(null)
 
-  const value = useSelector(state => state.itemModule.items)
+  const value = useSelector(state => state.playlistModule.items)
   console.log('value:', value)
   const dispatch = useDispatch()
   useEffect(() => {

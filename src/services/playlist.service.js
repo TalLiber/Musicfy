@@ -18,7 +18,7 @@ export const playlistService = {
 }
 window.cs = playlistService
 
-async function query(filterBy = { txt: '', price: 0 }) {
+async function query(filterBy = { }) {
     // return httpService.get(STORAGE_KEY, filterBy)
 
     var cars = await storageService.query(STORAGE_KEY)
