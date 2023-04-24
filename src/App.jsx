@@ -9,30 +9,26 @@ import { router } from './router'
 
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  loadItem,
-  removeItem,
+  loadPlaylists,
+  removePlaylist,
   setFilterBy
 } from './store/actions/playlists.actions'
 
-import SvgIcon from './cmps/SvgIcon'
 
-{/* <SvgIcon iconname='logo' /> */ }
 const App = () => {
 
-  const [items, setItems] = useState(null)
-
-  const value = useSelector(state => state.playlistModule.items)
-  console.log('value:', value)
   const dispatch = useDispatch()
+  const playlists = useSelector(state => state.playlistModule.playlists)
   useEffect(() => {
-    getItems()
-  }, [items])
-
-  const getItems = async () => {
-    dispatch(loadItem())
+    console.log('Playlists:', playlists)
+    getPlaylists()
+  }, [])
+  
+  const getPlaylists = async () => {
+    dispatch(loadPlaylists())
   }
 
-  if (!value) return <div>Loading...</div>
+  if (!playlists) return <div>Loading...</div>
   return (
     <>
       <RouterProvider router={router} />

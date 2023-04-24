@@ -1,26 +1,26 @@
 import { playlistService } from "../../services/playlist.service.js"
 
-export function loadItem() {
+export function loadPlaylists() {
 
     return async (dispatch, getState) => {
         try {
-            console.log('getting items');
+            console.log('getting playlists');
             const filterBy = getState().playlistModule.filterBy
-            const items = await playlistService.query(filterBy)
-            console.log('items:', items)
-            dispatch({ type: 'SET_ITEMS', items })
+            const playlists = await playlistService.query(filterBy)
+            console.log('playlists:', playlists)
+            dispatch({ type: 'SET_PLAYLISTS', playlists })
         } catch (err) {
             console.log('err:', err)
         }
     }
 }
 
-export function removeItem(robotId) {
+export function removePlaylist(playlistId) {
 
     return async (dispatch) => {
         try {
-            const items = await playlistService.remove(robotId)
-            dispatch({ type: 'REMOVE_ITEM', robotId })
+            const playlists = await playlistService.remove(playlistId)
+            dispatch({ type: 'REMOVE_PLAYLIST', playlistId })
             return 'hello'
         } catch (err) {
             console.log('err:', err)
@@ -38,3 +38,5 @@ export function setFilterBy(filterBy) {
         }
     }
 }
+
+// export function get

@@ -13,56 +13,56 @@ export const playlistService = {
     getById,
     save,
     remove,
-    getEmptyCar,
-    addCarMsg
+    getEmptyPlaylist,
+    addPlaylistMsg
 }
 window.cs = playlistService
 
 async function query(filterBy = { }) {
     // return httpService.get(STORAGE_KEY, filterBy)
 
-    var cars = await storageService.query(STORAGE_KEY)
+    var playlists = await storageService.query(STORAGE_KEY)
     if (filterBy.txt) {
         const regex = new RegExp(filterBy.txt, 'i')
-        cars = cars.filter(car => regex.test(car.vendor) || regex.test(car.description))
+        playlists = playlists.filter(playlist => regex.test(playlist.vendor) || regex.test(playlist.description))
     }
     if (filterBy.price) {
-        cars = cars.filter(car => car.price <= filterBy.price)
+        playlists = playlists.filter(playlist => playlist.price <= filterBy.price)
     }
-    return cars
+    return playlists
 
 }
-function getById(carId) {
-    return storageService.get(STORAGE_KEY, carId)
-    // return httpService.get(`car/${carId}`)
+function getById(playlistId) {
+    return storageService.get(STORAGE_KEY, playlistId)
+    // return httpService.get(`playlist/${playlistId}`)
 }
 
-async function remove(carId) {
-    await storageService.remove(STORAGE_KEY, carId)
-    // return httpService.delete(`car/${carId}`)
+async function remove(playlistId) {
+    await storageService.remove(STORAGE_KEY, playlistId)
+    // return httpService.delete(`playlist/${playlistId}`)
 }
-async function save(car) {
-    var savedCar
-    if (car._id) {
-        savedCar = await storageService.put(STORAGE_KEY, car)
-        // savedCar = await httpService.put(`car/${car._id}`, car)
+async function save(playlist) {
+    var savedPlaylist
+    if (playlist._id) {
+        savedPlaylist = await storageService.put(STORAGE_KEY, playlist)
+        // savedPlaylist = await httpService.put(`playlist/${playlist._id}`, playlist)
 
     } else {
         // Later, owner is set by the backend
-        car.owner = userService.getLoggedinUser()
-        savedCar = await storageService.post(STORAGE_KEY, car)
-        // savedCar = await httpService.post('car', car)
+        playlist.owner = userService.getLoggedinUser()
+        savedPlaylist = await storageService.post(STORAGE_KEY, playlist)
+        // savedPlaylist = await httpService.post('playlist', playlist)
     }
-    return savedCar
+    return savedPlaylist
 }
 
-async function addCarMsg(carId, txt) {
-    // const savedMsg = await httpService.post(`car/${carId}/msg`, {txt})
+async function addPlaylistMsg(playlistId, txt) {
+    // const savedMsg = await httpService.post(`playlist/${playlistId}/msg`, {txt})
     return savedMsg
 }
 
 
-function getEmptyCar() {
+function getEmptyPlaylist() {
     return {
         vendor: 'Susita-' + (Date.now() % 1000),
         price: utilService.getRandomIntInclusive(1000, 9000),

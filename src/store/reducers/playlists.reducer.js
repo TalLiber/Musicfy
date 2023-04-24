@@ -1,5 +1,5 @@
 const INITIAL_STATE = {
-    items: null,
+    playlists: null,
     filterBy: {
 
     }
@@ -9,25 +9,25 @@ const INITIAL_STATE = {
 export function playlistReducer(state = INITIAL_STATE, action) {
     // debugger
     switch (action.type) {
-        case 'SET_ITEMS':
+        case 'SET_PLAYLISTS':
             return {
                 ...state,
-                items: [...action.items]
+                playlists: [...action.playlists]
             }
-        case 'ADD_ITEM':
+        case 'ADD_PLAYLIST':
             return {
                 ...state,
-                items: [...state.items, action.item]
+                playlists: [...state.playlists, action.playlist]
             }
-        case 'REMOVE_ITEM':
+        case 'REMOVE_PLAYLIST':
             return {
                 ...state,
-                items: state.items.filter(item => item._id !== action.itemId)
+                playlists: state.playlists.filter(playlist => playlist._id !== action.playlistId)
             }
-        case 'UPDATE_ITEM':
+        case 'UPDATE_PLAYLIST':
             return {
                 ...state,
-                items: state.items.map(item => item._id === action.item._id ? action.item : item)
+                playlists: state.playlists.map(playlist => playlist._id === action.playlist._id ? action.playlist : playlist)
             }
         case 'SET_FILTER_BY':
             return {
