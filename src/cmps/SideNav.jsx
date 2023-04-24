@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux'
 
 import { SideItem } from './SideItem'
-import {addPlaylist} from '../store/actions/playlists.actions'
+import { addPlaylist } from '../store/actions/playlists.actions'
 
 export const SideNav = () => {
 
@@ -17,18 +17,20 @@ export const SideNav = () => {
   const [selected, setSelected] = useState(null)
 
   useEffect(() => {
-    (location.pathname === `/`) ? setSelected('home') : setSelected(`${location.pathname.slice(1)}`)
+    if (location.pathname === `/`) setSelected('home')
+    else if (location.pathname.substring(1, 9) === 'playlist') setSelected(`${location.pathname.slice(10)}`)
+    else setSelected(`${location.pathname.slice(1)}`)
   }, [location.pathname])
 
   const NavCateg = [{ name: 'Home', icon: 'home', path: '/' },
   { name: 'Search', icon: 'search', path: '/search' },
   { name: 'Your Library', icon: 'lib', path: '/lib' },
-  { name: 'Create Playlist', icon: 'plus', path: '/create'},
+  { name: 'Create Playlist', icon: 'plus', path: '/create' },
   { name: 'Liked Songs', icon: 'heart', path: '/lib' },
   ]
 
   const directTo = (path) => {
-    if(path === '/create') {
+    if (path === '/create') {
       addUserPlaylist()
       path = '/'
     }
@@ -48,15 +50,15 @@ export const SideNav = () => {
       <section className='upper-container'>
         {NavCateg.map((categ, idx) => {
           return (
-            <SideItem categ={categ} selected={selected} directTo={directTo} key={idx}/>
+            <SideItem categ={categ} selected={selected} directTo={directTo} key={idx} />
           )
         })}
-        <section>
-        {userPlaylists.map((categ, idx) => {
-          return (
-            <SideItem categ={categ} selected={selected} directTo={directTo} key={idx}/>
-          )
-        })}
+        <section className='user-categ-container'>
+          {userPlaylists.map((categ, idx) => {
+            return (
+              <SideItem categ={categ} selected={selected} directTo={directTo} key={idx} />
+            )
+          })}
         </section>
       </section>
     </div>
