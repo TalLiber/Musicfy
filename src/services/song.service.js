@@ -6,9 +6,10 @@ import { userService } from './user.service.js'
 
 
 
+
 const STORAGE_KEY = 'post_db'
 
-export const itemService = {
+export const songService = {
     query,
     getById,
     save,
@@ -69,7 +70,8 @@ function getEmptyCar() {
     }
 }
 
-
-
-
-
+// TEST DATA
+// ;(async ()=>{
+    // await storageService.post(STORAGE_KEY, {vendor: 'Subali Karov 1', price: 180})
+//     await storageService.post(STORAGE_KEY, {vendor: 'Subali Rahok 2', price: 240})
+// })()
