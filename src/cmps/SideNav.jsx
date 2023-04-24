@@ -35,7 +35,7 @@ export const SideNav = () => {
   return (
 
     <div className='side-nav-container'>
-      <i className='logo' >{SvgIcon({ iconName: 'heart' })}</i>
+      <i className='logo'>{SvgIcon({ iconName: 'heart' })}</i>
 
       <section className='upper-container'>
         {NavCateg.map((categ, idx) => {
