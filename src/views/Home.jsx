@@ -1,7 +1,6 @@
 
 export const Home = () => {
 
-
     return (
     <div className='home-container'>Home
     Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa et, nam ullam ipsam deserunt illum facilis perspiciatis praesentium aperiam repellendus excepturi nobis aliquid unde, itaque, reprehenderit sint voluptates nemo saepe!
