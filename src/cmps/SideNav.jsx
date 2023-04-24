@@ -1,41 +1,49 @@
 import SvgIcon from './SvgIcon'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from 'react-redux'
 
 import { SideItem } from './SideItem'
+import {addPlaylist} from '../store/actions/playlists.actions'
 
 export const SideNav = () => {
+
   const location = useLocation()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const userPlaylists = useSelector(state => state.playlistModule.playlists)
+
   const [selected, setSelected] = useState(null)
 
   useEffect(() => {
     (location.pathname === `/`) ? setSelected('home') : setSelected(`${location.pathname.slice(1)}`)
   }, [location.pathname])
 
-  const NavCateg = [{ title: 'Home', icon: 'home', path: '' },
-  { title: 'Search', icon: 'search', path: 'search' },
-  { title: 'Your Library', icon: 'lib', path: 'lib' },
-  { title: 'Create Playlist', icon: 'plus', path: 'create'},
-  { title: 'Liked Songs', icon: 'heart', path: 'lib' },
+  const NavCateg = [{ name: 'Home', icon: 'home', path: '/' },
+  { name: 'Search', icon: 'search', path: '/search' },
+  { name: 'Your Library', icon: 'lib', path: '/lib' },
+  { name: 'Create Playlist', icon: 'plus', path: '/create'},
+  { name: 'Liked Songs', icon: 'heart', path: '/lib' },
   ]
 
   const directTo = (path) => {
-    if(path === 'create') {
-      addPlaylist()
-      path = ''
+    if(path === '/create') {
+      addUserPlaylist()
+      path = '/'
     }
-    navigate('/' + path)
+    navigate(path)
   }
 
-  function addPlaylist() {
-    console.log('hi');
+  function addUserPlaylist() {
+    console.log('hi', userPlaylists);
+    dispatch(addPlaylist())
   }
 
   return (
 
     <div className='side-nav-container'>
-      <i className='logo'>{SvgIcon({ iconName: 'heart' })}</i>
+      <div className='logo'>{SvgIcon({ iconName: 'logo' })}</div>
 
       <section className='upper-container'>
         {NavCateg.map((categ, idx) => {
@@ -43,6 +51,13 @@ export const SideNav = () => {
             <SideItem categ={categ} selected={selected} directTo={directTo} key={idx}/>
           )
         })}
+        <section>
+        {userPlaylists.map((categ, idx) => {
+          return (
+            <SideItem categ={categ} selected={selected} directTo={directTo} key={idx}/>
+          )
+        })}
+        </section>
       </section>
     </div>
   )

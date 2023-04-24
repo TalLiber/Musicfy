@@ -17,7 +17,7 @@ export function playlistReducer(state = INITIAL_STATE, action) {
         case 'ADD_PLAYLIST':
             return {
                 ...state,
-                playlists: [...state.playlists, action.playlist]
+                playlists: [action.playlist, ...state.playlists]
             }
         case 'REMOVE_PLAYLIST':
             return {
@@ -32,7 +32,7 @@ export function playlistReducer(state = INITIAL_STATE, action) {
         case 'SET_FILTER_BY':
             return {
                 ...state,
-                filterBy: { ...action.filterBy }
+                filterBy: {...action.filterBy }
             }
 
         default:

@@ -2,7 +2,7 @@ import { playlistService } from "../../services/playlist.service.js"
 
 export function loadPlaylists() {
 
-    return async (dispatch, getState) => {
+    return async(dispatch, getState) => {
         try {
             console.log('getting playlists');
             const filterBy = getState().playlistModule.filterBy
@@ -15,9 +15,23 @@ export function loadPlaylists() {
     }
 }
 
+export function addPlaylist() {
+
+    let playlist = playlistService.getEmptyPlaylist()
+    return async(dispatch) => {
+        try {
+            playlist = await playlistService.save(playlist)
+            dispatch({ type: 'ADD_PLAYLIST', playlist })
+            return playlist
+        } catch (err) {
+            console.log('err:', err)
+        }
+    }
+}
+
 export function removePlaylist(playlistId) {
 
-    return async (dispatch) => {
+    return async(dispatch) => {
         try {
             const playlists = await playlistService.remove(playlistId)
             dispatch({ type: 'REMOVE_PLAYLIST', playlistId })
@@ -32,7 +46,7 @@ export function setFilterBy(filterBy) {
 
     return (dispatch) => {
         try {
-            dispatch({ type: 'SET_FILTER_BY', filterBy: { ...filterBy } })
+            dispatch({ type: 'SET_FILTER_BY', filterBy: {...filterBy } })
         } catch (err) {
             console.log('err:', err)
         }
