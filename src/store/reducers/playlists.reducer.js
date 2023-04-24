@@ -6,7 +6,7 @@ const INITIAL_STATE = {
 }
 
 
-export function itemReducer(state = INITIAL_STATE, action) {
+export function playlistReducer(state = INITIAL_STATE, action) {
     // debugger
     switch (action.type) {
         case 'SET_ITEMS':

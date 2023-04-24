@@ -12,7 +12,7 @@ import {
   loadItem,
   removeItem,
   setFilterBy
-} from './store/actions/items.actions'
+} from './store/actions/playlists.actions'
 
 import SvgIcon from './cmps/SvgIcon'
 
