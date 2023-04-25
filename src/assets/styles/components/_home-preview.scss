@@ -1,0 +1,32 @@
+.home-preview{
+    padding: 16px;
+    width: 100%;
+    background-color: #181818;
+    border-radius: 5px;
+
+    h1{
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+
+    .img-preview{
+        border: 1px solid black;
+        border-radius: 5px;
+        margin-bottom: 16px;
+    }
+
+    p{
+        color: #a7a7a7;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    &:hover{
+        cursor: pointer;
+        background-color: #282828;
+    }
+}
