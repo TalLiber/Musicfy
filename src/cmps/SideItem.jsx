@@ -4,7 +4,7 @@ export const SideItem = ({ categ, selected, directTo }) => {
 
   const getClass = () => {
     let classStr = `${categ.icon ? 'nav-categ' : 'user-categ'} ${categ.icon || ''}`
-    if (categ.path === '/' && selected === 'home' || categ.path === selected || categ._id === selected) classStr += ' selected'
+    if (categ.path === '/' && selected === 'home' || categ._id === selected || categ.path?.slice(1) === selected) classStr += ' selected'
     return classStr
   }
 

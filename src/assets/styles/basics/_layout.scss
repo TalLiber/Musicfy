@@ -6,7 +6,7 @@
     grid-template-columns: 270px 1fr;
     grid-template-rows: 64px 1fr 90px;
     grid-template-areas: 'side main' 'side main' 'player player';
-    overflow: hidden;
+    // overflow: hidden;
     .header-container {
         position: sticky;
         top: 0;

@@ -20,6 +20,7 @@ export const SideNav = () => {
     if (location.pathname === `/`) setSelected('home')
     else if (location.pathname.substring(1, 9) === 'playlist') setSelected(`${location.pathname.slice(10)}`)
     else setSelected(`${location.pathname.slice(1)}`)
+    console.log('selected', selected, location.pathname);
   }, [location.pathname])
 
   const NavCateg = [{ name: 'Home', icon: 'home', path: '/' },
