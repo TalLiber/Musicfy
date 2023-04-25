@@ -75,7 +75,7 @@ function getEmptyPlaylist() {
 
 
 // TEST DATA
-const playlist = [{
+const playlist = {
     "description": "songs you can’t help but scream along to",
     "id": "37i9dQZF1DX2KwEtNSejGe",
     "imgUrl": "https://i.scdn.co/image/ab67706f00000003a83ff89e84f67350d0de273a",
@@ -782,7 +782,7 @@ const playlist = [{
             "imgUrl": "https://i.scdn.co/image/ab67616d0000b2734ba15b951a5cff36133ca5bd"
         }
     ]
-}];
+};
 (async() => {
     // await storageService.post(STORAGE_KEY, playlist)
     //     await storageService.post(STORAGE_KEY, {vendor: 'Subali Rahok 2', price: 240})
