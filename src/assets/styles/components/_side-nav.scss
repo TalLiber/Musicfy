@@ -1,8 +1,15 @@
 .side-nav-container {
-    background-color: #000;
+    background-color: #000000;
     color: rgb(179, 179, 179);
+    padding-top: 22px;
     .logo {
         color: #fff;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 5px;
+        padding: 0 24px;
+        margin-bottom: 18px;
     }
     .nav-categ {
         height: 40px;
