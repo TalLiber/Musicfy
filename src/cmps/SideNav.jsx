@@ -46,7 +46,7 @@ export const SideNav = () => {
   return (
 
     <div className='side-nav-container'>
-      <div className='logo'>{SvgIcon({ iconName: 'logo' })}</div>
+      <div className='logo'>{SvgIcon({ iconName: 'logo' })} <h2>Musicfy</h2> </div>
 
       <section className='upper-container'>
         {NavCateg.map((categ, idx) => {
