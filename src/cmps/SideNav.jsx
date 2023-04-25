@@ -54,6 +54,7 @@ export const SideNav = () => {
             <SideItem categ={categ} selected={selected} directTo={directTo} key={idx} />
           )
         })}
+        <hr/>
         <section className='user-categ-container'>
           {userPlaylists.map((categ, idx) => {
             return (

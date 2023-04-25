@@ -71,6 +71,14 @@
             background-color: #fff;
         }
     }
+    hr {
+        background-color: #282828;
+        height: 1px;
+        margin-inline: 24px;
+        margin-top: 8px;
+        border: none;
+        box-shadow: linear-gradient(180deg, rgba(0, 0, 0, .7), transparent);
+    }
 }
 
 // linear-gradient(135deg,#450af5,#c4efd9)
