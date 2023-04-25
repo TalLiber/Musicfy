@@ -1,0 +1,31 @@
+.home-list{
+    .home-list-grid{
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-auto-rows: 0;
+        grid-template-rows: 1fr;
+        gap: 24px;
+    }
+
+    .home-list-header{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items:end;
+        margin-bottom: 16px;
+        
+        .btn-header{
+            border: 1px solid $bg-base;
+            background-color: inherit;
+            color: #a7a7a7;
+            height: min-content;
+            padding: 0;
+            
+        }
+
+        .btn-header:hover{
+            border-bottom: 1px solid #a7a7a7;
+        }
+    }
+
+}
