@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import EventBus from 'react-native-event-bus'
 
 import { HomeList } from '../cmps/HomeList'
 
@@ -9,14 +10,15 @@ export const Home = () => {
     const categories = [{id:1, name:'Focus',playlists},{id:2, name:'Pop', playlists}]
     const containerRef = useRef(null)
 
-    const [isVisible,setIsVisible] = useState(false) 
+    const isVisible = useRef(false) 
     const options ={
         root: null,
         rootMargin: "0px",
         threshold: 1.0
     }
     const cb = () => {
-        setIsVisible(prevState => !prevState)
+        isVisible.current = !isVisible.current
+        EventBus.getInstance().fireEvent("test", isVisible.current)
     }
 
     useEffect(() => {
@@ -32,7 +34,7 @@ export const Home = () => {
 
     return (
         <div className='home-container'>
-            <div ref={containerRef}>{isVisible? 'yes' : 'no'}</div>
+            <div ref={containerRef}></div>
             {categories.map((category,idx) => {
                 return <HomeList category={category} key={idx}/>
             })}
