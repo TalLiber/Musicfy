@@ -8,7 +8,7 @@ export const MediaPlayer = () => {
   const currSong = useSelector(state => state.playlistModule.currSong)
   useEffect(() => {
     console.log(currSong, 'currSong');
-  }, currSong)
+  }, [currSong])
   return (
     <div className='player-container'>
       <div className="song-container">
