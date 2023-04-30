@@ -65,7 +65,9 @@ img {
     width: 100%;
 }
 
-p {}
+p {
+    margin: 0;
+}
 
 .btn {
     @include btn;
