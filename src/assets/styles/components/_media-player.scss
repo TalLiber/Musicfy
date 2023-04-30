@@ -1,3 +1,97 @@
 .player-container {
+    z-index: 1;
     background-color: rgb(24, 24, 24);
+    padding-inline: 16px;
+    display: flex;
+    align-items: center;
+    i {
+        width: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .song-container {
+        width: 30%;
+        display: flex;
+        align-items: center;
+        img {
+            width: 56px;
+            border-radius: 4px;
+        }
+        .song-details {
+            margin-inline: 8px;
+        }
+        .song-title {
+            padding-inline-end: 6px;
+            font-family: Circular-light;
+            font-size: 14px;
+            height: 22px;
+        }
+        .song-artist {
+            padding-inline-end: 6px;
+            // padding: 0 12px 0 6px;
+            font-family: Circular-light;
+            font-size: 11px;
+            color: #a7a7a7;
+            height: 18px;
+        }
+        i {
+            color: hsla(0, 0%, 100%, .7);
+        }
+    }
+    .player-control {
+        width: 40%;
+        .control-btns {
+            display: flex;
+            gap: 16px;
+            margin-block-end: 8px;
+            .play-btn {
+                width: 32px;
+                height: 32px;
+                border-radius: 32px;
+                color: #000;
+                background-color: #fff;
+                cursor: pointer;
+            }
+            .side-btns {
+                flex: 1;
+                display: flex;
+                color: hsla(0, 0%, 100%, .7);
+                gap: 8px;
+                &.left-side {
+                    justify-content: flex-end;
+                }
+                &.right-side {
+                    justify-content: flex-start;
+                }
+            }
+        }
+        .playback-bar {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            .progress-time {
+                width: 40px;
+                font-size: 11px;
+                color: #a7a7a7;
+                &.elapsed {
+                    text-align: right;
+                }
+            }
+            .progress-bar {
+                height: 4px;
+                width: 100%;
+                border-radius: 2px;
+                background-color: hsla(0, 0%, 100%, .3);
+            }
+        }
+    }
+    .side-container {
+        width: 30%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        min-width: 180px;
+        color: #a7a7a7;
+    }
 }
