@@ -5,6 +5,7 @@
         grid-auto-rows: 0;
         grid-template-rows: 1fr;
         gap: 24px;
+        overflow-y: hidden;
     }
 
     .home-list-header{

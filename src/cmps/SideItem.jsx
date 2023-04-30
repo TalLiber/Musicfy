@@ -9,7 +9,6 @@ export const SideItem = ({ categ, selected, directTo }) => {
   }
 
   const getIcon = () => {
-    console.log(categ);
     return categ.icon === selected ? selected + '-full' : categ.icon
   }
   return (
