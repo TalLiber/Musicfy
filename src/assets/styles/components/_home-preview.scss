@@ -3,6 +3,7 @@
     width: 100%;
     background-color: #181818;
     border-radius: 5px;
+    aspect-ratio: 1.5/1;
 
     h1{
         overflow: hidden;
@@ -15,6 +16,7 @@
         border: 1px solid black;
         border-radius: 5px;
         margin-bottom: 16px;
+        width: 100%;
     }
 
     p{

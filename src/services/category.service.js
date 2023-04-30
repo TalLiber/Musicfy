@@ -3,8 +3,7 @@ import { httpService } from './http.service.js'
 import { utilService } from './util.service.js'
 import { userService } from './user.service.js'
 
-import categories from '../data/categories.json'
-// assert { type: 'json' }
+import homeCategories from '../data/home.json' assert { type: 'json' }
 
 
 const STORAGE_KEY = 'category_db'
@@ -22,9 +21,13 @@ window.cs = categoryService
 
 async function query(filterBy = {}) {
     // return httpService.get(STORAGE_KEY, filterBy)
-    if(filterBy.txt = "HomePage") return categories
+    var categories
+    if(filterBy.txt = "HomePage") {
+        categories = await storageService.query("HomePage_db")
+        return categories 
+    }
 
-    var categories = await storageService.query(STORAGE_KEY)
+    categories = await storageService.query(STORAGE_KEY)
     if (filterBy.txt) {
         const regex = new RegExp(filterBy.txt, 'i')
         categories = categories.filter(category => regex.test(category.vendor) || regex.test(category.description))
@@ -328,4 +331,8 @@ const categories = [{
     }
 ]
 
-const catIds = ['0JQ5DAqbMKFzHmL4tf05da', '0JQ5DAqbMKFEC4WFtoNRpw', '0JQ5DAqbMKFFzDl7qN9Apr']
+// const catIds = ['0JQ5DAqbMKFzHmL4tf05da', '0JQ5DAqbMKFEC4WFtoNRpw', '0JQ5DAqbMKFFzDl7qN9Apr']
+
+// ;(() => {
+//     utilService.saveToStorage("HomePage_db", homeCategories)
+// })()

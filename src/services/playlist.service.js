@@ -3,7 +3,7 @@ import { httpService } from './http.service.js'
 import { utilService } from './util.service.js'
 import { userService } from './user.service.js'
 
-// import playlist from '../data/playlist.json'
+import playlist from '../data/playlist.json'
 // assert { type: 'json' }
 
 
@@ -1298,7 +1298,6 @@ const catIds = ['0JQ5DAqbMKFzHmL4tf05da', '0JQ5DAqbMKFEC4WFtoNRpw', '0JQ5DAqbMKF
 //         }
 //     ]
 // };
-// (async() => {
-// await storageService.post(STORAGE_KEY, playlist)
-//     await storageService.post(STORAGE_KEY, {vendor: 'Subali Rahok 2', price: 240})
+// ;(() => {
+//  utilService.saveToStorage(STORAGE_KEY, playlist)
 // })()

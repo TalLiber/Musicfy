@@ -1,11 +1,12 @@
 .home-list{
+    margin-bottom: 16px;
+    overflow-y: hidden;
     .home-list-grid{
         display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        grid-auto-rows: 0;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
         grid-template-rows: 1fr;
         gap: 24px;
-        overflow-y: hidden;
+        // grid-auto-rows: 0;
     }
 
     .home-list-header{

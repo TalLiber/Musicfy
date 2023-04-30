@@ -1,6 +1,5 @@
 [
     {
-        "focus": {
             "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFCbimwdOYlsl/playlists?country=IL&offset=0&limit=20",
             "items": [{
                     "collaborative": false,
@@ -688,10 +687,9 @@
             "offset": 0,
             "previous": null,
             "total": 91
-        }
+        
     },
     {
-        "pop": {
             "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFEC4WFtoNRpw/playlists?country=IL&offset=0&limit=20",
             "items": [{
                     "collaborative": false,
@@ -1379,6 +1377,5 @@
             "offset": 0,
             "previous": null,
             "total": 38
-        }
     }
 ]

@@ -1,6 +1,7 @@
 import { applyMiddleware, combineReducers, compose, legacy_createStore as createStore } from 'redux'
 import thunk from 'redux-thunk'
 import { playlistReducer } from './reducers/playlists.reducer'
+import { categoryReducer } from './reducers/categories.reducer'
 import { songReducer } from './reducers/songs.reducer'
 import { userReducer } from './reducers/user.reducer'
 
@@ -10,6 +11,7 @@ const rootReducer = combineReducers({
     playlistModule: playlistReducer,
     userModule: userReducer,
     songModule: songReducer,
+    categoryModule:categoryReducer
 
 
 })

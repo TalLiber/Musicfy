@@ -46,7 +46,6 @@ export const Header = (props) => {
                 </button>
             </div>
             <div className='content-container'>
-                hay
             </div>
             <div className='login-container'>
                 <button className='btn-signup'>Sign up</button>
