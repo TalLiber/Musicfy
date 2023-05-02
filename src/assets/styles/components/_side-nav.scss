@@ -80,10 +80,18 @@
         border: none;
         box-shadow: linear-gradient(180deg, rgba(0, 0, 0, .7), transparent);
     }
+
+    .user-categ-container::-webkit-scrollbar-thumb {
+        background-color: yellowgreen;
+        border-radius: 25px;
+    }
+    .user-categ-container::-webkit-scrollbar-track {
+        background-color: antiquewhite;
+    }
+    .user-categ-container::-webkit-scrollbar {
+        background-color: brown;
+    }
 }
 
-section.user-categ-container::-webkit-scrollbar-track {
-    background-color: antiquewhite;
-}
 
 // linear-gradient(135deg,#450af5,#c4efd9)
