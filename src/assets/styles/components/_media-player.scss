@@ -10,6 +10,11 @@
         align-items: center;
         justify-content: center;
     }
+    .bar {
+        height: 4px;
+        border-radius: 2px;
+        background-color: hsla(0, 0%, 100%, .3);
+    }
     .song-container {
         width: 30%;
         display: flex;
@@ -79,10 +84,7 @@
                 }
             }
             .progress-bar {
-                height: 4px;
                 width: 100%;
-                border-radius: 2px;
-                background-color: hsla(0, 0%, 100%, .3);
             }
         }
     }
@@ -93,5 +95,54 @@
         justify-content: flex-end;
         min-width: 180px;
         color: #a7a7a7;
+        .volume-bar {
+            width: 93px;
+        }
+    }
+}
+
+.progress-container {
+    pointer-events: none;
+    width: 100%;
+    position: relative;
+    .prog {
+        width: 97%;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    input[type='range'] {
+        // height: 4px;
+        appearance: none;
+        background: transparent;
+        &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: transparent;
+        }
+    }
+    progress[value] {
+        appearance: none;
+        border: none;
+        height: 4px;
+        // background-color: pink; // change to spotify
+        &::-webkit-progress-bar {
+            border-radius: 2px;
+        }
+        &::-webkit-progress-value {
+            background: white;
+            border-radius: 2px;
+        }
+    }
+    pointer-events: all;
+    &:hover progress[value]::-webkit-progress-value {
+        background: #1db954;
+    }
+    &:hover input[type='range']::-webkit-slider-thumb {
+        background: #fff;
     }
 }

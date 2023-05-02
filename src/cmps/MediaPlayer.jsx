@@ -35,13 +35,23 @@ export const MediaPlayer = () => {
         </div>
         <div className="playback-bar">
           <div className="progress-time elapsed">-:--</div>
-          <div className="progress-bar"></div>
+          <div className="progress-container progress-bar">
+          <progress className="prog progress-bar" type="progress" value="32" min="0" max="50"></progress>
+          <input className="prog input-bar timestamp" id="fontController" type="range"
+            input="40" value="32" min="0" max="50" />
+        </div>
+
           <div className="progress-time duration">-:--</div>
         </div>
       </div>
       <div className="side-container">
         <i>{SvgIcon({ iconName: 'lyrics' })}</i>
-        <i>{SvgIcon({ iconName: 'volume-high' })}</i>
+        <i>{SvgIcon({ iconName: 'volume-mute' })}</i>
+        <div className="progress-container volume-bar">
+          <progress className="prog progress-bar" type="progress" value="32" min="0" max="50"></progress>
+          <input className="prog input-bar timestamp" id="fontController" type="range"
+            input="40" value="32" min="0" max="50" />
+        </div>
       </div>
     </div>
   )

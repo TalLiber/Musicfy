@@ -57,6 +57,7 @@
         padding-inline: 24px;
         color: #fff;
         opacity: 0.7;
+        height: 32px;
         cursor: pointer;
         &:hover {
             opacity: 1;
@@ -79,6 +80,10 @@
         border: none;
         box-shadow: linear-gradient(180deg, rgba(0, 0, 0, .7), transparent);
     }
+}
+
+section.user-categ-container::-webkit-scrollbar-track {
+    background-color: antiquewhite;
 }
 
 // linear-gradient(135deg,#450af5,#c4efd9)
