@@ -53,14 +53,14 @@ export const SideNav = () => {
             <SideItem categ={categ} selected={selected} directTo={directTo} key={idx} />
           )
         })}
-        <hr/>
-        <section className='user-categ-container'>
-          {userPlaylists.map((categ, idx) => {
-            return (
-              <SideItem categ={categ} selected={selected} directTo={directTo} key={idx} />
-            )
-          })}
-        </section>
+        <hr />
+      </section>
+      <section className='user-categ-container'>
+        {userPlaylists.map((categ, idx) => {
+          return (
+            <SideItem categ={categ} selected={selected} directTo={directTo} key={idx} />
+          )
+        })}
       </section>
     </div>
   )
