@@ -32,7 +32,7 @@ export const MediaPlayer = () => {
   var newPlayer
   function loadVideo() {
     newPlayer = new window.YT.Player(`playerRef`, {
-      videoId: 'A_MjCqQoLLA',
+      videoId: 'RS7trxkb0zE',
       height: '0',
       width: '0',
       events: {
