@@ -8,7 +8,9 @@
     grid-template-areas: 'side main' 'side main' 'player player';
     // overflow: hidden;
     .header-container {
-        position: sticky;
+        position: fixed;
+        right: 0;
+        left: 241px;
         top: 0;
     }
     .side-nav-container {

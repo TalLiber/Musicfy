@@ -13,12 +13,14 @@ import {
   removePlaylist,
   setFilterBy
 } from './store/actions/playlists.actions'
+import { loadCategories } from "./store/actions/categories.actions";
 
 
 const App = () => {
 
   const dispatch = useDispatch()
   const playlists = useSelector(state => state.playlistModule.playlists)
+
   useEffect(() => {
     console.log('Playlists:', playlists)
     getPlaylists()

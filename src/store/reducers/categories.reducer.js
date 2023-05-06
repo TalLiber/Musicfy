@@ -2,7 +2,7 @@ const INITIAL_STATE = {
     categories: null,
     filterBy: {
 
-    }
+    },
 }
 
 
