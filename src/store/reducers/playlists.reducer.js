@@ -6,6 +6,7 @@ const INITIAL_STATE = {
         artist: 'Carly Rae Jepsen',
         album: 'Kiss (Deluxe)',
         imgUrl: 'https://i.scdn.co/image/ab67616d0000b273a111f7769013f1731e9c697c',
+        id: 'A_MjCqQoLLA'
     },
     filterBy: {},
 }
