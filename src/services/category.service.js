@@ -4,6 +4,7 @@ import { utilService } from './util.service.js'
 import { userService } from './user.service.js'
 
 import homeCategories from '../data/home.json'
+import categoriesDb from '../data/categories.json'
 
 
 
@@ -41,8 +42,9 @@ async function query(filterBy = {}) {
 }
 
 function getById(categoryId) {
-    return storageService.get(STORAGE_KEY, categoryId)
-        // return httpService.get(`category/${categoryId}`)
+    // return storageService.get(STORAGE_KEY, categoryId)
+    return storageService.get("HomePage_db", categoryId)
+    // return httpService.get(`category/${categoryId}`)
 }
 
 async function remove(categoryId) {
@@ -337,4 +339,8 @@ const categories = [{
 ;
 // (() => {
 //     utilService.saveToStorage("HomePage_db", homeCategories)
+// })()
+
+// (() => {
+//     utilService.saveToStorage("category_db", categoriesDb)
 // })()

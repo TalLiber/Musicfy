@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from "react-router-dom"
 import {HomePreview} from './HomePreivew' 
 
-export const HomeList = ({playlists,idx, width}) => {
+export const HomeList = ({playlists,idx, width,id}) => {
 
     const [playlistSlice,setPlaylistSlice] = useState(6)
+    const navigate = useNavigate()
 
     const onMoveToPlaylist = (idx) => {
         console.log(idx)
@@ -24,7 +26,7 @@ export const HomeList = ({playlists,idx, width}) => {
         <div className='home-list'>
             <div className='home-list-header'>
                 <h2>{idx === 0? 'Focus': 'Pop'}</h2>
-                <button onClick={()=>{onMoveToPlaylist(id)}} className="btn-header">Show all</button>
+                <button onClick={() => navigate(`/Category/${id}`)} className="btn-header">Show all</button>
             </div>
             <div className='home-list-grid'>
             {playlists.slice(0,playlistSlice).map((playlist,idx) => {

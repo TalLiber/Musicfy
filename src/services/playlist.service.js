@@ -3,7 +3,7 @@ import { httpService } from './http.service.js'
 import { utilService } from './util.service.js'
 import { userService } from './user.service.js'
 
-import playlist from '../data/playlist.json'
+import playlistSave from '../data/playlist.json'
 // assert { type: 'json' }
 
 
@@ -327,7 +327,11 @@ const categories = [{
     }
 ]
 
-const catIds = ['0JQ5DAqbMKFzHmL4tf05da', '0JQ5DAqbMKFEC4WFtoNRpw', '0JQ5DAqbMKFFzDl7qN9Apr']
+// const catIds = ['0JQ5DAqbMKFzHmL4tf05da', '0JQ5DAqbMKFEC4WFtoNRpw', '0JQ5DAqbMKFFzDl7qN9Apr']
+
+// (() => {
+//     utilService.saveToStorage(STORAGE_KEY, playlistSave)
+// })()
 
 // function getCatInfo() {
 //     info = {

@@ -24,7 +24,9 @@
 
     .content-container{
         flex-grow: 1;
-        // background-color: #a7a7a7;
+        overflow:visible;
+        font-size: 1.5rem;
+        font-weight: 700;
     }
 
     .login-container{

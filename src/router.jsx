@@ -6,6 +6,7 @@ import {Home}  from './views/Home';
 import {Search} from './views/Search';
 import {Lib} from './views/Lib';
 import {Playlist} from './views/Playlist';
+import {Category} from './views/Category';
 
 
 const routes = [
@@ -29,6 +30,10 @@ const routes = [
     {
       path: 'Playlist/:id',
       element: <Playlist/>
+    },
+    {
+      path: 'Category/:id',
+      element: <Category/>
     },
   ]
  },
