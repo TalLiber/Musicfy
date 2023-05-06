@@ -18,7 +18,7 @@ export const SideNav = () => {
 
   useEffect(() => {
     if (location.pathname === `/`) setSelected('home')
-    else if (location.pathname.substring(1, 9) === 'playlist') setSelected(`${location.pathname.slice(10)}`)
+    else if (location.pathname.substring(1, 9) === 'Playlist') setSelected(`${location.pathname.slice(10)}`)
     else setSelected(`${location.pathname.slice(1)}`)
   }, [location.pathname])
 
