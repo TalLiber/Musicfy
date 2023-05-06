@@ -24,7 +24,7 @@ export const HomeList = ({playlists,idx, width}) => {
         <div className='home-list'>
             <div className='home-list-header'>
                 <h2>{idx === 0? 'Focus': 'Pop'}</h2>
-                <button onClick={()=>{onMoveToPlaylist(id)}} className="btn-header">Show all</button>
+                <button onClick={()=>{onMoveToPlaylist(playlists[idx].id)}} className="btn-header">Show all</button>
             </div>
             <div className='home-list-grid'>
             {playlists.slice(0,playlistSlice).map((playlist,idx) => {
