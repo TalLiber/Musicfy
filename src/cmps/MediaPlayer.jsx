@@ -42,10 +42,8 @@ export const MediaPlayer = () => {
   }
 
   function onPlayerReady(event) {
-    // setPlayer(newPlayer)
     setSongDuration(player.current.getDuration())
     console.log(timeFormat(player.current.getDuration()))
-    // newPlayer.seekTo(0)
   }
 
   function handleVolumeChange(ev) {
@@ -54,7 +52,8 @@ export const MediaPlayer = () => {
   }
 
   function handleTimeChange(ev) {
-    setCurrTime(ev.target.value)
+    setCurrTime(+ev.target.value)
+
     player.current.seekTo(ev.target.value)
   }
 
@@ -67,7 +66,7 @@ export const MediaPlayer = () => {
       player.current.playVideo()
       intervalIdRef.current = setInterval(() => {
         setCurrTime(prevTime => prevTime + 1)
-    }, 1000)
+      }, 1000)
     }
 
     setIsPlaying(prevState => !prevState)
@@ -75,9 +74,9 @@ export const MediaPlayer = () => {
 
   function getVolumeIcon() {
     let icon = 'volume-mute'
-    if(volume >= 66) icon = 'volume-high'
-    else if(volume >= 33) icon = 'volume-medium'
-    else if(volume > 0) icon = 'volume-low'
+    if (volume >= 66) icon = 'volume-high'
+    else if (volume >= 33) icon = 'volume-medium'
+    else if (volume > 0) icon = 'volume-low'
 
     return icon
   }
@@ -97,7 +96,7 @@ export const MediaPlayer = () => {
 
     ret += "" + mins + ":" + (secs < 10 ? "0" : "");
     ret += "" + secs;
-
+    console.log(ret);
     return ret;
   }
 
