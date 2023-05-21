@@ -44,7 +44,7 @@ async function query(filterBy = {}) {
 function getById(categoryId) {
     // return storageService.get(STORAGE_KEY, categoryId)
     return storageService.get("HomePage_db", categoryId)
-    // return httpService.get(`category/${categoryId}`)
+        // return httpService.get(`category/${categoryId}`)
 }
 
 async function remove(categoryId) {
@@ -336,7 +336,7 @@ const categories = [{
 
 // const catIds = ['0JQ5DAqbMKFzHmL4tf05da', '0JQ5DAqbMKFEC4WFtoNRpw', '0JQ5DAqbMKFFzDl7qN9Apr']
 
-;
+// ;
 // (() => {
 //     utilService.saveToStorage("HomePage_db", homeCategories)
 // })()

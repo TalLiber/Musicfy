@@ -5,14 +5,13 @@ import SvgIcon from './SvgIcon'
 
 export const MediaPlayer = () => {
 
-  const playerRef = useRef(null)
   const currSong = useSelector(state => state.playlistModule.currSong)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [player, setPlayer] = useState(null)
   const [volume, setVolume] = useState(50)
   const [songDuration, setSongDuration] = useState(null)
   const [currTime, setCurrTime] = useState(0)
   const intervalIdRef = useRef()
+  const player = useRef(null)
 
 
   useEffect(() => {
@@ -29,9 +28,9 @@ export const MediaPlayer = () => {
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
   }
 
-  var newPlayer
+
   function loadVideo() {
-    newPlayer = new window.YT.Player(`playerRef`, {
+    player.current = new window.YT.Player(`playerRef`, {
       videoId: 'RS7trxkb0zE',
       height: '0',
       width: '0',
@@ -43,29 +42,29 @@ export const MediaPlayer = () => {
   }
 
   function onPlayerReady(event) {
-    setPlayer(newPlayer)
-    setSongDuration(newPlayer.getDuration())
-    console.log(timeFormat(newPlayer.getDuration()))
+    // setPlayer(newPlayer)
+    setSongDuration(player.current.getDuration())
+    console.log(timeFormat(player.current.getDuration()))
     // newPlayer.seekTo(0)
   }
 
   function handleVolumeChange(ev) {
     setVolume(ev.target.value)
-    player.setVolume(ev.target.value)
+    player.current.setVolume(ev.target.value)
   }
 
   function handleTimeChange(ev) {
     setCurrTime(ev.target.value)
-    player.seekTo(ev.target.value)
+    player.current.seekTo(ev.target.value)
   }
 
   function togglePlay() {
     if (isPlaying) {
-      player.pauseVideo()
+      player.current.pauseVideo()
       clearInterval(intervalIdRef.current)
     }
     else {
-      player.playVideo()
+      player.current.playVideo()
       intervalIdRef.current = setInterval(() => {
         setCurrTime(prevTime => prevTime + 1)
     }, 1000)
