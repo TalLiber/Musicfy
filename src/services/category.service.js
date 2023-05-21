@@ -336,7 +336,7 @@ const categories = [{
 
 // const catIds = ['0JQ5DAqbMKFzHmL4tf05da', '0JQ5DAqbMKFEC4WFtoNRpw', '0JQ5DAqbMKFFzDl7qN9Apr']
 
-;
+// ;
 // (() => {
 //     utilService.saveToStorage("HomePage_db", homeCategories)
 // })()
