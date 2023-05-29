@@ -4,6 +4,7 @@ import EventBus from 'react-native-event-bus'
 export const useHeaderObserver = () => {
     const headerRef = useRef()
     const headerName = useRef()
+    const isDone = useRef(false)
 
     const options ={
         root: null,
@@ -11,7 +12,7 @@ export const useHeaderObserver = () => {
         threshold: 1.0
     }
     const cb = (entries) => {
-        if(!entries[0].isIntersecting) EventBus.getInstance().fireEvent("headerName", headerName.current)
+        if(!entries[0].isIntersecting && !isDone.current) EventBus.getInstance().fireEvent("headerName", headerName.current)
         else EventBus.getInstance().fireEvent("headerName", '')
     }
 
@@ -24,6 +25,7 @@ export const useHeaderObserver = () => {
         return () => {
             EventBus.getInstance().fireEvent("headerName", '')
             if(headerRef.current) observer.unobserve(headerRef.current)
+            isDone.current = true
         }
     }, [headerRef])
 
