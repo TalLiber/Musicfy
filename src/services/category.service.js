@@ -44,7 +44,7 @@ async function query(filterBy = {}) {
 function getById(categoryId) {
     // return storageService.get(STORAGE_KEY, categoryId)
     return storageService.get("HomePage_db", categoryId)
-    // return httpService.get(`category/${categoryId}`)
+        // return httpService.get(`category/${categoryId}`)
 }
 
 async function remove(categoryId) {
