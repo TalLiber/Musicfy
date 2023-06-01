@@ -5,9 +5,9 @@ import SvgIcon from './SvgIcon'
 
 export const MediaPlayer = () => {
 
-  const currSong = useSelector(state => state.playlistModule.currSong)
+  const currSong = useSelector(state => state.songModule.currSong)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [volume, setVolume] = useState(50)
+  const [volume, setVolume] = useState(10)
   const [songDuration, setSongDuration] = useState(null)
   const [currTime, setCurrTime] = useState(0)
   const intervalIdRef = useRef()
@@ -31,7 +31,7 @@ export const MediaPlayer = () => {
 
   function loadVideo() {
     player.current = new window.YT.Player(`playerRef`, {
-      videoId: 'RS7trxkb0zE',
+      videoId: currSong.id,
       height: '0',
       width: '0',
       events: {
@@ -41,8 +41,9 @@ export const MediaPlayer = () => {
 
   }
 
-  function onPlayerReady(event) {
+  function onPlayerReady() {
     setSongDuration(player.current.getDuration())
+    player.current.setVolume(volume)
     console.log(timeFormat(player.current.getDuration()))
   }
 
