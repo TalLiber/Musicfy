@@ -9,11 +9,12 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
     }
     .bar {
         height: 4px;
         border-radius: 2px;
-        background-color: hsla(0, 0%, 100%, .3);
+        background-color: #ffffff4d;
     }
     .song-container {
         width: 30%;

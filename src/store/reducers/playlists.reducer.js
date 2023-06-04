@@ -7,6 +7,7 @@ const INITIAL_STATE = {
       "description": "Get happy with today's dose of feel-good songs!",
       "tracks": [
         {
+          "id": "G7KNmW9a75Y",
           "addedAt": "2023-05-26T04:00:00Z",
           "title": "Flowers",
           "artist": "Miley Cyrus",
@@ -14,6 +15,7 @@ const INITIAL_STATE = {
           "imgUrl": "https://i.scdn.co/image/ab67616d0000b273f429549123dbe8552764ba1d"
         },
         {
+          "id": "WcIcVapfqXw",
           "addedAt": "2023-05-26T04:00:00Z",
           "title": "Calm Down (with Selena Gomez)",
           "artist": "Rema",
@@ -21,6 +23,7 @@ const INITIAL_STATE = {
           "imgUrl": "https://i.scdn.co/image/ab67616d0000b273a3a7f38ea2033aa501afd4cf"
         },
         {
+          "id": "mQER0A0ej0M",
           "addedAt": "2023-05-26T04:00:00Z",
           "title": "I'm Good (Blue)",
           "artist": "David Guetta",
@@ -554,16 +557,26 @@ const INITIAL_STATE = {
         }
       ]
     },
+    currSongIdx: 0,
     filterBy: {},
 }
 
 export function playlistReducer(state = INITIAL_STATE, action) {
-    // debugger
     switch (action.type) {
         case 'SET_PLAYLISTS':
             return {
                 ...state,
                 playlists: [...action.playlists],
+            }
+        case 'UPDATE_CURR_SONG_IDX':
+            return {
+                ...state,
+                currSongIdx: action.idx,
+            }
+        case 'SWITCH_CURR_SONG_IDX':
+            return {
+                ...state,
+                currSongIdx: state.currSongIdx + action.dir,
             }
         case 'ADD_PLAYLIST':
             return {
@@ -583,6 +596,11 @@ export function playlistReducer(state = INITIAL_STATE, action) {
                 playlists: state.playlists.map((playlist) =>
                     playlist._id === action.playlist._id ? action.playlist : playlist
                 ),
+            }
+        case 'SET_FILTER_BY':
+            return {
+                ...state,
+                filterBy: {...action.filterBy },
             }
         case 'SET_FILTER_BY':
             return {

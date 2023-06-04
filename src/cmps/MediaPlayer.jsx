@@ -1,21 +1,28 @@
 import { useEffect, useRef, useState } from "react"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { updateSongIdx } from '../store/actions/playlists.actions'
 
 import SvgIcon from './SvgIcon'
 
 export const MediaPlayer = () => {
 
-  const currSong = useSelector(state => state.songModule.currSong)
+  const currSong = useSelector(state => state.playlistModule.currPlaylist.tracks[state.playlistModule.currSongIdx])
   const [isPlaying, setIsPlaying] = useState(false)
-  const [volume, setVolume] = useState(10)
+  const [volume, setVolume] = useState(50)
   const [songDuration, setSongDuration] = useState(null)
   const [currTime, setCurrTime] = useState(0)
+  const [isShuffleMode, setIsShuffleMode] = useState(false)
+  const [isRepeatMode, setIsRepeatMode] = useState(false)
   const intervalIdRef = useRef()
   const player = useRef(null)
-
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    startIframe()
+    console.log(player.current);
+    if(!player.current) {
+      startIframe()
+    }
+    else loadVideo()
   }, [currSong])
 
   function startIframe() {
@@ -26,10 +33,12 @@ export const MediaPlayer = () => {
 
     var firstScriptTag = document.getElementsByTagName('script')[0]
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
+    console.log('startIframe');
   }
 
-
   function loadVideo() {
+    console.log('loadVideo', currSong.id);
+
     player.current = new window.YT.Player(`playerRef`, {
       videoId: currSong.id,
       height: '0',
@@ -43,8 +52,7 @@ export const MediaPlayer = () => {
 
   function onPlayerReady() {
     setSongDuration(player.current.getDuration())
-    player.current.setVolume(volume)
-    console.log(timeFormat(player.current.getDuration()))
+    console.log(player.current.getDuration())
   }
 
   function handleVolumeChange(ev) {
@@ -101,6 +109,19 @@ export const MediaPlayer = () => {
     return ret;
   }
 
+  function switchSong(dir) {
+    dispatch(updateSongIdx(dir))
+  }
+
+  function shufflePlaylist() {
+    setIsShuffleMode(prevState => !prevState)
+  }
+
+  function repeatPlaylist() {
+    setIsRepeatMode(prevState => !prevState)
+  }
+
+
   return (
     <div className='player-container'>
       <div className="song-container">
@@ -114,15 +135,15 @@ export const MediaPlayer = () => {
       <div className="player-control">
         <div className="control-btns">
           <div className="side-btns left-side">
-            <i>{SvgIcon({ iconName: 'shuffle' })}</i>
-            <i>{SvgIcon({ iconName: 'prev-song' })}</i>
+            <i onClick={shufflePlaylist} style={{ color: isShuffleMode ? '#1db954' : '#ffffffb3' }}>{SvgIcon({ iconName: 'shuffle' })}</i>
+            <i onClick={() => switchSong(-1)}>{SvgIcon({ iconName: 'prev-song' })}</i>
           </div>
           <i onClick={togglePlay} className="play-btn">
             {SvgIcon({ iconName: isPlaying ? 'player-pause' : 'player-play' })}
           </i>
           <div className="side-btns right-side">
-            <i>{SvgIcon({ iconName: 'next-song' })}</i>
-            <i>{SvgIcon({ iconName: 'repeat' })}</i>
+            <i onClick={() => switchSong(1)}>{SvgIcon({ iconName: 'next-song' })}</i>
+            <i onClick={repeatPlaylist} style={{ color: isRepeatMode ? '#1db954' : '#ffffffb3' }}>{SvgIcon({ iconName: 'repeat' })}</i>
           </div>
         </div>
         <div className="playback-bar">

@@ -53,4 +53,15 @@ export function setFilterBy(filterBy) {
     }
 }
 
+export function updateSongIdx(dir) {
+
+    return (dispatch) => {
+        try {
+            dispatch({ type: 'SWITCH_CURR_SONG_IDX', dir })
+        } catch (err) {
+            console.log('err:', err)
+        }
+    }
+}
+
 // export function get
