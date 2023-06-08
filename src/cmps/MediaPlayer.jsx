@@ -1,29 +1,55 @@
 import { useEffect, useRef, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { updateSongIdx } from '../store/actions/playlists.actions'
+import { updateSongIdx, changePlayMode, changeCueMode } from '../store/actions/playlists.actions'
 
 import SvgIcon from './SvgIcon'
 
 export const MediaPlayer = () => {
 
   const currSong = useSelector(state => state.playlistModule.currPlaylist.tracks[state.playlistModule.currSongIdx])
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [volume, setVolume] = useState(50)
-  const [songDuration, setSongDuration] = useState(null)
-  const [currTime, setCurrTime] = useState(0)
-  const [isShuffleMode, setIsShuffleMode] = useState(false)
-  const [isRepeatMode, setIsRepeatMode] = useState(false)
+  const isPlaying = useSelector(state => state.playlistModule.isPlaying)
+  const isCued = useSelector(state => state.playlistModule.isCued)
+  const [playerSettings, setPlayerSettings] = useState({
+    isPlaying: false,
+    volume: 50,
+    songDuration: null,
+    currTime: 0,
+    isShuffleMode: false,
+    isRepeatMode: false
+  })
   const intervalIdRef = useRef()
   const player = useRef(null)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log(player.current);
-    if(!player.current) {
-      startIframe()
-    }
-    else loadVideo()
+    if (!player.current) startIframe()
+    else loadNewVideo()
   }, [currSong])
+
+  useEffect(() => {
+    if (!player.current) return
+    if (isPlaying) player.current.playVideo()
+    else player.current.pauseVideo()
+  }, [isPlaying])
+
+  useEffect(() => {
+    if (!player.current) return
+    if (isCued) {
+      dispatch(changeCueMode(false))
+      if (isPlaying) player.current.playVideo()
+    }
+  }, [isCued])
+
+  function loadNewVideo() {
+    player.current.cueVideoById(currSong.id, 0)
+    clearInterval(intervalIdRef.current)
+    if (isPlaying) {
+      player.current.playVideo()
+      intervalIdRef.current = setInterval(() => {
+        setPlayerSettings(prevState => ({ ...prevState, currTime: prevState.currTime + 1 }))
+      }, 1000)
+    }
+  }
 
   function startIframe() {
     var tag = document.createElement('script');
@@ -33,11 +59,9 @@ export const MediaPlayer = () => {
 
     var firstScriptTag = document.getElementsByTagName('script')[0]
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
-    console.log('startIframe');
   }
 
   function loadVideo() {
-    console.log('loadVideo', currSong.id);
 
     player.current = new window.YT.Player(`playerRef`, {
       videoId: currSong.id,
@@ -45,47 +69,57 @@ export const MediaPlayer = () => {
       width: '0',
       events: {
         onReady: onPlayerReady,
+        onStateChange: onPlayerStateChange
       },
     })
 
   }
 
   function onPlayerReady() {
-    setSongDuration(player.current.getDuration())
-    console.log(player.current.getDuration())
+    setPlayerSettings(prevState => ({ ...prevState, songDuration: player.current.getDuration() }))
+  }
+
+  function onPlayerStateChange() {
+
+    if (player.current.getPlayerState() === window.YT.PlayerState.CUED) {
+      setPlayerSettings(prevState => ({ ...prevState, songDuration: player.current.getDuration(), currTime: 0 }))
+      dispatch(changeCueMode(true))
+    }
   }
 
   function handleVolumeChange(ev) {
-    setVolume(ev.target.value)
+    setPlayerSettings(prevState => ({ ...prevState, volume: ev.target.value }))
     player.current.setVolume(ev.target.value)
   }
 
   function handleTimeChange(ev) {
-    setCurrTime(+ev.target.value)
+    setPlayerSettings(prevState => ({ ...prevState, currTime: +ev.target.value }))
 
     player.current.seekTo(ev.target.value)
+    if (!isPlaying) player.current.pauseVideo()
   }
 
   function togglePlay() {
+
     if (isPlaying) {
-      player.current.pauseVideo()
+      dispatch(changePlayMode(false))
       clearInterval(intervalIdRef.current)
     }
     else {
-      player.current.playVideo()
+      dispatch(changePlayMode(true))
       intervalIdRef.current = setInterval(() => {
-        setCurrTime(prevTime => prevTime + 1)
+        setPlayerSettings(prevState => ({ ...prevState, currTime: prevState.currTime + 1 }))
       }, 1000)
     }
 
-    setIsPlaying(prevState => !prevState)
+    // setPlayerSettings(prevState => ({ ...prevState, isPlaying: !prevState.isPlaying }))
   }
 
   function getVolumeIcon() {
     let icon = 'volume-mute'
-    if (volume >= 66) icon = 'volume-high'
-    else if (volume >= 33) icon = 'volume-medium'
-    else if (volume > 0) icon = 'volume-low'
+    if (playerSettings.volume >= 66) icon = 'volume-high'
+    else if (playerSettings.volume >= 33) icon = 'volume-medium'
+    else if (playerSettings.volume > 0) icon = 'volume-low'
 
     return icon
   }
@@ -105,7 +139,6 @@ export const MediaPlayer = () => {
 
     ret += "" + mins + ":" + (secs < 10 ? "0" : "");
     ret += "" + secs;
-    console.log(ret);
     return ret;
   }
 
@@ -114,11 +147,11 @@ export const MediaPlayer = () => {
   }
 
   function shufflePlaylist() {
-    setIsShuffleMode(prevState => !prevState)
+    setPlayerSettings(prevState => ({ ...prevState, isShuffleMode: !prevState.isShuffleMode }))
   }
 
   function repeatPlaylist() {
-    setIsRepeatMode(prevState => !prevState)
+    setPlayerSettings(prevState => ({ ...prevState, isRepeatMode: !prevState.isRepeatMode }))
   }
 
 
@@ -135,7 +168,7 @@ export const MediaPlayer = () => {
       <div className="player-control">
         <div className="control-btns">
           <div className="side-btns left-side">
-            <i onClick={shufflePlaylist} style={{ color: isShuffleMode ? '#1db954' : '#ffffffb3' }}>{SvgIcon({ iconName: 'shuffle' })}</i>
+            <i onClick={shufflePlaylist} style={{ color: playerSettings.isShuffleMode ? '#1db954' : '#ffffffb3' }}>{SvgIcon({ iconName: 'shuffle' })}</i>
             <i onClick={() => switchSong(-1)}>{SvgIcon({ iconName: 'prev-song' })}</i>
           </div>
           <i onClick={togglePlay} className="play-btn">
@@ -143,27 +176,27 @@ export const MediaPlayer = () => {
           </i>
           <div className="side-btns right-side">
             <i onClick={() => switchSong(1)}>{SvgIcon({ iconName: 'next-song' })}</i>
-            <i onClick={repeatPlaylist} style={{ color: isRepeatMode ? '#1db954' : '#ffffffb3' }}>{SvgIcon({ iconName: 'repeat' })}</i>
+            <i onClick={repeatPlaylist} style={{ color: playerSettings.isRepeatMode ? '#1db954' : '#ffffffb3' }}>{SvgIcon({ iconName: 'repeat' })}</i>
           </div>
         </div>
         <div className="playback-bar">
-          <div className="progress-time elapsed">{timeFormat(currTime)}</div>
+          <div className="progress-time elapsed">{timeFormat(playerSettings.currTime)}</div>
           <div className="progress-container progress-bar">
-            <progress className="prog progress-bar" type="progress" onChange={handleTimeChange} value={currTime} min="0" max={songDuration}></progress>
+            <progress className="prog progress-bar" type="progress" onChange={handleTimeChange} value={playerSettings.currTime} min="0" max={playerSettings.songDuration}></progress>
             <input className="prog input-bar timestamp" id="fontController" type="range"
-              onChange={handleTimeChange} value={currTime} min="0" max={songDuration} />
+              onChange={handleTimeChange} value={playerSettings.currTime} min="0" max={playerSettings.songDuration} />
           </div>
 
-          <div className="progress-time duration">{timeFormat(songDuration)}</div>
+          <div className="progress-time duration">{timeFormat(playerSettings.songDuration)}</div>
         </div>
       </div>
       <div className="side-container">
         <i>{SvgIcon({ iconName: 'lyrics' })}</i>
         <i>{SvgIcon({ iconName: getVolumeIcon() })}</i>
         <div className="progress-container volume-bar">
-          <progress className="prog progress-bar" type="progress" onChange={handleVolumeChange} value={volume} min="0" max="100"></progress>
+          <progress className="prog progress-bar" type="progress" onChange={handleVolumeChange} value={playerSettings.volume} min="0" max="100"></progress>
           <input className="prog input-bar timestamp" id="fontController" type="range"
-            onChange={handleVolumeChange} value={volume} min="0" max="100" />
+            onChange={handleVolumeChange} value={playerSettings.volume} min="0" max="100" />
         </div>
       </div>
       <div id="playerRef"></div>
