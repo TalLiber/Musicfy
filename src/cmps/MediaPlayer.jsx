@@ -1,26 +1,17 @@
 import { useEffect, useRef, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { updateSongIdx, changePlayMode, changeCueMode } from '../store/actions/playlists.actions'
-import { updatePlayer } from '../store/actions/player.actions'
+import { updateSongIdx } from '../store/actions/playlists.actions'
+import { updatePlayer, updateCurrTime, toggleProp } from '../store/actions/player.actions'
 
 import SvgIcon from './SvgIcon'
 
 export const MediaPlayer = () => {
 
   const currSong = useSelector(state => state.playlistModule.currPlaylist.tracks[state.playlistModule.currSongIdx])
-  const isPlaying = useSelector(state => state.playlistModule.isPlaying)
-  const isCued = useSelector(state => state.playlistModule.isCued)
-  // const [playerSettings, setPlayerSettings] = useState({
-  //   isPlaying: false,
-  //   volume: 50,
-  //   songDuration: null,
-  //   currTime: 0,
-  //   isShuffleMode: false,
-  //   isRepeatMode: false
-  // })
   const playerSettings = useSelector(state => state.playerModule)
   const intervalIdRef = useRef()
   const player = useRef(null)
+  
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -30,26 +21,26 @@ export const MediaPlayer = () => {
 
   useEffect(() => {
     if (!player.current) return
-    if (isPlaying) player.current.playVideo()
+    if (playerSettings.isPlaying) player.current.playVideo()
     else player.current.pauseVideo()
-  }, [isPlaying])
+  }, [playerSettings.isPlaying])
 
   useEffect(() => {
     if (!player.current) return
     if (playerSettings.isCued) {
-      dispatch(updatePlayer('isCued', false))
-      if (isPlaying) player.current.playVideo()
+      dispatch(toggleProp('isCued'))
+      if (playerSettings.isPlaying) player.current.playVideo()
     }
   }, [playerSettings.isCued])
 
   function loadNewVideo() {
     player.current.cueVideoById(currSong.id, 0)
     clearInterval(intervalIdRef.current)
-    if (isPlaying) {
+    dispatch(updatePlayer('currTime', 0))
+    if (playerSettings.isPlaying) {
       player.current.playVideo()
       intervalIdRef.current = setInterval(() => {
-        // setPlayerSettings(prevState => ({ ...prevState, currTime: prevState.currTime + 1 }))
-        dispatch(updatePlayer('currTime', playerSettings.currTime + 1)) //TODO: NOT WORKING!!!!!
+        dispatch(updateCurrTime())
       }, 1000)
     }
   }
@@ -85,37 +76,37 @@ export const MediaPlayer = () => {
   function onPlayerStateChange() {
 
     if (player.current.getPlayerState() === window.YT.PlayerState.CUED) {
-      // setPlayerSettings(prevState => ({ ...prevState, songDuration: player.current.getDuration(), currTime: 0 }))
-      dispatch(updatePlayer('isCued', true))
+      dispatch(toggleProp('isCued'))
     }
   }
 
   function handleVolumeChange(ev) {
-    // setPlayerSettings(prevState => ({ ...prevState, volume: ev.target.value }))
+    dispatch(updatePlayer('volume', +ev.target.value))
+
     player.current.setVolume(ev.target.value)
   }
 
   function handleTimeChange(ev) {
-    // setPlayerSettings(prevState => ({ ...prevState, currTime: +ev.target.value }))
+    dispatch(updatePlayer('currTime', +ev.target.value))
 
     player.current.seekTo(ev.target.value)
-    if (!isPlaying) player.current.pauseVideo()
+    if (!playerSettings.isPlaying) player.current.pauseVideo()
   }
 
   function togglePlay() {
 
-    if (isPlaying) {
-      dispatch(changePlayMode(false))
+    if (playerSettings.isPlaying) {
+      // dispatch(updatePlayer('isPlaying', false))
       clearInterval(intervalIdRef.current)
     }
     else {
-      dispatch(changePlayMode(true))
+      // dispatch(updatePlayer('isPlaying', true))
       intervalIdRef.current = setInterval(() => {
-        // setPlayerSettings(prevState => ({ ...prevState, currTime: prevState.currTime + 1 }))
+        dispatch(updateCurrTime())
       }, 1000)
     }
 
-    // setPlayerSettings(prevState => ({ ...prevState, isPlaying: !prevState.isPlaying }))
+    dispatch(toggleProp('isPlaying'))
   }
 
   function getVolumeIcon() {
@@ -150,11 +141,11 @@ export const MediaPlayer = () => {
   }
 
   function shufflePlaylist() {
-    // setPlayerSettings(prevState => ({ ...prevState, isShuffleMode: !prevState.isShuffleMode }))
+    dispatch(toggleProp('isShuffleMode'))
   }
-
+  
   function repeatPlaylist() {
-    // setPlayerSettings(prevState => ({ ...prevState, isRepeatMode: !prevState.isRepeatMode }))
+    dispatch(toggleProp('isRepeatMode'))
   }
 
 
@@ -175,7 +166,7 @@ export const MediaPlayer = () => {
             <i onClick={() => switchSong(-1)}>{SvgIcon({ iconName: 'prev-song' })}</i>
           </div>
           <i onClick={togglePlay} className="play-btn">
-            {SvgIcon({ iconName: isPlaying ? 'player-pause' : 'player-play' })}
+            {SvgIcon({ iconName: playerSettings.isPlaying ? 'player-pause' : 'player-play' })}
           </i>
           <div className="side-btns right-side">
             <i onClick={() => switchSong(1)}>{SvgIcon({ iconName: 'next-song' })}</i>

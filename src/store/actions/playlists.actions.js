@@ -63,24 +63,3 @@ export function updateSongIdx(dir) {
         }
     }
 }
-export function changePlayMode(isPlaying) {
-
-    return (dispatch) => {
-        try {
-            dispatch({ type: 'CHANGE_PLAY_MODE', isPlaying })
-        } catch (err) {
-            console.log('err:', err)
-        }
-    }
-}
-export function changeCueMode(isCued) {
-
-    return (dispatch) => {
-        try {
-            dispatch({ type: 'CHANGE_CUE_MODE', isCued })
-        } catch (err) {
-            console.log('err:', err)
-        }
-    }
-}
-// export function get
