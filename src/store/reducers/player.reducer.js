@@ -1,7 +1,7 @@
 const INITIAL_STATE = {
   isPlaying: false,
   volume: 30,
-  songDuration: null,
+  songDuration: 0,
   currTime: 0,
   isShuffleMode: false,
   isRepeatMode: false,
