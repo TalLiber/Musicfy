@@ -11,7 +11,7 @@ export const MediaPlayer = () => {
   const playerSettings = useSelector(state => state.playerModule)
   const intervalIdRef = useRef()
   const player = useRef(null)
-  
+
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -32,6 +32,13 @@ export const MediaPlayer = () => {
       if (playerSettings.isPlaying) player.current.playVideo()
     }
   }, [playerSettings.isCued])
+
+  useEffect(() => {
+    if (!player.current) return
+    if (playerSettings.currTime === Math.floor(player.current.getDuration())) {
+      dispatch(updateSongIdx(1))
+    }
+  }, [playerSettings.currTime])
 
   function loadNewVideo() {
     player.current.cueVideoById(currSong.id, 0)
@@ -77,6 +84,7 @@ export const MediaPlayer = () => {
 
     if (player.current.getPlayerState() === window.YT.PlayerState.CUED) {
       dispatch(toggleProp('isCued'))
+      dispatch(updatePlayer('songDuration', player.current.getDuration()))
     }
   }
 
@@ -143,7 +151,7 @@ export const MediaPlayer = () => {
   function shufflePlaylist() {
     dispatch(toggleProp('isShuffleMode'))
   }
-  
+
   function repeatPlaylist() {
     dispatch(toggleProp('isRepeatMode'))
   }
