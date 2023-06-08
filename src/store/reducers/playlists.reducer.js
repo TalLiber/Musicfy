@@ -637,8 +637,6 @@ const INITIAL_STATE = {
     ],
   },
   currSongIdx: 0,
-  isPlaying: false,
-  isCued: false,
   filterBy: {},
 }
 
@@ -659,18 +657,6 @@ export function playlistReducer(state = INITIAL_STATE, action) {
         ...state,
         currSongIdx: state.currSongIdx + action.dir,
       }
-    case 'CHANGE_PLAY_MODE':
-      return {
-        ...state,
-        isPlaying: action.isPlaying,
-      }
-    case 'CHANGE_CUE_MODE':
-      console.log(action.isCued);
-      return {
-        ...state,
-        isCued: action.isCued,
-      }
-
     case 'ADD_PLAYLIST':
       return {
         ...state,
