@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { updateSongIdx, changePlayMode, changeCueMode } from '../store/actions/playlists.actions'
+import { updatePlayer } from '../store/actions/player.actions'
 
 import SvgIcon from './SvgIcon'
 
@@ -9,14 +10,15 @@ export const MediaPlayer = () => {
   const currSong = useSelector(state => state.playlistModule.currPlaylist.tracks[state.playlistModule.currSongIdx])
   const isPlaying = useSelector(state => state.playlistModule.isPlaying)
   const isCued = useSelector(state => state.playlistModule.isCued)
-  const [playerSettings, setPlayerSettings] = useState({
-    isPlaying: false,
-    volume: 50,
-    songDuration: null,
-    currTime: 0,
-    isShuffleMode: false,
-    isRepeatMode: false
-  })
+  // const [playerSettings, setPlayerSettings] = useState({
+  //   isPlaying: false,
+  //   volume: 50,
+  //   songDuration: null,
+  //   currTime: 0,
+  //   isShuffleMode: false,
+  //   isRepeatMode: false
+  // })
+  const playerSettings = useSelector(state => state.playerModule)
   const intervalIdRef = useRef()
   const player = useRef(null)
   const dispatch = useDispatch()
@@ -34,11 +36,11 @@ export const MediaPlayer = () => {
 
   useEffect(() => {
     if (!player.current) return
-    if (isCued) {
-      dispatch(changeCueMode(false))
+    if (playerSettings.isCued) {
+      dispatch(updatePlayer('isCued', false))
       if (isPlaying) player.current.playVideo()
     }
-  }, [isCued])
+  }, [playerSettings.isCued])
 
   function loadNewVideo() {
     player.current.cueVideoById(currSong.id, 0)
@@ -46,7 +48,8 @@ export const MediaPlayer = () => {
     if (isPlaying) {
       player.current.playVideo()
       intervalIdRef.current = setInterval(() => {
-        setPlayerSettings(prevState => ({ ...prevState, currTime: prevState.currTime + 1 }))
+        // setPlayerSettings(prevState => ({ ...prevState, currTime: prevState.currTime + 1 }))
+        dispatch(updatePlayer('currTime', playerSettings.currTime + 1)) //TODO: NOT WORKING!!!!!
       }, 1000)
     }
   }
@@ -76,24 +79,24 @@ export const MediaPlayer = () => {
   }
 
   function onPlayerReady() {
-    setPlayerSettings(prevState => ({ ...prevState, songDuration: player.current.getDuration() }))
+    dispatch(updatePlayer('songDuration', player.current.getDuration()))
   }
 
   function onPlayerStateChange() {
 
     if (player.current.getPlayerState() === window.YT.PlayerState.CUED) {
-      setPlayerSettings(prevState => ({ ...prevState, songDuration: player.current.getDuration(), currTime: 0 }))
-      dispatch(changeCueMode(true))
+      // setPlayerSettings(prevState => ({ ...prevState, songDuration: player.current.getDuration(), currTime: 0 }))
+      dispatch(updatePlayer('isCued', true))
     }
   }
 
   function handleVolumeChange(ev) {
-    setPlayerSettings(prevState => ({ ...prevState, volume: ev.target.value }))
+    // setPlayerSettings(prevState => ({ ...prevState, volume: ev.target.value }))
     player.current.setVolume(ev.target.value)
   }
 
   function handleTimeChange(ev) {
-    setPlayerSettings(prevState => ({ ...prevState, currTime: +ev.target.value }))
+    // setPlayerSettings(prevState => ({ ...prevState, currTime: +ev.target.value }))
 
     player.current.seekTo(ev.target.value)
     if (!isPlaying) player.current.pauseVideo()
@@ -108,7 +111,7 @@ export const MediaPlayer = () => {
     else {
       dispatch(changePlayMode(true))
       intervalIdRef.current = setInterval(() => {
-        setPlayerSettings(prevState => ({ ...prevState, currTime: prevState.currTime + 1 }))
+        // setPlayerSettings(prevState => ({ ...prevState, currTime: prevState.currTime + 1 }))
       }, 1000)
     }
 
@@ -147,11 +150,11 @@ export const MediaPlayer = () => {
   }
 
   function shufflePlaylist() {
-    setPlayerSettings(prevState => ({ ...prevState, isShuffleMode: !prevState.isShuffleMode }))
+    // setPlayerSettings(prevState => ({ ...prevState, isShuffleMode: !prevState.isShuffleMode }))
   }
 
   function repeatPlaylist() {
-    setPlayerSettings(prevState => ({ ...prevState, isRepeatMode: !prevState.isRepeatMode }))
+    // setPlayerSettings(prevState => ({ ...prevState, isRepeatMode: !prevState.isRepeatMode }))
   }
 
 
