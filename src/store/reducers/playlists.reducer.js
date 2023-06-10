@@ -653,6 +653,7 @@ export function playlistReducer(state = INITIAL_STATE, action) {
         currSongIdx: action.idx,
       }
     case 'SWITCH_CURR_SONG_IDX':
+      
       return {
         ...state,
         currSongIdx: state.currSongIdx + action.dir,

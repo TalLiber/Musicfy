@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   isShuffleMode: false,
   isRepeatMode: false,
   isCued: false,
+  shuffledIdxs: []
 }
 
 export function playerReducer(state = INITIAL_STATE, action) {

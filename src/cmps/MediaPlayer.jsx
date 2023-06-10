@@ -37,6 +37,7 @@ export const MediaPlayer = () => {
     if (!player.current) return
     if (playerSettings.currTime === Math.floor(player.current.getDuration())) {
       dispatch(updateSongIdx(1))
+      checkNextSong()
     }
   }, [playerSettings.currTime])
 
@@ -156,6 +157,9 @@ export const MediaPlayer = () => {
     dispatch(toggleProp('isRepeatMode'))
   }
 
+  function checkNextSong() {
+    
+  }
 
   return (
     <div className='player-container'>
