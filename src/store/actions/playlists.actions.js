@@ -4,10 +4,9 @@ export function loadPlaylists() {
 
     return async(dispatch, getState) => {
         try {
-            console.log('getting playlists');
+            // console.log('getting playlists');
             const filterBy = getState().playlistModule.filterBy
             const playlists = await playlistService.query(filterBy)
-            console.log('playlists:', playlists)
             dispatch({ type: 'SET_PLAYLISTS', playlists })
         } catch (err) {
             console.log('err:', err)

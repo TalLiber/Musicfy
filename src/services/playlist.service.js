@@ -16,7 +16,8 @@ export const playlistService = {
     remove,
     getEmptyPlaylist,
     addPlaylistMsg,
-    getCategories
+    getCategories,
+    getCategoryItems
 }
 window.cs = playlistService
 
@@ -76,6 +77,132 @@ function getEmptyPlaylist() {
         tracks: []
     }
 }
+
+import axios from 'axios'
+
+
+async function getAccessToken(clientId, clientSecret) {
+  try {
+    // Encode client credentials (Client ID and Client Secret)
+    const credentials = `${clientId}:${clientSecret}`;
+    const encodedCredentials = btoa(credentials);
+
+    // Make a POST request to the token endpoint
+    const response = await axios.post(
+      'https://accounts.spotify.com/api/token',
+      new URLSearchParams({
+        grant_type: 'client_credentials',
+      }).toString(),
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Authorization: `Basic ${encodedCredentials}`,
+        },
+      }
+    );
+
+    // Extract and return the access token from the response
+    const { data } = response;
+    const accessToken = data.access_token;
+    const expiresIn = data.expires_in;
+    return { accessToken, expiresIn };
+  } catch (error) {
+    console.error('Error retrieving access token:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
+let gAccessToken
+// Usage example
+const clientId = '5bb32cffdbd64dcbad190f888ccb0b6c';
+const clientSecret = '700bf1887f98431ca60a37bb2b889730';
+
+// getAccessToken(clientId, clientSecret)
+//   .then((tokenData) => {
+//     gAccessToken = tokenData.accessToken
+//     console.log('Access Token:', tokenData.accessToken);
+//     console.log('Expires In:', tokenData.expiresIn);
+//   })
+//   .catch((error) => {
+//     console.error('Error:', error);
+//   });
+
+
+  async function getCategoryItems(categoryId) {
+    try {
+      // Make a GET request to the Spotify API endpoint
+      const response = await axios.get(`https://api.spotify.com/v1/browse/categories/${categoryId}/playlists`, {
+        headers: {
+          Authorization: `Bearer ${gAccessToken}`,
+        },
+      });
+  
+      // Return the playlist data from the response
+      const cleanData = _cleanCategoryPlaylistsData(response.data)
+      return cleanData
+    } catch (error) {
+      console.error('Error retrieving playlist:', error.response ? error.response.data : error.message);
+      throw error;
+    }
+  }
+    
+  function _cleanCategoryPlaylistsData(data) {
+    const categPlaylists = data.playlists.items
+    console.log('categPlaylists',categPlaylists);
+    categPlaylists = categPlaylists.map(categPlaylist => {
+        return {
+            id: categPlaylist.id,
+            name: categPlaylist.name,
+            description: categPlaylist.description,
+            
+        }
+    })
+    // localStorage.setItem('categPlaylists', JSON.stringify(categPlaylists))
+  }
+// async function getAccessToken(clientId, clientSecret) {
+//   try {
+//     // Encode client credentials (Client ID and Client Secret) in Base64
+//     const credentials = `${clientId}:${clientSecret}`;
+//     const encodedCredentials = Buffer.from(credentials).toString('base64');
+
+//     // Make a POST request to the token endpoint
+//     const response = await axios.post(
+//       'https://accounts.spotify.com/api/token',
+//       new URLSearchParams({
+//         grant_type: 'client_credentials',
+//       }).toString(),
+//       {
+//         headers: {
+//           'Content-Type': 'application/x-www-form-urlencoded',
+//           Authorization: `Basic ${encodedCredentials}`,
+//         },
+//       }
+//     );
+
+//     // Extract and return the access token from the response
+//     const { data } = response;
+//     const accessToken = data.access_token;
+//     const expiresIn = data.expires_in;
+//     return { accessToken, expiresIn };
+//   } catch (error) {
+//     console.error('Error retrieving access token:', error.response ? error.response.data : error.message);
+//     throw error;
+//   }
+// }
+
+// // Usage example
+// const clientId = '5bb32cffdbd64dcbad190f888ccb0b6c';
+// const clientSecret = '700bf1887f98431ca60a37bb2b889730';
+
+// getAccessToken(clientId, clientSecret)
+//   .then((tokenData) => {
+//     console.log('Access Token:', tokenData.accessToken);
+//     console.log('Expires In:', tokenData.expiresIn);
+//   })
+//   .catch((error) => {
+//     console.error('Error:', error);
+//   });
+
 
 
 

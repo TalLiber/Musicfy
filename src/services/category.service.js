@@ -2,6 +2,7 @@ import { storageService } from './async-storage.service.js'
 import { httpService } from './http.service.js'
 import { utilService } from './util.service.js'
 import { userService } from './user.service.js'
+import {playlistService} from './playlist.service.js'
 
 // import homeCategories from '../data/home.json'
 import categoriesDb from '../data/categories.json'
@@ -41,7 +42,20 @@ async function query(filterBy = {}) {
 
 }
 
-function getById(categoryId) {
+async function getById(categoryId) {
+
+    // const categoryPlaylists = await playlistService.getCategoryItems(categoryId)
+    const categoryPlaylists =  JSON.parse(localStorage.getItem('categPlaylists'))
+   
+    console.log('categoryPlaylists', categoryPlaylists);
+    
+    // .then((playlistData) => {
+    //   console.log('Playlist:', playlistData.playlists.items);
+    // })
+    // .catch((error) => {
+    //   console.error('Error:', error);
+    // });
+
     // return storageService.get(STORAGE_KEY, categoryId)
     return storageService.get("HomePage_db", categoryId)
         // return httpService.get(`category/${categoryId}`)

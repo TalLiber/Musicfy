@@ -17,10 +17,6 @@ export const MediaPlayer = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log(playerSettings.shuffledIdxs);
-  }, [playerSettings.shuffledIdxs])
-
-  useEffect(() => {
     if (!player.current) startIframe()
     else loadNewVideo()
   }, [currTrack])
