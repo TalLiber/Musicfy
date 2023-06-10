@@ -3,7 +3,7 @@ import { httpService } from './http.service.js'
 import { utilService } from './util.service.js'
 import { userService } from './user.service.js'
 
-import homeCategories from '../data/home.json'
+// import homeCategories from '../data/home.json'
 import categoriesDb from '../data/categories.json'
 
 
@@ -336,11 +336,14 @@ const categories = [{
 
 // const catIds = ['0JQ5DAqbMKFzHmL4tf05da', '0JQ5DAqbMKFEC4WFtoNRpw', '0JQ5DAqbMKFFzDl7qN9Apr']
 
-// ;
-// (() => {
-//     utilService.saveToStorage("HomePage_db", homeCategories)
-// })()
+
 
 // (() => {
 //     utilService.saveToStorage("category_db", categoriesDb)
+// })()
+
+
+// ;
+// (() => {
+//     utilService.saveToStorage("HomePage_db", homeCategories)
 // })()
