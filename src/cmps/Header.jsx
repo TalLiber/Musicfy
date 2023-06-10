@@ -10,15 +10,26 @@ export const Header = (props) => {
     const location = useLocation()
     const [isPrev,setIsPrev] = useState()
     const [isNext,setIsNext] = useState()
-    const [opacityLevel,setOpacityLevel] = useState("rgba(0,0,0,0.5 )")
+    const [opacityLevel,setOpacityLevel] = useState("0.5")
+    const [headerBcg,setHeaderBcg] = useState("rgba(0,0,0)")
     const [headerName, setHeaderName] = useState('')
 
     useEffect(() => {
-        EventBus.getInstance().addListener("test",  (data) =>{
-            data? setOpacityLevel("rgba(0,0,0,0.5 )") : setOpacityLevel("rgba(0,0,0,1)")
+        EventBus.getInstance().addListener("toggleOpacity",  (data) =>{
+            data? setOpacityLevel("0.5") : setOpacityLevel("1")
         })
 
-        return EventBus.getInstance().removeListener("test")
+        return EventBus.getInstance().removeListener("toggleOpacity")
+    },[])
+    
+    useEffect(() => {
+        EventBus.getInstance().addListener("changeBgc",  (data) =>{
+            console.log('hay')
+            setHeaderBcg(data)
+        })
+            
+        return EventBus.getInstance().removeListener("changeBGC")
+
     },[])
 
     useEffect(() => {
@@ -39,7 +50,7 @@ export const Header = (props) => {
     }
 
     return (
-        <section className='header-container flex' style={{'backgroundColor':opacityLevel}}>
+        <section className='header-container flex' style={{'backgroundColor':headerBcg,'opacity':opacityLevel}}>
             <div className='action flex'>
                 <button className='btn-action' disabled={isPrev} onClick={() => handleClick(-1)}>
                     {SvgIcon({ iconName: 'prev' })}

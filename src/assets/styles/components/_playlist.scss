@@ -1,3 +1,28 @@
 .playlist{
     margin-top: 64px;
+    .playlist-header{
+        height: 30vh;
+        max-height: 336px;
+        min-height: 276px;
+        display: flex;
+        flex-direction: row;
+        padding: 32px;
+        padding-bottom: 24px;
+        padding-top: 0px;
+        align-items: end;
+        background-color:aquamarine;
+
+        .header-top{
+            height: 64px;
+            display: block;
+        }
+
+        .img-container{
+            height: 90%;
+            box-shadow: 0 4px 60px rgba(0,0,0,.5);
+            img{
+                height: 100%;
+            }
+        }
+    }
 }

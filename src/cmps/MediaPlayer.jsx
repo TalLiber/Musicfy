@@ -59,6 +59,7 @@ export const MediaPlayer = () => {
   }
 
   function togglePlay() {
+    console.log('player',player.current);
     if (isPlaying) {
       player.current.pauseVideo()
       clearInterval(intervalIdRef.current)

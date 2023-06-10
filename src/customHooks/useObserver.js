@@ -3,6 +3,7 @@ import EventBus from 'react-native-event-bus'
 
 export const useObserver = () => {
     const containerRef = useRef()
+    const headerBgc = useRef('rgba(0,0,0)')
     const [isVisible, setIsVisible] = useState(false)
 
     const options ={
@@ -12,8 +13,12 @@ export const useObserver = () => {
     }
     const cb = (entries) => {
         setIsVisible(entries[0].isIntersecting)
-        EventBus.getInstance().fireEvent("test", entries[0].isIntersecting)
+        EventBus.getInstance().fireEvent("toggleOpacity", entries[0].isIntersecting)
+        
     }
+    useEffect(() => {
+        EventBus.getInstance().fireEvent("changeBgc", headerBgc.current)
+    },headerBgc)
 
     useEffect(() => {
         const observer = new IntersectionObserver(cb,options)
@@ -26,5 +31,5 @@ export const useObserver = () => {
         }
     }, [containerRef])
 
-    return [containerRef]
+    return [containerRef,headerBgc]
 }
