@@ -62,3 +62,13 @@ export function updateTrackIdx(byType, toUpdate) {
         }
     }
 }
+
+export function changePlaylistColor(color) {
+    return (dispatch) => {
+        try {
+            dispatch({ type: 'change-playlist-color', color })
+        } catch (err) {
+            console.log('err:', err)
+        }
+    }
+}

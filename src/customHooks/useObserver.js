@@ -12,7 +12,8 @@ export const useObserver = () => {
     }
     const cb = (entries) => {
         setIsVisible(entries[0].isIntersecting)
-        EventBus.getInstance().fireEvent("test", entries[0].isIntersecting)
+        EventBus.getInstance().fireEvent("toggleOpacity", entries[0].isIntersecting)
+        
     }
 
     useEffect(() => {
