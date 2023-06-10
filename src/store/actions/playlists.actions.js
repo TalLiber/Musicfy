@@ -53,11 +53,11 @@ export function setFilterBy(filterBy) {
     }
 }
 
-export function updateSongIdx(dir) {
-
+export function updateTrackIdx(byType, toUpdate) {
     return (dispatch) => {
         try {
-            dispatch({ type: 'SWITCH_CURR_SONG_IDX', dir })
+            if(byType === 'dir') dispatch({ type: 'UPDATE_CURR_TRACK_IDX_BY_DIR', dir: toUpdate })
+            else dispatch({ type: 'UPDATE_CURR_TRACK_IDX_BY_NUM', idx: toUpdate })
         } catch (err) {
             console.log('err:', err)
         }
