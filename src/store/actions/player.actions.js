@@ -27,3 +27,13 @@ export function toggleProp(prop) {
         }
     }
 }
+
+export function shuffleIdxs(playlistLength) {
+    return (dispatch) => {
+        try {
+            dispatch({ type: 'SHUFFLE_IDXS' , playlistLength})
+        } catch (err) {
+            console.log('err:', err)
+        }
+    }
+}
