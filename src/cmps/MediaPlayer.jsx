@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { updateSongIdx } from '../store/actions/playlists.actions'
-import { updatePlayer, updateCurrTime, toggleProp } from '../store/actions/player.actions'
+import { updateTrackIdx } from '../store/actions/playlists.actions'
+import { updatePlayer, updateCurrTime, toggleProp, shuffleIdxs } from '../store/actions/player.actions'
 
 import SvgIcon from './SvgIcon'
 
 export const MediaPlayer = () => {
 
-  const currSong = useSelector(state => state.playlistModule.currPlaylist.tracks[state.playlistModule.currSongIdx])
+  const currTrack = useSelector(state => state.playlistModule.currPlaylist.tracks[state.playlistModule.currTrackIdx])
+  const currIdx = useSelector(state => state.playlistModule.currTrackIdx)
+  const playlistLength = useSelector(state => state.playlistModule.currPlaylist.tracks.length)
   const playerSettings = useSelector(state => state.playerModule)
   const intervalIdRef = useRef()
   const player = useRef(null)
@@ -15,9 +17,13 @@ export const MediaPlayer = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    console.log(playerSettings.shuffledIdxs);
+  }, [playerSettings.shuffledIdxs])
+
+  useEffect(() => {
     if (!player.current) startIframe()
     else loadNewVideo()
-  }, [currSong])
+  }, [currTrack])
 
   useEffect(() => {
     if (!player.current) return
@@ -36,13 +42,12 @@ export const MediaPlayer = () => {
   useEffect(() => {
     if (!player.current) return
     if (playerSettings.currTime === Math.floor(player.current.getDuration())) {
-      dispatch(updateSongIdx(1))
-      checkNextSong()
+      checkNextTrack()
     }
   }, [playerSettings.currTime])
 
   function loadNewVideo() {
-    player.current.cueVideoById(currSong.id, 0)
+    player.current.cueVideoById(currTrack.id, 0)
     clearInterval(intervalIdRef.current)
     dispatch(updatePlayer('currTime', 0))
     if (playerSettings.isPlaying) {
@@ -66,7 +71,7 @@ export const MediaPlayer = () => {
   function loadVideo() {
 
     player.current = new window.YT.Player(`playerRef`, {
-      videoId: currSong.id,
+      videoId: currTrack.id,
       height: '0',
       width: '0',
       events: {
@@ -78,14 +83,14 @@ export const MediaPlayer = () => {
   }
 
   function onPlayerReady() {
-    dispatch(updatePlayer('songDuration', player.current.getDuration()))
+    dispatch(updatePlayer('trackDuration', player.current.getDuration()))
   }
 
   function onPlayerStateChange() {
 
     if (player.current.getPlayerState() === window.YT.PlayerState.CUED) {
       dispatch(toggleProp('isCued'))
-      dispatch(updatePlayer('songDuration', player.current.getDuration()))
+      dispatch(updatePlayer('trackDuration', player.current.getDuration()))
     }
   }
 
@@ -104,20 +109,28 @@ export const MediaPlayer = () => {
 
   function togglePlay() {
 
-    if (playerSettings.isPlaying) {
-      // dispatch(updatePlayer('isPlaying', false))
-      clearInterval(intervalIdRef.current)
-    }
-    else {
-      // dispatch(updatePlayer('isPlaying', true))
-      intervalIdRef.current = setInterval(() => {
-        dispatch(updateCurrTime())
-      }, 1000)
-    }
+    if (playerSettings.isPlaying) stopTrack()
 
-    dispatch(toggleProp('isPlaying'))
+    else {
+      //TODO Not sure if this the right place to handle this case
+      if (currIdx === playlistLength - 1 && playerSettings.currTime === Math.floor(player.current.getDuration())) {
+        checkNextTrack(1, true)
+      }
+      playTrack()
+    }
   }
 
+  function stopTrack() {
+    dispatch(updatePlayer('isPlaying', false))
+    clearInterval(intervalIdRef.current)
+  }
+
+  function playTrack() {
+    dispatch(updatePlayer('isPlaying', true))
+    intervalIdRef.current = setInterval(() => {
+      dispatch(updateCurrTime())
+    }, 1000)
+  }
   function getVolumeIcon() {
     let icon = 'volume-mute'
     if (playerSettings.volume >= 66) icon = 'volume-high'
@@ -145,29 +158,39 @@ export const MediaPlayer = () => {
     return ret;
   }
 
-  function switchSong(dir) {
-    dispatch(updateSongIdx(dir))
-  }
-
   function shufflePlaylist() {
     dispatch(toggleProp('isShuffleMode'))
+    if (!playerSettings.isShuffleMode) dispatch(shuffleIdxs(playlistLength))
   }
+
 
   function repeatPlaylist() {
     dispatch(toggleProp('isRepeatMode'))
   }
 
-  function checkNextSong() {
-    
+  function checkNextTrack(dir = 1, byClick = false) {
+    if (!playerSettings.isShuffleMode) {
+      if (currIdx < playlistLength - 1 || playerSettings.isRepeatMode || byClick) dispatch(updateTrackIdx('dir', dir))
+      else stopTrack()
+    }
+    else{
+      if (playerSettings.shuffledIdxs.length) {
+        var nextIdx = playerSettings.shuffledIdxs.pop()
+        dispatch(updateTrackIdx('num', nextIdx))
+      } else if (playerSettings.isRepeatMode || byClick) {
+        dispatch(shuffleIdxs(playlistLength))
+        dispatch(updateTrackIdx('dir', dir))
+      } else stopTrack()
+    }
   }
 
   return (
-    <div className='player-container'>
-      <div className="song-container">
-        <img src={currSong.imgUrl} />
-        <div className="song-details">
-          <p className="song-title">{currSong.title}</p>
-          <p className="song-artist">{currSong.artist}</p>
+    <div className="player-container">
+      <div className="track-container">
+        <img src={currTrack.imgUrl} />
+        <div className="track-details">
+          <p className="track-title">{currTrack.title}</p>
+          <p className="track-artist">{currTrack.artist}</p>
         </div>
         <i>{SvgIcon({ iconName: 'heart-empty' })}</i>
       </div>
@@ -175,25 +198,25 @@ export const MediaPlayer = () => {
         <div className="control-btns">
           <div className="side-btns left-side">
             <i onClick={shufflePlaylist} style={{ color: playerSettings.isShuffleMode ? '#1db954' : '#ffffffb3' }}>{SvgIcon({ iconName: 'shuffle' })}</i>
-            <i onClick={() => switchSong(-1)}>{SvgIcon({ iconName: 'prev-song' })}</i>
+            <i onClick={() => checkNextTrack(-1, true)}>{SvgIcon({ iconName: 'prev-track' })}</i>
           </div>
           <i onClick={togglePlay} className="play-btn">
             {SvgIcon({ iconName: playerSettings.isPlaying ? 'player-pause' : 'player-play' })}
           </i>
           <div className="side-btns right-side">
-            <i onClick={() => switchSong(1)}>{SvgIcon({ iconName: 'next-song' })}</i>
+            <i onClick={() => checkNextTrack(1, true)}>{SvgIcon({ iconName: 'next-track' })}</i>
             <i onClick={repeatPlaylist} style={{ color: playerSettings.isRepeatMode ? '#1db954' : '#ffffffb3' }}>{SvgIcon({ iconName: 'repeat' })}</i>
           </div>
         </div>
         <div className="playback-bar">
           <div className="progress-time elapsed">{timeFormat(playerSettings.currTime)}</div>
           <div className="progress-container progress-bar">
-            <progress className="prog progress-bar" type="progress" onChange={handleTimeChange} value={playerSettings.currTime} min="0" max={playerSettings.songDuration}></progress>
+            <progress className="prog progress-bar" type="progress" onChange={handleTimeChange} value={playerSettings.currTime} min="0" max={playerSettings.trackDuration}></progress>
             <input className="prog input-bar timestamp" id="fontController" type="range"
-              onChange={handleTimeChange} value={playerSettings.currTime} min="0" max={playerSettings.songDuration} />
+              onChange={handleTimeChange} value={playerSettings.currTime} min="0" max={playerSettings.trackDuration} />
           </div>
 
-          <div className="progress-time duration">{timeFormat(playerSettings.songDuration)}</div>
+          <div className="progress-time duration">{timeFormat(playerSettings.trackDuration)}</div>
         </div>
       </div>
       <div className="side-container">

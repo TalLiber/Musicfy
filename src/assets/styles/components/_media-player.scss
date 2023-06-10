@@ -16,7 +16,7 @@
         border-radius: 2px;
         background-color: #ffffff4d;
     }
-    .song-container {
+    .track-container {
         width: 30%;
         display: flex;
         align-items: center;
@@ -24,16 +24,16 @@
             width: 56px;
             border-radius: 4px;
         }
-        .song-details {
+        .track-details {
             margin-inline: 8px;
         }
-        .song-title {
+        .track-title {
             padding-inline-end: 6px;
             font-family: Circular-light;
             font-size: 14px;
             height: 22px;
         }
-        .song-artist {
+        .track-artist {
             padding-inline-end: 6px;
             // padding: 0 12px 0 6px;
             font-family: Circular-light;
