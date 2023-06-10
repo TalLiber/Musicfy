@@ -638,6 +638,7 @@ const INITIAL_STATE = {
   },
   currSongIdx: 0,
   filterBy: {},
+  playlistColor:'#000000'
 }
 
 export function playlistReducer(state = INITIAL_STATE, action) {
@@ -686,6 +687,12 @@ export function playlistReducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         filterBy: { ...action.filterBy },
+      }
+
+    case 'change-playlist-color':
+      return{
+        ...state,
+        playlistColor: action.color
       }
     default:
       return state

@@ -4,84 +4,66 @@ import { useDispatch, useSelector } from 'react-redux'
 import {playlistService} from '../services/playlist.service'
 import { useHeaderObserver } from '../customHooks/useHeaderObserver'
 import { useObserver } from '../customHooks/useObserver'
-import Palette from 'react-palette';
-import { usePalette } from 'react-palette' 
+import { usePalette } from 'react-palette'
+import { changePlaylistColor } from '../store/actions/playlists.actions'
+import { PlaylistList } from '../cmps/PlaylistList'
+
+import SvgIcon from '../cmps/SvgIcon'
 
 
 export const Playlist = () => {
 
     const dispatch = useDispatch()
     const playlist = useSelector(state => state.playlistModule.currPlaylist)
+    const playerSettings = useSelector(state => state.playerModule)
     const params = useParams()
     const [headerRef, setHeaderName] = useHeaderObserver()
-    const [containerRef,headerBgc] = useObserver()
+    const [containerRef] = useObserver()
     const imgColor = useRef(null)
-    const [img, setImg] = useState(null)
     const { data, loading, error } = usePalette(imgColor.current)
 
     useEffect(() => {
         getPlaylist()
      },[params.id])
  
-     const getPlaylist = async () => {
+    useEffect(() => {
+        console.log(data)
+        dispatch(changePlaylistColor(data.darkVibrant))
+    },[data])
+            
+    useEffect(() => {
+        return () => {
+            dispatch(changePlaylistColor('#000000'))
+        }
+    }, [])
+    
+    const getPlaylist = async () => {
         setHeaderName.current = playlist.name
         setTimeout(()=>{
             imgColor.current = playlist.image
-            headerBgc.current = imgColor.current
         },1000)
-     }
-
+    }
 
     return (
         <section className="playlist">
-            <section className='playlist-header' style={{ backgroundColor: data.darkVibrant }}>
+            <section className='playlist-header' style={{ backgroundColor: data.vibrant }}>
                 <div className='img-container'>
                 <img src={playlist.image} alt="" />
                 </div>
                 <h1>{playlist.name}</h1>
+            </section>
+            <section className='playlist-action'style={{ backgroundColor: data.darkVibrant }}>
+                <button className='btn-play'>
+                    {SvgIcon({ iconName: playerSettings.isPlaying ? 'player-pause' : 'player-play' })}
+                </button>
+                <button className='btn-heart'>
+                    {SvgIcon({ iconName: 'heart-no-fill'})}
+                </button>
+                <button className='btn-more'>{SvgIcon({ iconName: 'dots'})}</button>
                 <div ref={headerRef}></div>
             </section>
             <div ref={containerRef}></div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
-            <div>hay</div>
+            <PlaylistList playlist={playlist}/>
         </section>
     )
   }

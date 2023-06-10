@@ -1,36 +1,44 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, useLocation, NavLink } from 'react-router-dom'
 import EventBus from 'react-native-event-bus'
+import { useSelector, useDispatch } from "react-redux"
 
 import SvgIcon from './SvgIcon'
 
 export const Header = (props) => {
 
     const navigator = useNavigate()
+    const playlistColor = useSelector(state => state.playlistModule.playlistColor)
     const location = useLocation()
     const [isPrev,setIsPrev] = useState()
     const [isNext,setIsNext] = useState()
-    const [opacityLevel,setOpacityLevel] = useState("0.5")
-    const [headerBcg,setHeaderBcg] = useState("rgba(0,0,0)")
+    const [opacityLevel,setOpacityLevel] = useState("80")
+    const [headerBgc, setHeaderBgc] = useState("#00000080")
     const [headerName, setHeaderName] = useState('')
 
     useEffect(() => {
         EventBus.getInstance().addListener("toggleOpacity",  (data) =>{
-            data? setOpacityLevel("0.5") : setOpacityLevel("1")
+            if(data){
+                setOpacityLevel("80")
+                setHeaderBgc(prevState=> {
+                    return prevState.slice(0,7) + '80'
+                })
+            } 
+            else {
+                setOpacityLevel("ff")
+                setHeaderBgc(prevState => {
+                    console.log(prevState.slice(0,7))
+                    return prevState.slice(0,7) + 'ff'
+                })
+            }
         })
-
+        
         return EventBus.getInstance().removeListener("toggleOpacity")
     },[])
     
     useEffect(() => {
-        EventBus.getInstance().addListener("changeBgc",  (data) =>{
-            console.log('hay')
-            setHeaderBcg(data)
-        })
-            
-        return EventBus.getInstance().removeListener("changeBGC")
-
-    },[])
+        setHeaderBgc(playlistColor + '80')
+    }, [playlistColor])
 
     useEffect(() => {
         EventBus.getInstance().addListener("headerName",  (data) =>{
@@ -50,7 +58,7 @@ export const Header = (props) => {
     }
 
     return (
-        <section className='header-container flex' style={{'backgroundColor':headerBcg,'opacity':opacityLevel}}>
+        <section className='header-container flex' style={{'backgroundColor':headerBgc}}>
             <div className='action flex'>
                 <button className='btn-action' disabled={isPrev} onClick={() => handleClick(-1)}>
                     {SvgIcon({ iconName: 'prev' })}
