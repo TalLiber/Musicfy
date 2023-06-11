@@ -22,7 +22,6 @@ const App = () => {
   const playlists = useSelector(state => state.playlistModule.playlists)
 
   useEffect(() => {
-    console.log('Playlists:', playlists)
     getPlaylists()
   }, [])
   

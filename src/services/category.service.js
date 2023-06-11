@@ -2,6 +2,7 @@ import { storageService } from './async-storage.service.js'
 import { httpService } from './http.service.js'
 import { utilService } from './util.service.js'
 import { userService } from './user.service.js'
+import {playlistService} from './playlist.service.js'
 
 // import homeCategories from '../data/home.json'
 import categoriesDb from '../data/categories.json'
@@ -41,7 +42,19 @@ async function query(filterBy = {}) {
 
 }
 
-function getById(categoryId) {
+async function getById(categoryId, name) {
+    const categoryPlaylists = await playlistService.getSpotifyItems('categPlaylists', categoryId)
+
+    return { name,
+        items: categoryPlaylists
+    }
+    // .then((playlistData) => {
+    //   console.log('Playlist:', playlistData.playlists.items);
+    // })
+    // .catch((error) => {
+    //   console.error('Error:', error);
+    // });
+
     // return storageService.get(STORAGE_KEY, categoryId)
     return storageService.get("HomePage_db", categoryId)
         // return httpService.get(`category/${categoryId}`)
@@ -325,12 +338,6 @@ const categories = [{
         "name": "Pride",
         "imgUrl": "https://t.scdn.co/images/c5495b9f0f694ffcb39c9217d4ed4375",
         "backgroundColor": "#477d95"
-    },
-    {
-        "id": "0JQ5DAqbMKFLVaM30PMBm4",
-        "name": "Summer",
-        "imgUrl": "https://t.scdn.co/images/8e508d7eb5b843a89c368c9507ecc429.jpeg",
-        "backgroundColor": "#8d67ab"
     }
 ]
 
@@ -338,8 +345,8 @@ const categories = [{
 
 
 
-// (() => {
-//     utilService.saveToStorage("category_db", categoriesDb)
+// ;(() => {
+//     utilService.saveToStorage("category_db", categories)
 // })()
 
 

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux'
 import { categoryService } from "../services/category.service"
 import { HomePreview } from '../cmps/HomePreivew'
 import { useObserver } from '../customHooks/useObserver'
 import { useHeaderObserver } from '../customHooks/useHeaderObserver'
-
+import { setPlaylist } from '../store/actions/playlists.actions'
 
 export const Category = () => {
     
@@ -16,16 +16,23 @@ export const Category = () => {
     const [cmpStyle, setCmpStyle] = useState(null)
     const [containerRef] = useObserver()
     const [headerRef, setHeaderName] = useHeaderObserver()
-    
+    const [searchParams] = useSearchParams()
+
     useEffect(() => {
         getCategory()
      },[params.id])
  
+     //TODO: Component use service directly?
      const getCategory = async () => {
-        const category = await categoryService.getById(params.id)
+        const category = await categoryService.getById(params.id, searchParams.get('name'))
         setCategory(category)
-        setCmpStyle({'backgroundColor':category.backgroundColor})
+        // setCmpStyle({'backgroundColor':category.backgroundColor})
         setHeaderName.current = category.name
+     }
+
+     function selectPlaylist(playlistData) {
+        dispatch(setPlaylist('data', playlistData))
+        
      }
 
     if(!category) return (<div> loading... </div>)
@@ -39,7 +46,7 @@ export const Category = () => {
 
             <section className='category-list'>
                 {category.items.map(item => {
-                    return <HomePreview playlist={item} key={item.id}/>
+                    return <HomePreview playlistData={item} key={item.id} selectPlaylist={selectPlaylist}/>
                 })}
             </section>
 

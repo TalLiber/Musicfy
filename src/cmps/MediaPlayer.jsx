@@ -17,10 +17,6 @@ export const MediaPlayer = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log(playerSettings.shuffledIdxs);
-  }, [playerSettings.shuffledIdxs])
-
-  useEffect(() => {
     if (!player.current) startIframe()
     else loadNewVideo()
   }, [currTrack])
@@ -190,7 +186,7 @@ export const MediaPlayer = () => {
         <img src={currTrack.imgUrl} />
         <div className="track-details">
           <p className="track-title">{currTrack.title}</p>
-          <p className="track-artist">{currTrack.artist}</p>
+          <p className="track-artist">{currTrack.artists[0]}</p>
         </div>
         <i>{SvgIcon({ iconName: 'heart-empty' })}</i>
       </div>

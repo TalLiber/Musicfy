@@ -4,10 +4,9 @@ export function loadPlaylists() {
 
     return async(dispatch, getState) => {
         try {
-            console.log('getting playlists');
+            // console.log('getting playlists');
             const filterBy = getState().playlistModule.filterBy
             const playlists = await playlistService.query(filterBy)
-            console.log('playlists:', playlists)
             dispatch({ type: 'SET_PLAYLISTS', playlists })
         } catch (err) {
             console.log('err:', err)
@@ -58,6 +57,21 @@ export function updateTrackIdx(byType, toUpdate) {
         try {
             if(byType === 'dir') dispatch({ type: 'UPDATE_CURR_TRACK_IDX_BY_DIR', dir: toUpdate })
             else dispatch({ type: 'UPDATE_CURR_TRACK_IDX_BY_NUM', idx: toUpdate })
+        } catch (err) {
+            console.log('err:', err)
+        }
+    }
+}
+
+//TODO: Maybe 2 functions will be better?
+export function setPlaylist(byType, data) {
+    return async (dispatch) => {
+        try {
+            if(byType === 'data') dispatch({ type: 'SET_PLAYLIST_DATA', data })
+            else {
+                const tracks = await playlistService.getSpotifyItems('tracks', data)
+                dispatch({ type: 'SET_PLAYLIST_TRACKS', tracks })
+            }
         } catch (err) {
             console.log('err:', err)
         }

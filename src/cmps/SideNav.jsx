@@ -38,7 +38,6 @@ export const SideNav = () => {
   }
 
   function addUserPlaylist() {
-    console.log('hi', userPlaylists);
     dispatch(addPlaylist())
   }
 
