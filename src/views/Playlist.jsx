@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux'
-import {playlistService} from '../services/playlist.service'
+import { playlistService } from '../services/playlist.service'
 import { useHeaderObserver } from '../customHooks/useHeaderObserver'
 import { useObserver } from '../customHooks/useObserver'
 import { usePalette } from 'react-palette'
-import { changePlaylistColor } from '../store/actions/playlists.actions'
+import { changePlaylistColor, setPlaylist } from '../store/actions/playlists.actions'
 import { PlaylistList } from '../cmps/PlaylistList'
 
 import SvgIcon from '../cmps/SvgIcon'
@@ -23,50 +23,56 @@ export const Playlist = () => {
     const { data, loading, error } = usePalette(imgColor.current)
 
     useEffect(() => {
+        setPlaylistTracks()
         getPlaylist()
-     },[params.id])
- 
+    }, [params.id])
+
     useEffect(() => {
-        console.log(data)
+        // console.log(data)
         dispatch(changePlaylistColor(data.darkVibrant))
-    },[data])
-            
+    }, [data])
+
     useEffect(() => {
         return () => {
             dispatch(changePlaylistColor('#000000'))
         }
     }, [])
-    
-    const getPlaylist = async () => {
-        setHeaderName.current = playlist.name
-        setTimeout(()=>{
-            imgColor.current = playlist.image
-        },1000)
+
+    function setPlaylistTracks() {
+        console.log('params.id', params.id);
+        dispatch(setPlaylist('tracks', params.id))
     }
 
+    const getPlaylist = async () => {
+        setHeaderName.current = playlist.name
+        setTimeout(() => {
+            imgColor.current = playlist.image
+        }, 2000)
+    }
+    // if (!playerSettings.isPlaying) return <div>Loading...</div>
     return (
         <section className="playlist">
             <section className='playlist-header' style={{ backgroundColor: data.vibrant }}>
                 <div className='img-container'>
-                <img src={playlist.image} alt="" />
+                    <img src={playlist.image} alt="" />
                 </div>
                 <h1>{playlist.name}</h1>
             </section>
-            <section className='playlist-action'style={{ backgroundColor: data.darkVibrant }}>
+            <section className='playlist-action' style={{ backgroundColor: data.darkVibrant }}>
                 <button className='btn-play'>
                     {SvgIcon({ iconName: playerSettings.isPlaying ? 'player-pause' : 'player-play' })}
                 </button>
                 <button className='btn-heart'>
-                    {SvgIcon({ iconName: 'heart-no-fill'})}
+                    {SvgIcon({ iconName: 'heart-no-fill' })}
                 </button>
-                <button className='btn-more'>{SvgIcon({ iconName: 'dots'})}</button>
+                <button className='btn-more'>{SvgIcon({ iconName: 'dots' })}</button>
                 <div ref={headerRef}></div>
             </section>
             <div ref={containerRef}></div>
-            <PlaylistList playlist={playlist}/>
+            <PlaylistList playlist={playlist} />
         </section>
     )
-  }
+}
 
 
 

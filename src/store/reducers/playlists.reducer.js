@@ -10,7 +10,7 @@ const INITIAL_STATE = {
         id: 'WcIcVapfqXw',
         addedAt: '2023-05-26T04:00:00Z',
         title: 'Calm Down (with Selena Gomez)',
-        artist: 'Rema',
+        artists: ['Rema'],
         album: 'Calm Down (with Selena Gomez)',
         imgUrl:
           'https://i.scdn.co/image/ab67616d0000b273a3a7f38ea2033aa501afd4cf',
@@ -19,7 +19,7 @@ const INITIAL_STATE = {
         id: 'G7KNmW9a75Y',
         addedAt: '2023-05-26T04:00:00Z',
         title: 'Flowers',
-        artist: 'Miley Cyrus',
+        artists: ['Miley Cyrus'],
         album: 'Flowers',
         imgUrl:
           'https://i.scdn.co/image/ab67616d0000b273f429549123dbe8552764ba1d',
@@ -28,7 +28,7 @@ const INITIAL_STATE = {
         id: '90RLzVUuXe4',
         addedAt: '2023-05-26T04:00:00Z',
         title: "I'm Good (Blue)",
-        artist: 'David Guetta',
+        artists: ['David Guetta'],
         album: "I'm Good (Blue)",
         imgUrl:
           'https://i.scdn.co/image/ab67616d0000b273933c036cd61cd40d3f17a9c4',
@@ -37,7 +37,7 @@ const INITIAL_STATE = {
         id: 'mNEUkkoUoIA',
         addedAt: '2023-05-26T04:00:00Z',
         title: "I Ain't Worried",
-        artist: 'OneRepublic',
+        artists: ['OneRepublic'],
         album:
           'I Ain’t Worried (Music From The Motion Picture "Top Gun: Maverick")',
         imgUrl:
@@ -56,6 +56,16 @@ export function playlistReducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         playlists: [...action.playlists],
+      }
+    case 'SET_PLAYLIST_DATA':
+      return {
+        ...state,
+        currPlaylist: {...action.data, tracks: state.currPlaylist.tracks},
+      }
+    case 'SET_PLAYLIST_TRACKS':
+      return {
+        ...state,
+        currPlaylist: {...state.currPlaylist, tracks: [...action.tracks]},
       }
     case 'UPDATE_CURR_TRACK_IDX_BY_NUM':
       console.log('action.idx', action.idx);

@@ -1,3 +1,7 @@
+import axios from 'axios'
+
+import config from '../../config.js'
+
 import { storageService } from './async-storage.service.js'
 import { httpService } from './http.service.js'
 import { utilService } from './util.service.js'
@@ -6,86 +10,86 @@ import { userService } from './user.service.js'
 import playlistSave from '../data/playlist.json'
 // assert { type: 'json' }
 
-
 const STORAGE_KEY = 'playlist_db'
+let gAccessToken
 
 export const playlistService = {
-    query,
-    getById,
-    save,
-    remove,
-    getEmptyPlaylist,
-    addPlaylistMsg,
-    getCategories,
-    getCategoryItems
+  query,
+  getById,
+  save,
+  remove,
+  getEmptyPlaylist,
+  addPlaylistMsg,
+  getCategories,
+  getSpotifyItems,
 }
 window.cs = playlistService
 
 async function query(filterBy = {}) {
-    // return httpService.get(STORAGE_KEY, filterBy)
+  // return httpService.get(STORAGE_KEY, filterBy)
 
-    var playlists = await storageService.query(STORAGE_KEY)
-    if (filterBy.txt) {
-        const regex = new RegExp(filterBy.txt, 'i')
-        playlists = playlists.filter(playlist => regex.test(playlist.vendor) || regex.test(playlist.description))
-    }
-    if (filterBy.price) {
-        playlists = playlists.filter(playlist => playlist.price <= filterBy.price)
-    }
-    return playlists
-
+  var playlists = await storageService.query(STORAGE_KEY)
+  if (filterBy.txt) {
+    const regex = new RegExp(filterBy.txt, 'i')
+    playlists = playlists.filter(
+      (playlist) =>
+        regex.test(playlist.vendor) || regex.test(playlist.description)
+    )
+  }
+  if (filterBy.price) {
+    playlists = playlists.filter((playlist) => playlist.price <= filterBy.price)
+  }
+  return playlists
 }
 
 function getById(playlistId) {
-    return storageService.get(STORAGE_KEY, playlistId)
-        // return httpService.get(`playlist/${playlistId}`)
+  return storageService.get(STORAGE_KEY, playlistId)
+  // return httpService.get(`playlist/${playlistId}`)
 }
 
 async function remove(playlistId) {
-    await storageService.remove(STORAGE_KEY, playlistId)
-        // return httpService.delete(`playlist/${playlistId}`)
+  await storageService.remove(STORAGE_KEY, playlistId)
+  // return httpService.delete(`playlist/${playlistId}`)
 }
 async function save(playlist) {
-    var savedPlaylist
-    if (playlist._id) {
-        savedPlaylist = await storageService.put(STORAGE_KEY, playlist)
-            // savedPlaylist = await httpService.put(`playlist/${playlist._id}`, playlist)
-    } else {
-        // Later, owner is set by the backend
-        // playlist.owner = userService.getLoggedinUser()
-        savedPlaylist = await storageService.post(STORAGE_KEY, playlist)
-            // savedPlaylist = await httpService.post('playlist', playlist)
-    }
-    return savedPlaylist
+  var savedPlaylist
+  if (playlist._id) {
+    savedPlaylist = await storageService.put(STORAGE_KEY, playlist)
+    // savedPlaylist = await httpService.put(`playlist/${playlist._id}`, playlist)
+  } else {
+    // Later, owner is set by the backend
+    // playlist.owner = userService.getLoggedinUser()
+    savedPlaylist = await storageService.post(STORAGE_KEY, playlist)
+    // savedPlaylist = await httpService.post('playlist', playlist)
+  }
+  return savedPlaylist
 }
 
 async function addPlaylistMsg(playlistId, txt) {
-    // const savedMsg = await httpService.post(`playlist/${playlistId}/msg`, {txt})
-    return savedMsg
+  // const savedMsg = await httpService.post(`playlist/${playlistId}/msg`, {txt})
+  return savedMsg
 }
 
 function getCategories() {
-    return categories
+  return categories
 }
 
 function getEmptyPlaylist() {
-    return {
-        name: 'My Playlist #2',
-        description: '',
-        owner: 'user',
-        imgUrl: '',
-        tracks: []
-    }
+  return {
+    name: 'My Playlist #2',
+    description: '',
+    owner: 'user',
+    imgUrl: '',
+    tracks: [],
+  }
 }
-
-import axios from 'axios'
 
 
 async function getAccessToken(clientId, clientSecret) {
   try {
     // Encode client credentials (Client ID and Client Secret)
-    const credentials = `${clientId}:${clientSecret}`;
-    const encodedCredentials = btoa(credentials);
+    const credentials = `${clientId}:${clientSecret}`
+    const encodedCredentials = btoa(credentials)
 
     // Make a POST request to the token endpoint
     const response = await axios.post(
@@ -99,66 +103,88 @@ async function getAccessToken(clientId, clientSecret) {
           Authorization: `Basic ${encodedCredentials}`,
         },
       }
-    );
+    )
 
     // Extract and return the access token from the response
-    const { data } = response;
-    const accessToken = data.access_token;
-    const expiresIn = data.expires_in;
-    return { accessToken, expiresIn };
+    const { data } = response
+    const accessToken = data.access_token
+    const expiresIn = data.expires_in
+    return { accessToken, expiresIn }
   } catch (error) {
-    console.error('Error retrieving access token:', error.response ? error.response.data : error.message);
-    throw error;
+    console.error(
+      'Error retrieving access token:',
+      error.response ? error.response.data : error.message
+    )
+    throw error
   }
 }
 
-let gAccessToken
-// Usage example
-const clientId = '5bb32cffdbd64dcbad190f888ccb0b6c';
-const clientSecret = '700bf1887f98431ca60a37bb2b889730';
 
-// getAccessToken(clientId, clientSecret)
-//   .then((tokenData) => {
-//     gAccessToken = tokenData.accessToken
-//     console.log('Access Token:', tokenData.accessToken);
-//     console.log('Expires In:', tokenData.expiresIn);
-//   })
-//   .catch((error) => {
-//     console.error('Error:', error);
-//   });
+getAccessToken(config.clientId, config.clientSecret)
+  .then((tokenData) => {
+    gAccessToken = tokenData.accessToken
+    // console.log('Access Token:', tokenData.accessToken)
+    // console.log('Expires In:', tokenData.expiresIn)
+  })
+  .catch((error) => {
+    console.error('Error:', error)
+  })
 
-
-  async function getCategoryItems(categoryId) {
-    try {
-      // Make a GET request to the Spotify API endpoint
-      const response = await axios.get(`https://api.spotify.com/v1/browse/categories/${categoryId}/playlists`, {
+async function getSpotifyItems(reqType, id) {
+  const endpoints = {
+    categPlaylists: `https://api.spotify.com/v1/browse/categories/${id}/playlists`,
+    tracks: `https://api.spotify.com/v1/playlists/${id}/tracks`
+  }
+  
+  try {
+    // Make a GET request to the Spotify API endpoint
+    const response = await axios.get(endpoints[reqType],
+      {
         headers: {
           Authorization: `Bearer ${gAccessToken}`,
         },
-      });
-  
-      // Return the playlist data from the response
-      const cleanData = _cleanCategoryPlaylistsData(response.data)
-      return cleanData
-    } catch (error) {
-      console.error('Error retrieving playlist:', error.response ? error.response.data : error.message);
-      throw error;
+      }
+    )
+
+    // Return the playlist data from the response
+    const cleanData = (reqType === 'categPlaylists') ? _cleanCategoryPlaylistsData(response.data) : _cleanPlaylistsTracksData(response.data)
+    return cleanData
+  } catch (error) {
+    console.error(
+      'Error retrieving data:',
+      error.response ? error.response.data : error.message
+    )
+    throw error
+  }
+}
+
+function _cleanCategoryPlaylistsData(data) {
+  return data.playlists.items.map((categoryPlaylist) => {
+    return {
+      id: categoryPlaylist.id,
+      name: categoryPlaylist.name,
+      description: categoryPlaylist.description,
+      image: categoryPlaylist.images[0].url,
     }
-  }
-    
-  function _cleanCategoryPlaylistsData(data) {
-    const categPlaylists = data.playlists.items
-    console.log('categPlaylists',categPlaylists);
-    categPlaylists = categPlaylists.map(categPlaylist => {
-        return {
-            id: categPlaylist.id,
-            name: categPlaylist.name,
-            description: categPlaylist.description,
-            
-        }
-    })
-    // localStorage.setItem('categPlaylists', JSON.stringify(categPlaylists))
-  }
+  })
+}
+
+function _cleanPlaylistsTracksData(data) {
+  return data.items.map((item) => {
+    return {
+      addedAt: item.added_at,
+      id: '',
+      title: item.track.name,
+      artists: _cleanArtists(item.track.artists),
+      imgUrl: item.track.album.images[0].url,
+      formalDuration: item.track.duration_ms
+    }
+  })
+}
+
+function _cleanArtists(artists) {
+  return artists.map(artist => artist.name)
+}
 // async function getAccessToken(clientId, clientSecret) {
 //   try {
 //     // Encode client credentials (Client ID and Client Secret) in Base64
@@ -203,255 +229,262 @@ const clientSecret = '700bf1887f98431ca60a37bb2b889730';
 //     console.error('Error:', error);
 //   });
 
-
-
-
-const categories = [{
-        "id": "0JQ5DAqbMKFzHmL4tf05da",
-        "name": "Mood",
-        "imgUrl": "https://t.scdn.co/media/original/mood-274x274_976986a31ac8c49794cbdc7246fd5ad7_274x274.jpg",
-        "backgroundColor": "#b49bc8"
-    },
-    {
-        "id": "0JQ5DAqbMKFEC4WFtoNRpw",
-        "name": "Pop",
-        "imgUrl": "https://t.scdn.co/media/derived/pop-274x274_447148649685019f5e2a03a39e78ba52_0_0_274_274.jpg",
-        "backgroundColor": "#f037a5"
-    },
-    {
-        "id": "0JQ5DAqbMKFFzDl7qN9Apr",
-        "name": "Chill",
-        "imgUrl": "https://t.scdn.co/media/derived/chill-274x274_4c46374f007813dd10b37e8d8fd35b4b_0_0_274_274.jpg",
-        "backgroundColor": "#9cf0e1"
-    },
-    {
-        "id": "0JQ5DAqbMKFA6SOHvT3gck",
-        "name": "Party",
-        "imgUrl": "https://t.scdn.co/images/fada056dcfd54cd28faf80d62b7059c6.jpeg",
-        "backgroundColor": "#d7f27d"
-    },
-    {
-        "id": "0JQ5DAqbMKFQ00XGBls6ym",
-        "name": "Hip-Hop",
-        "imgUrl": "https://t.scdn.co/media/original/hip-274_0a661854d61e29eace5fe63f73495e68_274x274.jpg",
-        "backgroundColor": "#8d67ab"
-    },
-    {
-        "id": "0JQ5DAqbMKFCbimwdOYlsl",
-        "name": "Focus",
-        "imgUrl": "https://t.scdn.co/media/original/genre-images-square-274x274_5e50d72b846a198fcd2ca9b3aef5f0c8_274x274.jpg",
-        "backgroundColor": "#503750"
-    },
-    {
-        "id": "0JQ5DAqbMKFDXXwE9BDJAr",
-        "name": "Rock",
-        "imgUrl": "https://t.scdn.co/media/derived/rock_9ce79e0a4ef901bbd10494f5b855d3cc_0_0_274_274.jpg",
-        "backgroundColor": "#7358ff"
-    },
-    {
-        "id": "0JQ5DAqbMKFFtlLYUHv8bT",
-        "name": "Alternative",
-        "imgUrl": "https://t.scdn.co/images/ee9451b3ed474c82b1da8f9b5eafc88f.jpeg",
-        "backgroundColor": "#af2896"
-    },
-    {
-        "id": "0JQ5DAqbMKFPw634sFwguI",
-        "name": "EQUAL",
-        "imgUrl": "https://t.scdn.co/images/084155aeaa724ea1bd393a017d67b709",
-        "backgroundColor": "#148a08"
-    },
-    {
-        "id": "0JQ5DAqbMKFCWjUTdzaG0e",
-        "name": "Indie",
-        "imgUrl": "https://t.scdn.co/images/fe06caf056474bc58862591cd60b57fc.jpeg",
-        "backgroundColor": "#eb1e32"
-    },
-    {
-        "id": "0JQ5DAqbMKFHOzuVTgTizF",
-        "name": "Dance/Electronic",
-        "imgUrl": "https://t.scdn.co/media/derived/edm-274x274_0ef612604200a9c14995432994455a6d_0_0_274_274.jpg",
-        "backgroundColor": "#0d73ec"
-    },
-    {
-        "id": "0JQ5DAqbMKFLb2EqgLtpjC",
-        "name": "Wellness",
-        "imgUrl": "https://t.scdn.co/images/3710b68657574bc79df14bd74629e5ac",
-        "backgroundColor": "#509bf5"
-    },
-    {
-        "id": "0JQ5DAqbMKFCuoRTxhYWow",
-        "name": "Sleep",
-        "imgUrl": "https://t.scdn.co/media/derived/sleep-274x274_0d4f836af8fab7bf31526968073e671c_0_0_274_274.jpg",
-        "backgroundColor": "#1e3264"
-    },
-    {
-        "id": "0JQ5DAqbMKFRKBHIxJ5hMm",
-        "name": "Tastemakers",
-        "imgUrl": "https://t.scdn.co/images/b4182906bf244b4994805084c057e9ee.jpeg",
-        "backgroundColor": "#1e3264"
-    },
-    {
-        "id": "0JQ5DAqbMKFIVNxQgRNSg0",
-        "name": "Decades",
-        "imgUrl": "https://t.scdn.co/images/b611cf5145764c64b80e91ccd5f357c8",
-        "backgroundColor": "#ba5d07"
-    },
-    {
-        "id": "0JQ5DAqbMKFAXlCG6QvYQ4",
-        "name": "Workout",
-        "imgUrl": "https://t.scdn.co/media/links/workout-274x274.jpg",
-        "backgroundColor": "#777777"
-    },
-    {
-        "id": "0JQ5DAqbMKFx0uLQR2okcc",
-        "name": "At Home",
-        "imgUrl": "https://t.scdn.co/images/04da469dd7be4dab96659aa1fa9f0ac9.jpeg",
-        "backgroundColor": "#b49bc8"
-    },
-    {
-        "id": "0JQ5DAqbMKFAQy4HL4XU2D",
-        "name": "Travel",
-        "imgUrl": "https://t.scdn.co/media/derived/travel-274x274_1e89cd5b42cf8bd2ff8fc4fb26f2e955_0_0_274_274.jpg",
-        "backgroundColor": "#2d46b9"
-    },
-    {
-        "id": "0JQ5DAqbMKFy78wprEpAjl",
-        "name": "Folk & Acoustic",
-        "imgUrl": "https://t.scdn.co/images/7fe0f2c9c91f45a3b6bae49d298201a4.jpeg",
-        "backgroundColor": "#283ea3"
-    },
-    {
-        "id": "0JQ5DAqbMKFLVaM30PMBm4",
-        "name": "Summer",
-        "imgUrl": "https://t.scdn.co/images/8e508d7eb5b843a89c368c9507ecc429.jpeg",
-        "backgroundColor": "#283ea3"
-    },
-    {
-        "id": "0JQ5DAqbMKFEZPnFQSFB1T",
-        "name": "R&B",
-        "imgUrl": "https://t.scdn.co/media/derived/r-b-274x274_fd56efa72f4f63764b011b68121581d8_0_0_274_274.jpg",
-        "backgroundColor": "#dc148c"
-    },
-    {
-        "id": "0JQ5DAqbMKFIpEuaCnimBj",
-        "name": "Soul",
-        "imgUrl": "https://t.scdn.co/media/derived/soul-274x274_266bc900b35dda8956380cffc73a4d8c_0_0_274_274.jpg",
-        "backgroundColor": "#dc148c"
-    },
-    {
-        "id": "0JQ5DAqbMKFAJ5xb0fwo9m",
-        "name": "Jazz",
-        "imgUrl": "https://t.scdn.co/images/568f37f1cab54136939d63bd1f59d40c",
-        "backgroundColor": "#f59b23"
-    },
-    {
-        "id": "0JQ5DAqbMKFRieVZLLoo9m",
-        "name": "Instrumental",
-        "imgUrl": "https://t.scdn.co/images/384c2b595a1648aa801837ff99961188",
-        "backgroundColor": "#477d95"
-    },
-    {
-        "id": "0JQ5DAqbMKFAjfauKLOZiv",
-        "name": "Punk",
-        "imgUrl": "https://t.scdn.co/media/derived/punk-274x274_f3f1528ea7bbb60a625da13e3315a40b_0_0_274_274.jpg",
-        "backgroundColor": "#233268"
-    },
-    {
-        "id": "0JQ5DAqbMKFQFQN0rnK48G",
-        "name": "Flamenco",
-        "imgUrl": "https://t.scdn.co/images/37780cd0347248e38195515fc7ca061a.jpeg",
-        "backgroundColor": "#ff4632"
-    },
-    {
-        "id": "0JQ5DAqbMKFDkd668ypn6O",
-        "name": "Metal",
-        "imgUrl": "https://t.scdn.co/media/original/metal_27c921443fd0a5ba95b1b2c2ae654b2b_274x274.jpg",
-        "backgroundColor": "#777777"
-    },
-    {
-        "id": "0JQ5DAqbMKFxXaXKP7zcDp",
-        "name": "Latin",
-        "imgUrl": "https://t.scdn.co/images/26a60378-a374-4cd7-b894-28efa5e154cb.jpg",
-        "backgroundColor": "#e1118b"
-    },
-    {
-        "id": "0JQ5DAqbMKFPrEiAOxgac3",
-        "name": "Classical",
-        "imgUrl": "https://t.scdn.co/media/derived/classical-274x274_abf78251ff3d90d2ceaf029253ca7cb4_0_0_274_274.jpg",
-        "backgroundColor": "#e1118b"
-    },
-    {
-        "id": "0JQ5DAqbMKFObNLOHydSW8",
-        "name": "Caribbean",
-        "imgUrl": "https://t.scdn.co/images/495fadcefe234607b14b2db3381f3f5d.jpeg",
-        "backgroundColor": "#0d73ec"
-    },
-    {
-        "id": "0JQ5DAqbMKFCfObibaOZbv",
-        "name": "Gaming",
-        "imgUrl": "https://t.scdn.co/images/0d39395309ba47838ef12ce987f19d16.jpeg",
-        "backgroundColor": "#e8115b"
-    },
-    {
-        "id": "0JQ5DAqbMKFQiK2EHwyjcU",
-        "name": "Blues",
-        "imgUrl": "https://t.scdn.co/images/6fe5cd3ebc8c4db7bb8013152b153505",
-        "backgroundColor": "#1e3264"
-    },
-    {
-        "id": "funk",
-        "name": "Funk",
-        "imgUrl": "https://t.scdn.co/images/f4f0987fcab446fcaa7173acb5e25701.jpeg",
-        "backgroundColor": "#e61e32"
-    },
-    {
-        "id": "0JQ5DAqbMKFF9bY76LXmfI",
-        "name": "Frequency",
-        "imgUrl": "https://t.scdn.co/images/cad629fb65a14de4beddb38510e27cb1",
-        "backgroundColor": "#ffc864"
-    },
-    {
-        "id": "0JQ5DAqbMKFQIL0AXnG5AK",
-        "name": "Trending",
-        "imgUrl": "https://t.scdn.co/media/derived/trending-274x274_7b238f7217985e79d3664f2734347b98_0_0_274_274.jpg",
-        "backgroundColor": "#ff4632"
-    },
-    {
-        "id": "0JQ5DAqbMKFFoimhOqWzLB",
-        "name": "Kids & Family",
-        "imgUrl": "https://t.scdn.co/images/664bb84f7a774e1eadb7c227aed98f3c",
-        "backgroundColor": "#8d67ab"
-    },
-    {
-        "id": "0JQ5DAqbMKFKLfwjuJMoNC",
-        "name": "Country",
-        "imgUrl": "https://t.scdn.co/images/a2e0ebe2ebed4566ba1d8236b869241f.jpeg",
-        "backgroundColor": "#b49bc8"
-    },
-    {
-        "id": "0JQ5DAqbMKFGvOw3O4nLAf",
-        "name": "K-Pop",
-        "imgUrl": "https://t.scdn.co/images/2078afd91e4d431eb19efc5bee5ab131.jpeg",
-        "backgroundColor": "#148a08"
-    },
-    {
-        "id": "0JQ5DAqbMKFLjmiZRss79w",
-        "name": "Ambient",
-        "imgUrl": "https://t.scdn.co/images/9210c5a26e6a4b4da2c3ea8e5f87fff8",
-        "backgroundColor": "#477d95"
-    },
-    {
-        "id": "0JQ5DAqbMKFF1br7dZcRtK",
-        "name": "Pride",
-        "imgUrl": "https://t.scdn.co/images/c5495b9f0f694ffcb39c9217d4ed4375",
-        "backgroundColor": "#477d95"
-    },
-    {
-        "id": "0JQ5DAqbMKFLVaM30PMBm4",
-        "name": "Summer",
-        "imgUrl": "https://t.scdn.co/images/8e508d7eb5b843a89c368c9507ecc429.jpeg",
-        "backgroundColor": "#8d67ab"
-    }
+const categories = [
+  {
+    id: '0JQ5DAqbMKFzHmL4tf05da',
+    name: 'Mood',
+    image:
+      'https://t.scdn.co/media/original/mood-274x274_976986a31ac8c49794cbdc7246fd5ad7_274x274.jpg',
+    backgroundColor: '#b49bc8',
+  },
+  {
+    id: '0JQ5DAqbMKFEC4WFtoNRpw',
+    name: 'Pop',
+    image:
+      'https://t.scdn.co/media/derived/pop-274x274_447148649685019f5e2a03a39e78ba52_0_0_274_274.jpg',
+    backgroundColor: '#f037a5',
+  },
+  {
+    id: '0JQ5DAqbMKFFzDl7qN9Apr',
+    name: 'Chill',
+    image:
+      'https://t.scdn.co/media/derived/chill-274x274_4c46374f007813dd10b37e8d8fd35b4b_0_0_274_274.jpg',
+    backgroundColor: '#9cf0e1',
+  },
+  {
+    id: '0JQ5DAqbMKFA6SOHvT3gck',
+    name: 'Party',
+    image: 'https://t.scdn.co/images/fada056dcfd54cd28faf80d62b7059c6.jpeg',
+    backgroundColor: '#d7f27d',
+  },
+  {
+    id: '0JQ5DAqbMKFQ00XGBls6ym',
+    name: 'Hip-Hop',
+    image:
+      'https://t.scdn.co/media/original/hip-274_0a661854d61e29eace5fe63f73495e68_274x274.jpg',
+    backgroundColor: '#8d67ab',
+  },
+  {
+    id: '0JQ5DAqbMKFCbimwdOYlsl',
+    name: 'Focus',
+    image:
+      'https://t.scdn.co/media/original/genre-images-square-274x274_5e50d72b846a198fcd2ca9b3aef5f0c8_274x274.jpg',
+    backgroundColor: '#503750',
+  },
+  {
+    id: '0JQ5DAqbMKFDXXwE9BDJAr',
+    name: 'Rock',
+    image:
+      'https://t.scdn.co/media/derived/rock_9ce79e0a4ef901bbd10494f5b855d3cc_0_0_274_274.jpg',
+    backgroundColor: '#7358ff',
+  },
+  {
+    id: '0JQ5DAqbMKFFtlLYUHv8bT',
+    name: 'Alternative',
+    image: 'https://t.scdn.co/images/ee9451b3ed474c82b1da8f9b5eafc88f.jpeg',
+    backgroundColor: '#af2896',
+  },
+  {
+    id: '0JQ5DAqbMKFPw634sFwguI',
+    name: 'EQUAL',
+    image: 'https://t.scdn.co/images/084155aeaa724ea1bd393a017d67b709',
+    backgroundColor: '#148a08',
+  },
+  {
+    id: '0JQ5DAqbMKFCWjUTdzaG0e',
+    name: 'Indie',
+    image: 'https://t.scdn.co/images/fe06caf056474bc58862591cd60b57fc.jpeg',
+    backgroundColor: '#eb1e32',
+  },
+  {
+    id: '0JQ5DAqbMKFHOzuVTgTizF',
+    name: 'Dance/Electronic',
+    image:
+      'https://t.scdn.co/media/derived/edm-274x274_0ef612604200a9c14995432994455a6d_0_0_274_274.jpg',
+    backgroundColor: '#0d73ec',
+  },
+  {
+    id: '0JQ5DAqbMKFLb2EqgLtpjC',
+    name: 'Wellness',
+    image: 'https://t.scdn.co/images/3710b68657574bc79df14bd74629e5ac',
+    backgroundColor: '#509bf5',
+  },
+  {
+    id: '0JQ5DAqbMKFCuoRTxhYWow',
+    name: 'Sleep',
+    image:
+      'https://t.scdn.co/media/derived/sleep-274x274_0d4f836af8fab7bf31526968073e671c_0_0_274_274.jpg',
+    backgroundColor: '#1e3264',
+  },
+  {
+    id: '0JQ5DAqbMKFRKBHIxJ5hMm',
+    name: 'Tastemakers',
+    image: 'https://t.scdn.co/images/b4182906bf244b4994805084c057e9ee.jpeg',
+    backgroundColor: '#1e3264',
+  },
+  {
+    id: '0JQ5DAqbMKFIVNxQgRNSg0',
+    name: 'Decades',
+    image: 'https://t.scdn.co/images/b611cf5145764c64b80e91ccd5f357c8',
+    backgroundColor: '#ba5d07',
+  },
+  {
+    id: '0JQ5DAqbMKFAXlCG6QvYQ4',
+    name: 'Workout',
+    image: 'https://t.scdn.co/media/links/workout-274x274.jpg',
+    backgroundColor: '#777777',
+  },
+  {
+    id: '0JQ5DAqbMKFx0uLQR2okcc',
+    name: 'At Home',
+    image: 'https://t.scdn.co/images/04da469dd7be4dab96659aa1fa9f0ac9.jpeg',
+    backgroundColor: '#b49bc8',
+  },
+  {
+    id: '0JQ5DAqbMKFAQy4HL4XU2D',
+    name: 'Travel',
+    image:
+      'https://t.scdn.co/media/derived/travel-274x274_1e89cd5b42cf8bd2ff8fc4fb26f2e955_0_0_274_274.jpg',
+    backgroundColor: '#2d46b9',
+  },
+  {
+    id: '0JQ5DAqbMKFy78wprEpAjl',
+    name: 'Folk & Acoustic',
+    image: 'https://t.scdn.co/images/7fe0f2c9c91f45a3b6bae49d298201a4.jpeg',
+    backgroundColor: '#283ea3',
+  },
+  {
+    id: '0JQ5DAqbMKFLVaM30PMBm4',
+    name: 'Summer',
+    image: 'https://t.scdn.co/images/8e508d7eb5b843a89c368c9507ecc429.jpeg',
+    backgroundColor: '#283ea3',
+  },
+  {
+    id: '0JQ5DAqbMKFEZPnFQSFB1T',
+    name: 'R&B',
+    image:
+      'https://t.scdn.co/media/derived/r-b-274x274_fd56efa72f4f63764b011b68121581d8_0_0_274_274.jpg',
+    backgroundColor: '#dc148c',
+  },
+  {
+    id: '0JQ5DAqbMKFIpEuaCnimBj',
+    name: 'Soul',
+    image:
+      'https://t.scdn.co/media/derived/soul-274x274_266bc900b35dda8956380cffc73a4d8c_0_0_274_274.jpg',
+    backgroundColor: '#dc148c',
+  },
+  {
+    id: '0JQ5DAqbMKFAJ5xb0fwo9m',
+    name: 'Jazz',
+    image: 'https://t.scdn.co/images/568f37f1cab54136939d63bd1f59d40c',
+    backgroundColor: '#f59b23',
+  },
+  {
+    id: '0JQ5DAqbMKFRieVZLLoo9m',
+    name: 'Instrumental',
+    image: 'https://t.scdn.co/images/384c2b595a1648aa801837ff99961188',
+    backgroundColor: '#477d95',
+  },
+  {
+    id: '0JQ5DAqbMKFAjfauKLOZiv',
+    name: 'Punk',
+    image:
+      'https://t.scdn.co/media/derived/punk-274x274_f3f1528ea7bbb60a625da13e3315a40b_0_0_274_274.jpg',
+    backgroundColor: '#233268',
+  },
+  {
+    id: '0JQ5DAqbMKFQFQN0rnK48G',
+    name: 'Flamenco',
+    image: 'https://t.scdn.co/images/37780cd0347248e38195515fc7ca061a.jpeg',
+    backgroundColor: '#ff4632',
+  },
+  {
+    id: '0JQ5DAqbMKFDkd668ypn6O',
+    name: 'Metal',
+    image:
+      'https://t.scdn.co/media/original/metal_27c921443fd0a5ba95b1b2c2ae654b2b_274x274.jpg',
+    backgroundColor: '#777777',
+  },
+  {
+    id: '0JQ5DAqbMKFxXaXKP7zcDp',
+    name: 'Latin',
+    image: 'https://t.scdn.co/images/26a60378-a374-4cd7-b894-28efa5e154cb.jpg',
+    backgroundColor: '#e1118b',
+  },
+  {
+    id: '0JQ5DAqbMKFPrEiAOxgac3',
+    name: 'Classical',
+    image:
+      'https://t.scdn.co/media/derived/classical-274x274_abf78251ff3d90d2ceaf029253ca7cb4_0_0_274_274.jpg',
+    backgroundColor: '#e1118b',
+  },
+  {
+    id: '0JQ5DAqbMKFObNLOHydSW8',
+    name: 'Caribbean',
+    image: 'https://t.scdn.co/images/495fadcefe234607b14b2db3381f3f5d.jpeg',
+    backgroundColor: '#0d73ec',
+  },
+  {
+    id: '0JQ5DAqbMKFCfObibaOZbv',
+    name: 'Gaming',
+    image: 'https://t.scdn.co/images/0d39395309ba47838ef12ce987f19d16.jpeg',
+    backgroundColor: '#e8115b',
+  },
+  {
+    id: '0JQ5DAqbMKFQiK2EHwyjcU',
+    name: 'Blues',
+    image: 'https://t.scdn.co/images/6fe5cd3ebc8c4db7bb8013152b153505',
+    backgroundColor: '#1e3264',
+  },
+  {
+    id: 'funk',
+    name: 'Funk',
+    image: 'https://t.scdn.co/images/f4f0987fcab446fcaa7173acb5e25701.jpeg',
+    backgroundColor: '#e61e32',
+  },
+  {
+    id: '0JQ5DAqbMKFF9bY76LXmfI',
+    name: 'Frequency',
+    image: 'https://t.scdn.co/images/cad629fb65a14de4beddb38510e27cb1',
+    backgroundColor: '#ffc864',
+  },
+  {
+    id: '0JQ5DAqbMKFQIL0AXnG5AK',
+    name: 'Trending',
+    image:
+      'https://t.scdn.co/media/derived/trending-274x274_7b238f7217985e79d3664f2734347b98_0_0_274_274.jpg',
+    backgroundColor: '#ff4632',
+  },
+  {
+    id: '0JQ5DAqbMKFFoimhOqWzLB',
+    name: 'Kids & Family',
+    image: 'https://t.scdn.co/images/664bb84f7a774e1eadb7c227aed98f3c',
+    backgroundColor: '#8d67ab',
+  },
+  {
+    id: '0JQ5DAqbMKFKLfwjuJMoNC',
+    name: 'Country',
+    image: 'https://t.scdn.co/images/a2e0ebe2ebed4566ba1d8236b869241f.jpeg',
+    backgroundColor: '#b49bc8',
+  },
+  {
+    id: '0JQ5DAqbMKFGvOw3O4nLAf',
+    name: 'K-Pop',
+    image: 'https://t.scdn.co/images/2078afd91e4d431eb19efc5bee5ab131.jpeg',
+    backgroundColor: '#148a08',
+  },
+  {
+    id: '0JQ5DAqbMKFLjmiZRss79w',
+    name: 'Ambient',
+    image: 'https://t.scdn.co/images/9210c5a26e6a4b4da2c3ea8e5f87fff8',
+    backgroundColor: '#477d95',
+  },
+  {
+    id: '0JQ5DAqbMKFF1br7dZcRtK',
+    name: 'Pride',
+    image: 'https://t.scdn.co/images/c5495b9f0f694ffcb39c9217d4ed4375',
+    backgroundColor: '#477d95',
+  }
 ]
 
 // const catIds = ['0JQ5DAqbMKFzHmL4tf05da', '0JQ5DAqbMKFEC4WFtoNRpw', '0JQ5DAqbMKFFzDl7qN9Apr']

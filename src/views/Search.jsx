@@ -14,9 +14,11 @@ export const Search = () => {
       <h3>Browse all</h3>
       <section className='categories-container'>
         {categories.map(categ => {
-          return (<article className='category-card' style={{ backgroundColor: categ.backgroundColor }} onClick={() => navigate(`/Category/${categ.id}`)}>
+          return (<article className='category-card' style={{ backgroundColor: categ.backgroundColor }} onClick={() => navigate({
+            pathname: `/Category/${categ.id}`,
+            search: `?name=${categ.name}`})} key={categ.id}>
             <p>{categ.name}</p>
-            <img src={categ.imgUrl} />
+            <img src={categ.image} />
           </article>)
         })}
       </section>

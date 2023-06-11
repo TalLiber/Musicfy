@@ -2,21 +2,20 @@ import { useEffect } from 'react'
 import { useNavigate } from "react-router-dom"
 
 
-export const HomePreview = ({playlist}) => {
+export const HomePreview = ({playlistData, selectPlaylist}) => {
 
     const navigate = useNavigate()
 
-
-    useEffect(() => {
-        // console.log('playlist',playlist)
-    }, [])
-
+    function onSelectPlaylist() {
+        selectPlaylist(playlistData)
+        navigate(`/Playlist/${playlistData.id}`)
+    }
 
     return (
-        <div className='home-preview' onClick={() => navigate(`/Playlist/${playlist.id}`)}>
-            <img src={playlist.images[0].url} alt="" className='img-preview' />
-            <h1>{playlist.name}</h1>
-            <p>{playlist.description}</p> 
+        <div className='home-preview' onClick={onSelectPlaylist}>
+            <img src={playlistData.image} alt="" className='img-preview' />
+            <h1>{playlistData.name}</h1>
+            <p>{playlistData.description}</p> 
         </div>
     )
 }

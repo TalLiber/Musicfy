@@ -42,13 +42,12 @@ async function query(filterBy = {}) {
 
 }
 
-async function getById(categoryId) {
+async function getById(categoryId, name) {
+    const categoryPlaylists = await playlistService.getSpotifyItems('categPlaylists', categoryId)
 
-    // const categoryPlaylists = await playlistService.getCategoryItems(categoryId)
-    const categoryPlaylists =  JSON.parse(localStorage.getItem('categPlaylists'))
-   
-    console.log('categoryPlaylists', categoryPlaylists);
-    
+    return { name,
+        items: categoryPlaylists
+    }
     // .then((playlistData) => {
     //   console.log('Playlist:', playlistData.playlists.items);
     // })
@@ -339,12 +338,6 @@ const categories = [{
         "name": "Pride",
         "imgUrl": "https://t.scdn.co/images/c5495b9f0f694ffcb39c9217d4ed4375",
         "backgroundColor": "#477d95"
-    },
-    {
-        "id": "0JQ5DAqbMKFLVaM30PMBm4",
-        "name": "Summer",
-        "imgUrl": "https://t.scdn.co/images/8e508d7eb5b843a89c368c9507ecc429.jpeg",
-        "backgroundColor": "#8d67ab"
     }
 ]
 
@@ -352,8 +345,8 @@ const categories = [{
 
 
 
-// (() => {
-//     utilService.saveToStorage("category_db", categoriesDb)
+// ;(() => {
+//     utilService.saveToStorage("category_db", categories)
 // })()
 
 

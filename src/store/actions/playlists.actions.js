@@ -63,6 +63,21 @@ export function updateTrackIdx(byType, toUpdate) {
     }
 }
 
+//TODO: Maybe 2 functions will be better?
+export function setPlaylist(byType, data) {
+    return async (dispatch) => {
+        try {
+            if(byType === 'data') dispatch({ type: 'SET_PLAYLIST_DATA', data })
+            else {
+                const tracks = await playlistService.getSpotifyItems('tracks', data)
+                dispatch({ type: 'SET_PLAYLIST_TRACKS', tracks })
+            }
+        } catch (err) {
+            console.log('err:', err)
+        }
+    }
+}
+
 export function changePlaylistColor(color) {
     return (dispatch) => {
         try {
