@@ -47,7 +47,7 @@ export const Playlist = () => {
         setHeaderName.current = playlist.name
         setTimeout(() => {
             imgColor.current = playlist.image
-        }, 2000)
+        }, 1000)
     }
     // if (!playerSettings.isPlaying) return <div>Loading...</div>
     return (

@@ -22,6 +22,7 @@ export const playlistService = {
   addPlaylistMsg,
   getCategories,
   getSpotifyItems,
+  getYoutubeId,
 }
 window.cs = playlistService
 
@@ -84,7 +85,6 @@ function getEmptyPlaylist() {
   }
 }
 
-
 async function getAccessToken(clientId, clientSecret) {
   try {
     // Encode client credentials (Client ID and Client Secret)
@@ -119,7 +119,6 @@ async function getAccessToken(clientId, clientSecret) {
   }
 }
 
-
 getAccessToken(config.clientId, config.clientSecret)
   .then((tokenData) => {
     gAccessToken = tokenData.accessToken
@@ -130,24 +129,38 @@ getAccessToken(config.clientId, config.clientSecret)
     console.error('Error:', error)
   })
 
+async function getYoutubeId(keyword) {
+  try {
+    const response = await axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&videoEmbeddable=true&type=video&key=${config.youtubeKey}&q=${keyword}`)
+
+    return response.data.items[0].id.videoId
+  } catch (error) {
+    console.error(
+      'Error retrieving data:',
+      error.response ? error.response.data : error.message
+    )
+    throw error
+  }
+}
 async function getSpotifyItems(reqType, id) {
   const endpoints = {
     categPlaylists: `https://api.spotify.com/v1/browse/categories/${id}/playlists`,
-    tracks: `https://api.spotify.com/v1/playlists/${id}/tracks`
+    tracks: `https://api.spotify.com/v1/playlists/${id}/tracks`,
   }
-  
+
   try {
     // Make a GET request to the Spotify API endpoint
-    const response = await axios.get(endpoints[reqType],
-      {
-        headers: {
-          Authorization: `Bearer ${gAccessToken}`,
-        },
-      }
-    )
+    const response = await axios.get(endpoints[reqType], {
+      headers: {
+        Authorization: `Bearer ${gAccessToken}`,
+      },
+    })
 
     // Return the playlist data from the response
-    const cleanData = (reqType === 'categPlaylists') ? _cleanCategoryPlaylistsData(response.data) : _cleanPlaylistsTracksData(response.data)
+    const cleanData =
+      reqType === 'categPlaylists'
+        ? _cleanCategoryPlaylistsData(response.data)
+        : _cleanPlaylistsTracksData(response.data)
     return cleanData
   } catch (error) {
     console.error(
@@ -173,17 +186,18 @@ function _cleanPlaylistsTracksData(data) {
   return data.items.map((item) => {
     return {
       addedAt: item.added_at,
-      id: '',
+      id: item.track.id,
       title: item.track.name,
       artists: _cleanArtists(item.track.artists),
       imgUrl: item.track.album.images[0].url,
-      formalDuration: item.track.duration_ms
+      formalDuration: item.track.duration_ms,
+      youtubeId: ''
     }
   })
 }
 
 function _cleanArtists(artists) {
-  return artists.map(artist => artist.name)
+  return artists.map((artist) => artist.name)
 }
 // async function getAccessToken(clientId, clientSecret) {
 //   try {
@@ -484,7 +498,7 @@ const categories = [
     name: 'Pride',
     image: 'https://t.scdn.co/images/c5495b9f0f694ffcb39c9217d4ed4375',
     backgroundColor: '#477d95',
-  }
+  },
 ]
 
 // const catIds = ['0JQ5DAqbMKFzHmL4tf05da', '0JQ5DAqbMKFEC4WFtoNRpw', '0JQ5DAqbMKFFzDl7qN9Apr']

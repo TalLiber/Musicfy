@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { updateTrackIdx } from '../store/actions/playlists.actions'
+import { updateTrackIdx, getYoutubeId } from '../store/actions/playlists.actions'
 import { updatePlayer, updateCurrTime, toggleProp, shuffleIdxs } from '../store/actions/player.actions'
 
 import SvgIcon from './SvgIcon'
@@ -19,7 +19,11 @@ export const MediaPlayer = () => {
   useEffect(() => {
     if (!player.current) startIframe()
     else loadNewVideo()
-  }, [currTrack])
+  }, [currTrack.youtubeId])
+
+  useEffect(() => {
+    dispatch(getYoutubeId(`${currTrack.title}- ${currTrack.artists[0]}`))
+  }, [currTrack.title])
 
   useEffect(() => {
     if (!player.current) return
@@ -43,7 +47,7 @@ export const MediaPlayer = () => {
   }, [playerSettings.currTime])
 
   function loadNewVideo() {
-    player.current.cueVideoById(currTrack.id, 0)
+    player.current.cueVideoById(currTrack.youtubeId, 0)
     clearInterval(intervalIdRef.current)
     dispatch(updatePlayer('currTime', 0))
     if (playerSettings.isPlaying) {
@@ -67,7 +71,7 @@ export const MediaPlayer = () => {
   function loadVideo() {
 
     player.current = new window.YT.Player(`playerRef`, {
-      videoId: currTrack.id,
+      videoId: currTrack.youtubeId,
       height: '0',
       width: '0',
       events: {

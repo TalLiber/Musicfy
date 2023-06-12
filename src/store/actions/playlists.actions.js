@@ -78,6 +78,17 @@ export function setPlaylist(byType, data) {
     }
 }
 
+export function getYoutubeId(keyword) {
+    return async (dispatch) => {
+      try {
+        const youtubeId = await playlistService.getYoutubeId(keyword)
+        dispatch({ type: 'SET_YOUTUBE_ID', youtubeId })
+      } catch (err) {
+        console.log('err:', err)
+      }
+    }
+  }  
+
 export function changePlaylistColor(color) {
     return (dispatch) => {
         try {

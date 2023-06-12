@@ -7,7 +7,8 @@ const INITIAL_STATE = {
     description: "Get happy with today's dose of feel-good songs!",
     tracks: [
       {
-        id: 'WcIcVapfqXw',
+        id: 'WcIcVapcfsdcfqXw',
+        youtubeId: 'WcIcVapfqXw',
         addedAt: '2023-05-26T04:00:00Z',
         title: 'Calm Down (with Selena Gomez)',
         artists: ['Rema'],
@@ -16,7 +17,8 @@ const INITIAL_STATE = {
           'https://i.scdn.co/image/ab67616d0000b273a3a7f38ea2033aa501afd4cf',
       },
       {
-        id: 'G7KNmW9a75Y',
+        id: 'G7KNmdfvadfW9a75Y',
+        youtubeId: 'G7KNmW9a75Y',
         addedAt: '2023-05-26T04:00:00Z',
         title: 'Flowers',
         artists: ['Miley Cyrus'],
@@ -25,7 +27,8 @@ const INITIAL_STATE = {
           'https://i.scdn.co/image/ab67616d0000b273f429549123dbe8552764ba1d',
       },
       {
-        id: '90RLzVUuXe4',
+        id: '90RLzVwefwefUuXe4',
+        youtubeId: '90RLzVUuXe4',
         addedAt: '2023-05-26T04:00:00Z',
         title: "I'm Good (Blue)",
         artists: ['David Guetta'],
@@ -34,7 +37,8 @@ const INITIAL_STATE = {
           'https://i.scdn.co/image/ab67616d0000b273933c036cd61cd40d3f17a9c4',
       },
       {
-        id: 'mNEUkkoUoIA',
+        id: 'mNEfwefwUkkoUoIA',
+        youtubeId: 'mNEUkkoUoIA',
         addedAt: '2023-05-26T04:00:00Z',
         title: "I Ain't Worried",
         artists: ['OneRepublic'],
@@ -42,12 +46,12 @@ const INITIAL_STATE = {
           'I Ain’t Worried (Music From The Motion Picture "Top Gun: Maverick")',
         imgUrl:
           'https://i.scdn.co/image/ab67616d0000b273ec96e006b8bdfc582610ec13',
-      }
+      },
     ],
   },
   currTrackIdx: 0,
   filterBy: {},
-  playlistColor:'#000000'
+  playlistColor: '#000000',
 }
 
 export function playlistReducer(state = INITIAL_STATE, action) {
@@ -60,15 +64,28 @@ export function playlistReducer(state = INITIAL_STATE, action) {
     case 'SET_PLAYLIST_DATA':
       return {
         ...state,
-        currPlaylist: {...action.data, tracks: state.currPlaylist.tracks},
+        currPlaylist: { ...action.data, tracks: state.currPlaylist.tracks },
       }
     case 'SET_PLAYLIST_TRACKS':
       return {
         ...state,
-        currPlaylist: {...state.currPlaylist, tracks: [...action.tracks]},
+        currPlaylist: { ...state.currPlaylist, tracks: [...action.tracks] },
+      }
+    case 'SET_YOUTUBE_ID':
+      const updatedTracks = [...state.currPlaylist.tracks]
+      updatedTracks[state.currTrackIdx] = {
+        ...updatedTracks[state.currTrackIdx],
+        youtubeId: action.youtubeId,
+      }
+
+      return {
+        ...state,
+        currPlaylist: {
+          ...state.currPlaylist,
+          tracks: updatedTracks,
+        },
       }
     case 'UPDATE_CURR_TRACK_IDX_BY_NUM':
-      console.log('action.idx', action.idx);
       return {
         ...state,
         currTrackIdx: action.idx,
@@ -76,7 +93,11 @@ export function playlistReducer(state = INITIAL_STATE, action) {
     case 'UPDATE_CURR_TRACK_IDX_BY_DIR':
       return {
         ...state,
-        currTrackIdx: _validateIdx(state.currTrackIdx, state.currPlaylist.tracks.length, action.dir),
+        currTrackIdx: _validateIdx(
+          state.currTrackIdx,
+          state.currPlaylist.tracks.length,
+          action.dir
+        ),
       }
     case 'ADD_PLAYLIST':
       return {
@@ -109,9 +130,9 @@ export function playlistReducer(state = INITIAL_STATE, action) {
       }
 
     case 'change-playlist-color':
-      return{
+      return {
         ...state,
-        playlistColor: action.color
+        playlistColor: action.color,
       }
     default:
       return state
