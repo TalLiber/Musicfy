@@ -43,9 +43,10 @@ async function query(filterBy = {}) {
   return playlists
 }
 
-function getById(playlistId) {
-  return storageService.get(STORAGE_KEY, playlistId)
-  // return httpService.get(`playlist/${playlistId}`)
+async function getById(spotifyId) {
+  // return storageService.get(STORAGE_KEY, playlistId)
+  const play = await httpService.get(`playlist/${spotifyId}`)
+  console.log('play',play);
 }
 
 async function remove(playlistId) {
@@ -119,15 +120,15 @@ async function getAccessToken(clientId, clientSecret) {
   }
 }
 
-getAccessToken(config.clientId, config.clientSecret)
-  .then((tokenData) => {
-    gAccessToken = tokenData.accessToken
-    // console.log('Access Token:', tokenData.accessToken)
-    // console.log('Expires In:', tokenData.expiresIn)
-  })
-  .catch((error) => {
-    console.error('Error:', error)
-  })
+// getAccessToken(config.clientId, config.clientSecret)
+//   .then((tokenData) => {
+//     gAccessToken = tokenData.accessToken
+//     console.log('Access Token:', tokenData.accessToken)
+//     console.log('Expires In:', tokenData.expiresIn)
+//   })
+//   .catch((error) => {
+//     console.error('Error:', error)
+//   })
 
 async function getYoutubeId(keyword) {
   try {

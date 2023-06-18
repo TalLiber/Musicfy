@@ -5,7 +5,7 @@ import { playlistService } from '../services/playlist.service'
 import { useHeaderObserver } from '../customHooks/useHeaderObserver'
 import { useObserver } from '../customHooks/useObserver'
 import { usePalette } from 'react-palette'
-import { changePlaylistColor, setPlaylist } from '../store/actions/playlists.actions'
+import { changePlaylistColor, getPlaylistById } from '../store/actions/playlists.actions'
 import { PlaylistList } from '../cmps/PlaylistList'
 
 import SvgIcon from '../cmps/SvgIcon'
@@ -23,8 +23,8 @@ export const Playlist = () => {
     const { data, loading, error } = usePalette(imgColor.current)
 
     useEffect(() => {
-        setPlaylistTracks()
-        getPlaylist()
+        dispatch(getPlaylistById(params.id))
+        // getPlaylist()
     }, [params.id])
 
     useEffect(() => {
@@ -37,11 +37,6 @@ export const Playlist = () => {
             dispatch(changePlaylistColor('#000000'))
         }
     }, [])
-
-    function setPlaylistTracks() {
-        console.log('params.id', params.id);
-        dispatch(setPlaylist('tracks', params.id))
-    }
 
     const getPlaylist = async () => {
         setHeaderName.current = playlist.name

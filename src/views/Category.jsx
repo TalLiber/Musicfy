@@ -5,7 +5,6 @@ import { categoryService } from "../services/category.service"
 import { HomePreview } from '../cmps/HomePreivew'
 import { useObserver } from '../customHooks/useObserver'
 import { useHeaderObserver } from '../customHooks/useHeaderObserver'
-import { setPlaylist } from '../store/actions/playlists.actions'
 
 export const Category = () => {
     
@@ -16,7 +15,7 @@ export const Category = () => {
     const [cmpStyle, setCmpStyle] = useState(null)
     const [containerRef] = useObserver()
     const [headerRef, setHeaderName] = useHeaderObserver()
-    const [searchParams] = useSearchParams()
+    const [searchParams] = useSearchParams() 
 
     useEffect(() => {
         getCategory()
@@ -30,11 +29,6 @@ export const Category = () => {
         setHeaderName.current = category.name
      }
 
-     function selectPlaylist(playlistData) {
-        dispatch(setPlaylist('data', playlistData))
-        
-     }
-
     if(!category) return (<div> loading... </div>)
     return (
         <section className='category'>
@@ -46,7 +40,7 @@ export const Category = () => {
 
             <section className='category-list'>
                 {category.items.map(item => {
-                    return <HomePreview playlistData={item} key={item.id} selectPlaylist={selectPlaylist}/>
+                    return <HomePreview playlistData={item} key={item.id}/>
                 })}
             </section>
 
