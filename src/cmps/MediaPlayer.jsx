@@ -183,7 +183,6 @@ export const MediaPlayer = () => {
       } else stopTrack()
     }
   }
-
   return (
     <div className="player-container">
       <div className="track-container">

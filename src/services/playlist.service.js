@@ -47,6 +47,7 @@ async function getById(spotifyId) {
   // return storageService.get(STORAGE_KEY, playlistId)
   const play = await httpService.get(`playlist/${spotifyId}`)
   console.log('play',play);
+  return play
 }
 
 async function remove(playlistId) {

@@ -1,3 +1,4 @@
+import { categoryService } from '../../services/category.service.js'
 import { playlistService } from '../../services/playlist.service.js'
 
 export function loadPlaylists() {
@@ -60,11 +61,21 @@ export function updateTrackIdx(byType, toUpdate) {
   }
 }
 
+
 export function getPlaylistById(spotifyId) {
   return async (dispatch) => {
     try {
       const playlist = await playlistService.getById(spotifyId)
-      console.log('playlist',playlist);
+      dispatch({ type: 'SET_PLAYLIST', playlist })
+    } catch (err) {
+      console.log('err:', err)
+    }
+  }
+}
+export function getCategoryPlaylists(categoryId) {
+  return async (dispatch) => {
+    try {
+      const categoryPlaylists = await categoryService.getById(categoryId)
       dispatch({ type: 'SET_PLAYLIST', playlist })
     } catch (err) {
       console.log('err:', err)
