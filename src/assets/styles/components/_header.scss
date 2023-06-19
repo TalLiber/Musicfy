@@ -20,6 +20,9 @@
             &:disabled {
                 cursor: not-allowed;
             }
+            i{
+                display: flex;
+            }
         }
     }
 

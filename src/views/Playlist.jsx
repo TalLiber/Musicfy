@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux'
-import { playlistService } from '../services/playlist.service'
 import { useHeaderObserver } from '../customHooks/useHeaderObserver'
 import { useObserver } from '../customHooks/useObserver'
 import { usePalette } from 'react-palette'
-import { changePlaylistColor, setPlaylist } from '../store/actions/playlists.actions'
+import { changePlaylistColor, setPlaylist, updateTrackIdx } from '../store/actions/playlists.actions'
 import { PlaylistList } from '../cmps/PlaylistList'
+import { updatePlayer } from '../store/actions/player.actions'
 
 import SvgIcon from '../cmps/SvgIcon'
 
@@ -49,6 +49,11 @@ export const Playlist = () => {
             imgColor.current = playlist.image
         }, 1000)
     }
+
+    const playTrack = (trackIdx,isPlaying) =>{
+        dispatch(updateTrackIdx('num', trackIdx))
+        dispatch(updatePlayer('isPlaying', isPlaying))
+    }
     // if (!playerSettings.isPlaying) return <div>Loading...</div>
     return (
         <section className="playlist">
@@ -56,7 +61,11 @@ export const Playlist = () => {
                 <div className='img-container'>
                     <img src={playlist.image} alt="" />
                 </div>
-                <h1>{playlist.name}</h1>
+                <section className='playlist-info'>
+                    <p>Playlist</p>
+                    <h1 className='playlist-name'>{playlist.name}</h1>
+                    <p className='playlist-disc'>{playlist.description}</p>
+                </section>
             </section>
             <section className='playlist-action' style={{ backgroundColor: data.darkVibrant }}>
                 <button className='btn-play'>
@@ -69,7 +78,7 @@ export const Playlist = () => {
                 <div ref={headerRef}></div>
             </section>
             <div ref={containerRef}></div>
-            <PlaylistList playlist={playlist} />
+            <PlaylistList playlist={playlist} playTrack={playTrack}/>
         </section>
     )
 }

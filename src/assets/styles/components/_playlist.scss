@@ -11,14 +11,29 @@
         padding-top: 0px;
         align-items: end;
 
+        .playlist-name{
+            font-size: 4.5rem;
+            font-weight: 900px;
+        }
+
         .header-top{
             height: 64px;
             display: block;
         }
 
+        .playlist-info{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .playlist-disc{
+            color: rgba(255, 255, 255, 0.698);
+        }
+
         .img-container{
             height: 90%;
             box-shadow: 0 4px 60px rgba(0,0,0,.5);
+            margin-inline-end: 24px;
             img{
                 height: 100%;
             }
