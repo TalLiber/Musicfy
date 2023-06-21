@@ -6,7 +6,8 @@ export const utilService = {
     randomPastTime,
     saveToStorage,
     loadFromStorage,
-    timeFormat
+    timeFormat,
+    dateAdded
 }
 
 function makeId(length = 6) {
@@ -80,3 +81,20 @@ function timeFormat(duration) {
     ret += "" + secs;
     return ret;
   }
+
+  function dateAdded(addedAt) {
+    const currDate = new Date()
+    const specificDate = new Date(addedAt)
+    const diffInMs = currDate.getTime() -specificDate.getTime()
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60))
+    const diffInDays = Math.floor(diffInHours / 24)
+    const diffInWeeks = Math.floor(diffInDays / 7)
+    const diffInMonths = Math.floor(diffInWeeks / 4)
+    const diffInYears = Math.floor(diffInMonths / 12)
+    
+    if (diffInHours < 24) return diffInHours === 1 ? `${diffInHours} hour ago` : `${diffInHours} hours ago`
+    if (diffInDays < 7) return diffInDays === 1 ? `${diffInDays} day ago` : `${diffInDays} days ago`
+    if (diffInWeeks < 4) return diffInWeeks === 1 ? `${diffInWeeks} week ago` : `${diffInWeeks} weeks ago`
+    if (diffInMonths < 12)return diffInMonths === 1 ? `${diffInMonths} month ago` : `${diffInMonths} months ago`
+    return diffInDays === 1 ? `${diffInYears} year ago` : `${diffInYears} years ago` 
+}

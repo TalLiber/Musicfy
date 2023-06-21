@@ -19,7 +19,7 @@ export const PlaylistList = ({playlist, playTrack}) => {
                     <p>{SvgIcon({ iconName: 'clock'})}</p>
                 </section>
                 {playlist.tracks.map((track,idx) => {
-                    return <PlaylistPreview key={idx} track={track} playTrack={playTrack} idx={idx}> </PlaylistPreview>
+                    return <PlaylistPreview key={idx} track={track} playTrack={playTrack} idx={idx} playlistId={playlist.id}> </PlaylistPreview>
                 })}
             </div>
         </div>

@@ -23,9 +23,13 @@ export const Playlist = () => {
     const { data, loading, error } = usePalette(imgColor.current)
 
     useEffect(() => {
-        setPlaylistTracks()
         getPlaylist()
+        setPlaylistTracks()
     }, [params.id])
+    
+    useEffect(()=>{
+        console.log(playlist)
+    },[playlist.name])
 
     useEffect(() => {
         // console.log(data)
@@ -38,11 +42,11 @@ export const Playlist = () => {
         }
     }, [])
 
-    function setPlaylistTracks() {
+    const setPlaylistTracks = async () => {
         console.log('params.id', params.id);
         dispatch(setPlaylist('tracks', params.id))
     }
-
+    
     const getPlaylist = async () => {
         setHeaderName.current = playlist.name
         setTimeout(() => {
@@ -68,7 +72,7 @@ export const Playlist = () => {
                 </section>
             </section>
             <section className='playlist-action' style={{ backgroundColor: data.darkVibrant }}>
-                <button className='btn-play'>
+                <button className='btn-play' onClick={() => dispatch(updatePlayer('isPlaying', !playerSettings.isPlaying))}>
                     {SvgIcon({ iconName: playerSettings.isPlaying ? 'player-pause' : 'player-play' })}
                 </button>
                 <button className='btn-heart'>

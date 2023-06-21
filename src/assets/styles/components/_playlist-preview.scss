@@ -17,6 +17,9 @@
 
     &:hover{
         background-color: hsla(0,0%,100%,.1);
+        .track-info > *, .track-album{
+            color: $clr1;
+        }
     }
 
     .btn-player{
@@ -30,22 +33,71 @@
         }
     }
 
+    .track-title{
+        display: flex;
+        align-items: center;
+    }
+
+    .track-img{
+        height: 50px;
+        margin-inline-end: 16px;
+        display: flex;
+        align-items: center;
+        img{
+            height: 60%;
+        }
+    }
+
     .track-info{
         display: flex;
         flex-direction: column;
+
         h1{
             font-size: 1rem;
             font-weight: 400;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            color: $clr1;
+
+            &:hover{
+                cursor: pointer;
+                text-decoration: underline;
+            }
         }
+
+        .green-header{
+            color: rgb(30, 215, 96);
+        }
+
         p{
             font-size: 0.875rem;
             color: rgba(255, 255, 255, 0.698);
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+
+            &:hover{
+                cursor: pointer;
+                text-decoration: underline;
+            }
         }
     }
 
     .track-album{
         color:#b3b3b3;
         font-size: 0.875rem;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+
+        &:hover{
+            cursor: pointer;
+            text-decoration: underline;
+        }
     }
 
     .like-time{
@@ -57,6 +109,7 @@
 
     .track-date{
         color: rgba(255, 255, 255, 0.698);
+        padding-inline-start: 2px;
     }
 
     .btn-heart{
@@ -68,6 +121,9 @@
         svg{
             height: 16px;
             width: 16px;
+        }
+        &:hover{
+            color: $clr1;
         }
     }
     
