@@ -61,6 +61,11 @@ export function playlistReducer(state = INITIAL_STATE, action) {
         ...state,
         playlists: [...action.playlists],
       }
+    case 'SET_PLAYLIST':
+      return {
+        ...state,
+        currPlaylist: action.playlist,
+      }
     case 'SET_PLAYLIST_DATA':
       return {
         ...state,

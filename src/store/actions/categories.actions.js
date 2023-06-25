@@ -1,5 +1,16 @@
 import { categoryService } from "../../services/category.service"
 
+export function getCategoryPlaylists(categoryId) {
+    return async (dispatch) => {
+      try {
+        const categoryPlaylists = await categoryService.getById(categoryId)
+        dispatch({ type: 'SET_CATEGORY_PLAYLISTS', playlists: categoryPlaylists })
+      } catch (err) {
+        console.log('err:', err)
+      }
+    }
+  }
+  
 export function loadCategories() {
 
     return async(dispatch, getState) => {

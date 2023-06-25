@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHeaderObserver } from '../customHooks/useHeaderObserver'
 import { useObserver } from '../customHooks/useObserver'
 import { usePalette } from 'react-palette'
-import { changePlaylistColor, setPlaylist, updateTrackIdx } from '../store/actions/playlists.actions'
+import { changePlaylistColor, getPlaylistById } from '../store/actions/playlists.actions'
 import { PlaylistList } from '../cmps/PlaylistList'
 import { updatePlayer } from '../store/actions/player.actions'
 
@@ -23,8 +23,8 @@ export const Playlist = () => {
     const { data, loading, error } = usePalette(imgColor.current)
 
     useEffect(() => {
-        getPlaylist()
-        setPlaylistTracks()
+        dispatch(getPlaylistById(params.id))
+        // getPlaylist()
     }, [params.id])
     
     useEffect(()=>{
@@ -42,11 +42,6 @@ export const Playlist = () => {
         }
     }, [])
 
-    const setPlaylistTracks = async () => {
-        console.log('params.id', params.id);
-        dispatch(setPlaylist('tracks', params.id))
-    }
-    
     const getPlaylist = async () => {
         setHeaderName.current = playlist.name
         setTimeout(() => {

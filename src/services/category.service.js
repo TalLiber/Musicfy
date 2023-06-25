@@ -43,11 +43,11 @@ async function query(filterBy = {}) {
 }
 
 async function getById(categoryId, name) {
-    const categoryPlaylists = await playlistService.getSpotifyItems('categPlaylists', categoryId)
+    // const categoryPlaylists = await playlistService.getSpotifyItems('categPlaylists', categoryId)
 
-    return { name,
-        items: categoryPlaylists
-    }
+    // return { name,
+    //     items: categoryPlaylists
+    // }
     // .then((playlistData) => {
     //   console.log('Playlist:', playlistData.playlists.items);
     // })
@@ -56,8 +56,8 @@ async function getById(categoryId, name) {
     // });
 
     // return storageService.get(STORAGE_KEY, categoryId)
-    return storageService.get("HomePage_db", categoryId)
-        // return httpService.get(`category/${categoryId}`)
+    // return storageService.get("HomePage_db", categoryId)
+        return httpService.get(`playlist/category/${categoryId}`)
 }
 
 async function remove(categoryId) {
