@@ -4,7 +4,7 @@ import { PlaylistPreview } from './PlaylistPreview'
 
 import SvgIcon from '../cmps/SvgIcon'
 
-export const PlaylistList = ({playlist}) => {
+export const PlaylistList = ({playlist, playTrack}) => {
 
 
     return (
@@ -18,9 +18,9 @@ export const PlaylistList = ({playlist}) => {
                     <p>Date Added</p>
                     <p>{SvgIcon({ iconName: 'clock'})}</p>
                 </section>
-            {playlist.tracks.map((track,idx) => {
-                return <PlaylistPreview key={idx} track={track}> </PlaylistPreview>
-            })}
+                {playlist.tracks.map((track,idx) => {
+                    return <PlaylistPreview key={idx} track={track} playTrack={playTrack} idx={idx} playlistId={playlist.id}> </PlaylistPreview>
+                })}
             </div>
         </div>
     )

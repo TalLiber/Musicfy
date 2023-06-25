@@ -197,6 +197,7 @@ function _cleanPlaylistsTracksData(data) {
       artists: _cleanArtists(item.track.artists),
       imgUrl: item.track.album.images[0].url,
       formalDuration: item.track.duration_ms,
+      album:item.track.album.name,
       youtubeId: ''
     }
   })

@@ -13,9 +13,10 @@
             grid-gap: 16px;
             align-content: center;
             border-bottom: #b3b3b330 solid 0.8px;
+            margin-block-end: 11px;
 
             &>:last-child{
-                padding-left: 60px;
+                padding-left: 80px;
             }
         }
     }

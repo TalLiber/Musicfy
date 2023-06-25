@@ -1,0 +1,134 @@
+.playlist-preview{
+    display: grid;
+    grid-template-areas: '1 2 3 4 5';
+    grid-template-columns: 16px 6fr 4fr 3fr minmax(120px,1fr);
+    align-content: center;
+    margin: 0 20px;
+    padding: 0 12px;
+    border-radius: 4px;
+    grid-gap: 16px;
+    padding-block-end: 5px;
+    padding-block-start: 5px;
+    align-items: center;
+
+    &>:last-child{
+        padding-left: 60px;
+    }
+
+    &:hover{
+        background-color: hsla(0,0%,100%,.1);
+        .track-info > *, .track-album{
+            color: $clr1;
+        }
+    }
+
+    .btn-player{
+        border: 0;
+        background-color: transparent;
+        color: $clr1;
+        padding-left:0;
+        svg{
+            height: 10px;
+            width: 10px;
+        }
+    }
+
+    .track-title{
+        display: flex;
+        align-items: center;
+    }
+
+    .track-img{
+        height: 50px;
+        margin-inline-end: 16px;
+        display: flex;
+        align-items: center;
+        img{
+            height: 60%;
+        }
+    }
+
+    .track-info{
+        display: flex;
+        flex-direction: column;
+
+        h1{
+            font-size: 1rem;
+            font-weight: 400;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            color: $clr1;
+
+            &:hover{
+                cursor: pointer;
+                text-decoration: underline;
+            }
+        }
+
+        .green-header{
+            color: rgb(30, 215, 96);
+        }
+
+        p{
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.698);
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+
+            &:hover{
+                cursor: pointer;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .track-album{
+        color:#b3b3b3;
+        font-size: 0.875rem;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+
+        &:hover{
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
+
+    .like-time{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0;
+    }
+
+    .track-date{
+        color: rgba(255, 255, 255, 0.698);
+        padding-inline-start: 2px;
+    }
+
+    .btn-heart{
+        color: #b3b3b3;
+        background-color: transparent;
+        border: 0;
+        align-self: center;
+        margin-inline-end: auto;
+        svg{
+            height: 16px;
+            width: 16px;
+        }
+        &:hover{
+            color: $clr1;
+        }
+    }
+    
+    .track-duration{
+        color: #b3b3b3;
+        margin-inline-end: 20%;
+    }
+}
