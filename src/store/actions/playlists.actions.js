@@ -61,7 +61,6 @@ export function updateTrackIdx(byType, toUpdate) {
   }
 }
 
-
 export function getPlaylistById(spotifyId) {
   return async (dispatch) => {
     try {
@@ -72,22 +71,15 @@ export function getPlaylistById(spotifyId) {
     }
   }
 }
-export function getCategoryPlaylists(categoryId) {
-  return async (dispatch) => {
-    try {
-      const categoryPlaylists = await categoryService.getById(categoryId)
-      dispatch({ type: 'SET_PLAYLIST', playlist })
-    } catch (err) {
-      console.log('err:', err)
-    }
-  }
-}
 
 export function getYoutubeId(keyword) {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
       const youtubeId = await playlistService.getYoutubeId(keyword)
+      // const youtubeId = 'tal'
       dispatch({ type: 'SET_YOUTUBE_ID', youtubeId })
+      playlistService.updatePlaylist(getState().playlistModule.currPlaylist)
+      console.log('getState',getState().playlistModule.currPlaylist);
     } catch (err) {
       console.log('err:', err)
     }

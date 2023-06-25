@@ -1,18 +1,17 @@
 const INITIAL_STATE = {
     categories: null,
-    filterBy: {
-
-    },
+    catagoryPlaylists: null,
+    filterBy: {},
 }
 
 
 export function categoryReducer(state = INITIAL_STATE, action) {
     // debugger
     switch (action.type) {
-        case 'SET_CATEGORIES':
+        case 'SET_CATEGORY_PLAYLISTS':
             return {
                 ...state,
-                categories: [...action.categories]
+                catagoryPlaylists: [...action.playlists]
             }
         case 'ADD_CATEGORY':
             return {

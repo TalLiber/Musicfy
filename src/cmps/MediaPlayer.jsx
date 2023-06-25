@@ -22,6 +22,7 @@ export const MediaPlayer = () => {
   }, [currTrack.youtubeId])
 
   useEffect(() => {
+    if (currTrack.youtubeId) return
     dispatch(getYoutubeId(`${currTrack.title}- ${currTrack.artists[0]}`))
   }, [currTrack.title])
 
@@ -173,7 +174,7 @@ export const MediaPlayer = () => {
       if (currIdx < playlistLength - 1 || playerSettings.isRepeatMode || byClick) dispatch(updateTrackIdx('dir', dir))
       else stopTrack()
     }
-    else{
+    else {
       if (playerSettings.shuffledIdxs.length) {
         var nextIdx = playerSettings.shuffledIdxs.pop()
         dispatch(updateTrackIdx('num', nextIdx))
