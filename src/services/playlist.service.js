@@ -46,7 +46,6 @@ async function query(filterBy = {}) {
 async function getById(spotifyId) {
   // return storageService.get(STORAGE_KEY, playlistId)
   const play = await httpService.get(`playlist/${spotifyId}`)
-  console.log('play',play);
   return play
 }
 
@@ -54,20 +53,16 @@ async function remove(playlistId) {
   await storageService.remove(STORAGE_KEY, playlistId)
   // return httpService.delete(`playlist/${playlistId}`)
 }
-async function updatePlaylist(playlist) {
-  await storageService.remove(STORAGE_KEY, playlistId)
-  // return httpService.delete(`playlist/${playlistId}`)
-}
 async function save(playlist) {
   var savedPlaylist
   if (playlist._id) {
-    savedPlaylist = await storageService.put(STORAGE_KEY, playlist)
-    // savedPlaylist = await httpService.put(`playlist/${playlist._id}`, playlist)
+    // savedPlaylist = await storageService.put(STORAGE_KEY, playlist)
+    savedPlaylist = await httpService.put(`playlist/${playlist._id}`, playlist)
   } else {
     // Later, owner is set by the backend
     // playlist.owner = userService.getLoggedinUser()
-    savedPlaylist = await storageService.post(STORAGE_KEY, playlist)
-    // savedPlaylist = await httpService.post('playlist', playlist)
+    // savedPlaylist = await storageService.post(STORAGE_KEY, playlist)
+    savedPlaylist = await httpService.post('playlist', playlist)
   }
   return savedPlaylist
 }

@@ -17,7 +17,7 @@ export const MediaPlayer = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if(currTrack) return
+    if(!currTrack) return
     if (!player.current) startIframe()
     else loadNewVideo()
   }, [currTrack.youtubeId])
