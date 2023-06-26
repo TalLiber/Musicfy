@@ -7,6 +7,7 @@ import {Search} from './views/Search';
 import {Lib} from './views/Lib';
 import {Playlist} from './views/Playlist';
 import {Category} from './views/Category';
+import { Login } from './views/Login';
 
 
 const routes = [
@@ -36,6 +37,11 @@ const routes = [
       element: <Category/>
     },
   ]
+ },
+ {
+  path: '/login',
+  element: <Login />,
+  canActivate: requireAuth(),
  },
  {
   path: '*',

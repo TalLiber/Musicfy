@@ -6,12 +6,10 @@ import { updatePlayer } from '../store/actions/player.actions'
 
 
 import SvgIcon from './SvgIcon'
-import { svgService } from '../services/svg.service'
-import svgIcon from './SvgIcon'
 
 export const Header = (props) => {
 
-    const navigator = useNavigate()
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const location = useLocation()
     const playerSettings = useSelector(state => state.playerModule)
@@ -70,7 +68,7 @@ export const Header = (props) => {
     }, [location.key])
 
     const handleClick = (num) => {
-        navigator(num)
+        navigate(num)
     }
 
     return (
@@ -98,8 +96,8 @@ export const Header = (props) => {
                 }
             </section>
             <div className='login-container'>
-                <button className='btn-signup'>Sign up</button>
-                <button className='btn-login'>
+                <button className='btn-signup' >Sign up</button>
+                <button className='btn-login' onClick={()=> navigate('/login')}>
                     <span>
                         Log in
                     </span>
