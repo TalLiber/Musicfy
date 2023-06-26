@@ -27,9 +27,9 @@ export const Playlist = () => {
         // getPlaylist()
     }, [params.id])
     
-    useEffect(()=>{
-        console.log(playlist)
-    },[playlist.name])
+    // useEffect(()=>{
+    //     console.log(playlist)
+    // },[playlist.name])
 
     useEffect(() => {
         // console.log(data)
