@@ -11,3 +11,10 @@ export function login(userCred) {
         }
     }
 }
+
+export function getLoggedinUser() {
+    return () => {
+        const user = userService.getLoggedinUser()
+        // dispatch({ type: 'GET_LOGGE'})
+    }
+}

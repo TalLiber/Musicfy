@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHeaderObserver } from '../customHooks/useHeaderObserver'
 import { useObserver } from '../customHooks/useObserver'
 import { usePalette } from 'react-palette'
-import { changePlaylistColor, getPlaylistById } from '../store/actions/playlists.actions'
+import { changePlaylistColor, getPlaylistById, updateTrackIdx } from '../store/actions/playlists.actions'
 import { PlaylistList } from '../cmps/PlaylistList'
 import { updatePlayer } from '../store/actions/player.actions'
 
