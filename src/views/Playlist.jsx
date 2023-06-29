@@ -17,22 +17,22 @@ export const Playlist = () => {
     const playlist = useSelector(state => state.playlistModule.currPlaylist)
     const playerSettings = useSelector(state => state.playerModule)
     const params = useParams()
-    const [headerRef, setHeaderName] = useHeaderObserver()
+    const [headerRef, headerName] = useHeaderObserver()
     const [containerRef] = useObserver()
     const imgColor = useRef(null)
     const { data, loading, error } = usePalette(imgColor.current)
 
     useEffect(() => {
         dispatch(getPlaylistById(params.id))
-        // getPlaylist()
     }, [params.id])
     
-    // useEffect(()=>{
-    //     console.log(playlist)
-    // },[playlist.name])
+    useEffect(() => {
+        imgColor.current = playlist.image
+        headerName.current = playlist.name
+    },[playlist.name])
 
     useEffect(() => {
-        // console.log(data)
+        console.log(data)
         dispatch(changePlaylistColor(data.darkVibrant))
     }, [data])
 
@@ -41,13 +41,6 @@ export const Playlist = () => {
             dispatch(changePlaylistColor('#000000'))
         }
     }, [])
-
-    const getPlaylist = async () => {
-        setHeaderName.current = playlist.name
-        setTimeout(() => {
-            imgColor.current = playlist.image
-        }, 1000)
-    }
 
     const playTrack = (trackIdx,isPlaying) =>{
         dispatch(updateTrackIdx('num', trackIdx))

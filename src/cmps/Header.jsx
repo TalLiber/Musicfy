@@ -14,6 +14,7 @@ export const Header = (props) => {
     const location = useLocation()
     const playerSettings = useSelector(state => state.playerModule)
     const playlistColor = useSelector(state => state.playlistModule.playlistColor)
+    const currUser = useSelector(state => state.userModule.loggedInUser)
     const [isPrev,setIsPrev] = useState()
     const [isNext,setIsNext] = useState()
     const [currPath,setCurrpath] = useState()
@@ -90,19 +91,25 @@ export const Header = (props) => {
                 <div>{headerName}</div>
                 { isSearch &&
                     <div className={isFocus?' search-box focus': 'search-box'}>
-                        {svgIcon({iconName: 'search'})}
+                        {SvgIcon({iconName: 'search'})}
                         <input type="text" onFocus={()=>setIsFocus(true)} onBlur={()=>setIsFocus(false)} placeholder='What do you want to listen to?' />
                     </div>
                 }
             </section>
-            <div className='login-container'>
-                <button className='btn-signup' >Sign up</button>
-                <button className='btn-login' onClick={()=> navigate('/login')}>
-                    <span>
-                        Log in
-                    </span>
-                </button>
-            </div>
+            {currUser.fullname ? 
+                <section className='user-container'>
+                    <img src={currUser.imgUrl} alt="" />
+                </section> 
+                :
+                <section className='login-container'>
+                    <button className='btn-signup' >Sign up</button>
+                    <button className='btn-login' onClick={()=> navigate('/login')}>
+                        <span>
+                            Log in
+                        </span>
+                    </button>
+                </section>
+            }
             {/* <NavLink to="/search">Search</NavLink>   */}
         </section>
     )

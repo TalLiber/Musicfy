@@ -1,6 +1,13 @@
+import { userService } from '../../services/user.service'
 
-export function spendBalance(amount) {
+export function login(userCred) {
+
     return async (dispatch) => {
-        dispatch({ type: 'SPEND_BALANCE', amount })
+        try {
+            const user = await userService.login(userCred)
+            dispatch({ type: 'UPDATE_USER', user})
+        } catch (err) {
+            console.log('err:', err)
+        }
     }
 }

@@ -13,8 +13,7 @@ const rootReducer = combineReducers({
     playerModule: playerReducer,
     userModule: userReducer,
     songModule: songReducer,
-    categoryModule:categoryReducer
-
+    categoryModule:categoryReducer,
 
 })
 

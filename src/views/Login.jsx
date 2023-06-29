@@ -1,21 +1,36 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { login } from '../store/actions/user.actions'
+
 
 import SvgIcon  from '../cmps/SvgIcon'
 
 export const Login = () => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const currUser = useSelector(state => state.userModule.loggedInUser)
 
 
     useEffect(() => {
-    }, [])
+        console.log(currUser)
+        if(currUser.fullname) navigate('/')
+    }, [currUser.fullname])
+
+    async function loginUser(ev){
+        ev.preventDefault()
+        const user = {username:ev.target[0].value, password: ev.target[1].value}
+        dispatch(login(user))
+        ev.target[0].value = ''
+        ev.target[1].value = ''
+    }
 
     
     return (
         <section className='login'>
             <section className='header'>
-            <div className='logo'>{SvgIcon({ iconName: 'logo' })} <h2>Musicfy</h2> </div>
+            <div className='logo' onClick={() => navigate('/')}>{SvgIcon({ iconName: 'logo' })} <h2>Musicfy</h2> </div>
             </section>
 
             <section className='login-container'>
@@ -27,6 +42,19 @@ export const Login = () => {
                             Continue with Google
                         </span>
                     </button>
+                    <hr />
+                    <form action="" className='login-form' onSubmit={loginUser}>
+                        <label htmlFor="username">
+                            Email or username
+                            <input id='username' type="text" placeholder='Email or username' />
+                        </label>
+                        <label htmlFor="pass">
+                            Passward
+                            <input id='pass' type="password" placeholder='Passward' />
+                        </label>
+                        <button className='login-btn'>Log In</button>
+                    </form>
+                    <hr />
                 </section>
             </section>
         </section>
