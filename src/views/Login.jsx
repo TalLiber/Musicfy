@@ -18,7 +18,7 @@ export const Login = () => {
         if(currUser.fullname) navigate('/')
     }, [currUser.fullname])
 
-    async function loginUser(ev){
+    function loginUser(ev) {
         ev.preventDefault()
         const user = {username:ev.target[0].value, password: ev.target[1].value}
         dispatch(login(user))
