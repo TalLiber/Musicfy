@@ -8,6 +8,7 @@ import SvgIcon from './SvgIcon'
 export const MediaPlayer = () => {
 
   const currTrack = useSelector(state => state.playlistModule.currPlaylist.tracks[state.playlistModule.currTrackIdx])
+  const currPlaylist = useSelector(state => state.playlistModule.currPlaylist)
   const currIdx = useSelector(state => state.playlistModule.currTrackIdx)
   const playlistLength = useSelector(state => state.playlistModule.currPlaylist.tracks.length)
   const playerSettings = useSelector(state => state.playerModule)
@@ -17,7 +18,7 @@ export const MediaPlayer = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if(!currTrack) return
+    if(!currTrack || !currPlaylist.spotifyId) return
     if (!player.current) startIframe()
     else loadNewVideo()
   }, [currTrack.youtubeId])
