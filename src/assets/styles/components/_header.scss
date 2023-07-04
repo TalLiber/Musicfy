@@ -145,11 +145,14 @@
     }
 
     .user-container{
+        width: 25%;
         height: 100%;
         position: relative;
+        text-align: end;
 
         img{
             height: 100%;
+            width: auto;
             object-fit: cover;
         }
     }

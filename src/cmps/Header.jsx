@@ -68,6 +68,14 @@ export const Header = (props) => {
     },[])
 
     useEffect(() => {
+        EventBus.getInstance().addListener("closeModal",  () =>{
+            setIsModalOpen(false)
+        })
+
+        return EventBus.getInstance().removeListener("closeModal")
+    },[])
+
+    useEffect(() => {
         setIsPrev(location.key === 'default') 
         setIsNext(history.length > 1 && history.length - history.state.idx !== 2)
     }, [location.key])
@@ -80,7 +88,8 @@ export const Header = (props) => {
         dispatch(dispatch(logout()))
     }
 
-    function toggleModal(){
+    function toggleModal(e){
+        e.stopPropagation()
         setIsModalOpen(state => state = !state)
     }
 
