@@ -126,7 +126,7 @@ export const Header = (props) => {
                 </section> 
                 :
                 <section className='login-container'>
-                    <button className='btn-signup' >Sign up</button>
+                    <button className='btn-signup' onClick={()=> navigate('/signup')}>Sign up</button>
                     <button className='btn-login' onClick={()=> navigate('/login')}>
                         <span>
                             Log in
