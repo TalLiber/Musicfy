@@ -11,10 +11,29 @@ export function login(userCred) {
         }
     }
 }
+export function logout() {
+
+    return async (dispatch) => {
+        try {
+            await userService.logout()
+            const user = {
+                fullname: '',
+                imgUrl: null
+            }
+            dispatch({ type: 'UPDATE_USER', user})
+        } catch (err) {
+            console.log('err:', err)
+        }
+    }
+}
 
 export function getLoggedinUser() {
-    return () => {
-        const user = userService.getLoggedinUser()
-        // dispatch({ type: 'GET_LOGGE'})
+    return async (dispatch) => {
+        try {
+            const user = await userService.getLoggedinUser()
+            if(user) dispatch({ type: 'UPDATE_USER', user})
+        } catch(err) {
+            console.log('err:', err)
+        }
     }
 }

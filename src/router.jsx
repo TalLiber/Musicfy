@@ -1,13 +1,14 @@
 // routes.js
-import { Outlet, createBrowserRouter } from 'react-router-dom';
-import {AppIndex} from './views/AppIndex';
+import { Outlet, createBrowserRouter } from 'react-router-dom'
+import {AppIndex} from './views/AppIndex'
 
-import {Home}  from './views/Home';
-import {Search} from './views/Search';
-import {Lib} from './views/Lib';
-import {Playlist} from './views/Playlist';
-import {Category} from './views/Category';
-import { Login } from './views/Login';
+import {Home}  from './views/Home'
+import {Search} from './views/Search'
+import {Lib} from './views/Lib'
+import {Playlist} from './views/Playlist'
+import {Category} from './views/Category'
+import { Login } from './views/Login'
+import { Signup } from './views/Signup'
 
 
 const routes = [
@@ -41,6 +42,11 @@ const routes = [
  {
   path: '/login',
   element: <Login />,
+  canActivate: requireAuth(),
+ },
+ {
+  path: '/signup',
+  element: <Signup />,
   canActivate: requireAuth(),
  },
  {

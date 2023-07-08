@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import EventBus from 'react-native-event-bus'
 import { useSelector, useDispatch } from "react-redux"
 import { updatePlayer } from '../store/actions/player.actions'
+import { getLoggedinUser, logout} from '../store/actions/user.actions'
+import { UserModule } from './UserModal'
 
 
 import SvgIcon from './SvgIcon'
@@ -24,6 +26,7 @@ export const Header = (props) => {
     const [headerBgc, setHeaderBgc] = useState("#00000080")
     const [headerName, setHeaderName] = useState('')
     const [isFocus, setIsFocus] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     useEffect(() => {
         EventBus.getInstance().addListener("toggleOpacity",  (data) =>{
@@ -59,17 +62,35 @@ export const Header = (props) => {
         EventBus.getInstance().addListener("headerName",  (data) =>{
             setHeaderName(data)
         })
+        dispatch(getLoggedinUser())
 
         return EventBus.getInstance().removeListener("headerName")
     },[])
 
     useEffect(() => {
+        EventBus.getInstance().addListener("closeModal",  () =>{
+            setIsModalOpen(false)
+        })
+
+        return EventBus.getInstance().removeListener("closeModal")
+    },[])
+
+    useEffect(() => {
         setIsPrev(location.key === 'default') 
-        setIsNext(history.length > 1 && history.length - history.state.idx === 1)
+        setIsNext(history.length > 1 && history.length - history.state.idx !== 2)
     }, [location.key])
 
     const handleClick = (num) => {
         navigate(num)
+    }
+
+    function onLogout() {
+        dispatch(dispatch(logout()))
+    }
+
+    function toggleModal(e){
+        e.stopPropagation()
+        setIsModalOpen(state => state = !state)
     }
 
     return (
@@ -78,7 +99,7 @@ export const Header = (props) => {
                 <button className='btn-action' disabled={isPrev} onClick={() => handleClick(-1)}>
                     {SvgIcon({ iconName: 'prev' })}
                 </button>
-                <button className='btn-action' disabled={isNext} onClick={() => handleClick(1)}>
+                <button className='btn-action' disabled={!isNext} onClick={() => handleClick(1)}>
                     {SvgIcon({ iconName: 'next' })}
                 </button>
             </div>
@@ -97,12 +118,15 @@ export const Header = (props) => {
                 }
             </section>
             {currUser.fullname ? 
-                <section className='user-container'>
+                <section className='user-container' onClick={toggleModal}>
                     <img src={currUser.imgUrl} alt="" />
+                    { isModalOpen &&
+                        <UserModule logout={onLogout}/>
+                    }
                 </section> 
                 :
                 <section className='login-container'>
-                    <button className='btn-signup' >Sign up</button>
+                    <button className='btn-signup' onClick={()=> navigate('/signup')}>Sign up</button>
                     <button className='btn-login' onClick={()=> navigate('/login')}>
                         <span>
                             Log in

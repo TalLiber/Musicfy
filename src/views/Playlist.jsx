@@ -3,38 +3,42 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux'
 import { useHeaderObserver } from '../customHooks/useHeaderObserver'
 import { useObserver } from '../customHooks/useObserver'
-import { usePalette } from 'react-palette'
 import { changePlaylistColor, getPlaylistById, updateTrackIdx } from '../store/actions/playlists.actions'
 import { PlaylistList } from '../cmps/PlaylistList'
 import { updatePlayer } from '../store/actions/player.actions'
+import { FastAverageColor } from 'fast-average-color'
 
 import SvgIcon from '../cmps/SvgIcon'
 
 
 export const Playlist = () => {
-
+    
     const dispatch = useDispatch()
     const playlist = useSelector(state => state.playlistModule.currPlaylist)
     const playerSettings = useSelector(state => state.playerModule)
     const params = useParams()
     const [headerRef, headerName] = useHeaderObserver()
     const [containerRef] = useObserver()
-    const imgColor = useRef(null)
-    const { data, loading, error } = usePalette(imgColor.current)
+    const [bgc, setBgc] = useState()
+    const fac = new FastAverageColor()
+    
 
     useEffect(() => {
         dispatch(getPlaylistById(params.id))
     }, [params.id])
     
     useEffect(() => {
-        imgColor.current = playlist.image
+        console.log(playlist)
         headerName.current = playlist.name
+        fac.getColorAsync(playlist.image)
+            .then(color => {
+                setBgc(color.rgba)
+                dispatch(changePlaylistColor(color.hexa))
+            })
+            .catch(e => {
+                console.log(e)
+            })
     },[playlist.name])
-
-    useEffect(() => {
-        console.log(data)
-        dispatch(changePlaylistColor(data.darkVibrant))
-    }, [data])
 
     useEffect(() => {
         return () => {
@@ -46,10 +50,10 @@ export const Playlist = () => {
         dispatch(updateTrackIdx('num', trackIdx))
         dispatch(updatePlayer('isPlaying', isPlaying))
     }
-    // if (!playerSettings.isPlaying) return <div>Loading...</div>
+    if (playlist.spotifyId !== params.id) return <div>Loading...</div>
     return (
         <section className="playlist">
-            <section className='playlist-header' style={{ backgroundColor: data.vibrant }}>
+            <section className='playlist-header' style={{ backgroundColor: bgc || ''}}>
                 <div className='img-container'>
                     <img src={playlist.image} alt="" />
                 </div>
@@ -59,7 +63,7 @@ export const Playlist = () => {
                     <p className='playlist-disc'>{playlist.description}</p>
                 </section>
             </section>
-            <section className='playlist-action' style={{ backgroundColor: data.darkVibrant }}>
+            <section className='playlist-action' style={{ backgroundColor: bgc || '' }}>
                 <button className='btn-play' onClick={() => dispatch(updatePlayer('isPlaying', !playerSettings.isPlaying))}>
                     {SvgIcon({ iconName: playerSettings.isPlaying ? 'player-pause' : 'player-play' })}
                 </button>
