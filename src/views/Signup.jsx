@@ -37,28 +37,28 @@ export const Signup = () => {
             <button className='login-google'>
                 <div className='google-icon' >{SvgIcon({iconName:'google-g'})}</div>
                 <span>
-                    Sign up using Google
+                    Sign up with Google
                 </span>
             </button>
 
             <span className='or'>Or</span>
 
             <section className='form-container'>
-                <h1 className='form-txt'>Sign in using Email address</h1>
+                <h1 className='form-txt'>Sign up using Email address</h1>
                 <form action="" className='signup-form' onSubmit={() => console.log('submit')}>
 
                     <label htmlFor="email">
-                        What is youre Email address?
+                        <span>What's your email?</span>
                         <input id='email' type="text" placeholder='Type in youre Email address'/>
                     </label>
 
                     <label htmlFor="password">
-                        Create password
+                        <span>Create password</span>
                         <input id='password' type="password" placeholder='Type in youre password'/>
                     </label>
                     
                     <label htmlFor="username">
-                        What will be youre username?
+                        <span>What will be youre username?</span>
                         <input id='username' type="text" placeholder='Type in youre username'/>
                     </label>
 
@@ -66,8 +66,11 @@ export const Signup = () => {
                 </form>
             </section>
 
-            <section className='login-container'>
-                
+            <section className='login-navigate'>
+                <span className='txt'>Have an account? </span>
+                <span className='navigate' onClick={() => navigate(`/login`)}>
+                    Log in.
+                </span>
             </section>
         </section>
     )
