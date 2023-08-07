@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { login } from '../store/actions/user.actions'
+import { signup } from '../store/actions/user.actions'
 
 
 import SvgIcon  from '../cmps/SvgIcon'
@@ -18,12 +18,18 @@ export const Signup = () => {
         if(currUser.fullname) navigate('/')
     }, [currUser.fullname])
 
-    function loginUser(ev) {
+    function Signup(ev) {
         ev.preventDefault()
-        const user = {username:ev.target[0].value, password: ev.target[1].value}
-        dispatch(login(user))
+        const user = {
+            fullname: ev.target[0].value, 
+            username:ev.target[2].value, 
+            password: ev.target[1].value,
+            playlist:[]
+        }
+        dispatch(signup(user))
         ev.target[0].value = ''
         ev.target[1].value = ''
+        ev.target[2].value = ''
     }
 
     
@@ -44,22 +50,22 @@ export const Signup = () => {
             <span className='or'>Or</span>
 
             <section className='form-container'>
-                <h1 className='form-txt'>Sign up using Email address</h1>
-                <form action="" className='signup-form' onSubmit={() => console.log('submit')}>
+                <h1 className='form-txt'>Create an account</h1>
+                <form action="" className='signup-form' onSubmit={Signup}>
 
-                    <label htmlFor="email">
-                        <span>What's your email?</span>
-                        <input id='email' type="text" placeholder='Type in youre Email address'/>
+                    <label htmlFor="fullname">
+                        <span>What's your full name?</span>
+                        <input id='fullname' type="text" placeholder='Type in youre full name'/>
                     </label>
 
-                    <label htmlFor="password">
-                        <span>Create password</span>
-                        <input id='password' type="password" placeholder='Type in youre password'/>
-                    </label>
-                    
                     <label htmlFor="username">
                         <span>What will be youre username?</span>
                         <input id='username' type="text" placeholder='Type in youre username'/>
+                    </label>
+                    
+                    <label htmlFor="password">
+                        <span>Create password</span>
+                        <input id='password' type="password" placeholder='Type in youre password'/>
                     </label>
 
                     <button className='signup-btn'>Sign Up</button>

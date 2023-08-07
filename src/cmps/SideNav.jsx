@@ -12,7 +12,7 @@ export const SideNav = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const userPlaylists = useSelector(state => state.playlistModule.playlists)
+  const userPlaylists = useSelector(state => [...state.userModule.loggedInUser.playlist])
 
   const [selected, setSelected] = useState(null)
 
@@ -22,6 +22,9 @@ export const SideNav = () => {
     else setSelected(`${location.pathname.slice(1)}`)
   }, [location.pathname])
 
+  useEffect(() => {
+  }, [])
+  
   const NavCateg = [{ name: 'Home', icon: 'home', path: '/' },
   { name: 'Search', icon: 'search', path: '/search' },
   { name: 'Your Library', icon: 'lib', path: '/lib' },
@@ -55,7 +58,7 @@ export const SideNav = () => {
         <hr />
       </section>
       <section className='user-categ-container'>
-        {userPlaylists.map((categ, idx) => {
+        {userPlaylists?.map((categ, idx) => {
           return (
             <SideItem categ={categ} selected={selected} directTo={directTo} key={idx} />
           )

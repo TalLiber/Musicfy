@@ -3,12 +3,13 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux'
 import { useHeaderObserver } from '../customHooks/useHeaderObserver'
 import { useObserver } from '../customHooks/useObserver'
-import { changePlaylistColor, getPlaylistById, updateTrackIdx } from '../store/actions/playlists.actions'
+import { addPlaylist, changePlaylistColor, getPlaylistById, removePlaylist, updateTrackIdx } from '../store/actions/playlists.actions'
 import { PlaylistList } from '../cmps/PlaylistList'
 import { updatePlayer } from '../store/actions/player.actions'
 import { FastAverageColor } from 'fast-average-color'
 
 import SvgIcon from '../cmps/SvgIcon'
+import { removeUserPlaylist, addUserPlaylist  } from '../store/actions/user.actions'
 
 
 export const Playlist = () => {
@@ -16,11 +17,13 @@ export const Playlist = () => {
     const dispatch = useDispatch()
     const playlist = useSelector(state => state.playlistModule.currPlaylist)
     const playerSettings = useSelector(state => state.playerModule)
+    const userPlaylists = useSelector(state => [...state.userModule.loggedInUser.playlist])
     const params = useParams()
     const [headerRef, headerName] = useHeaderObserver()
     const [containerRef] = useObserver()
     const [bgc, setBgc] = useState()
     const fac = new FastAverageColor()
+    const [isLiked, setIsLiked] = useState(false)
     
 
     useEffect(() => {
@@ -28,7 +31,10 @@ export const Playlist = () => {
     }, [params.id])
     
     useEffect(() => {
-        console.log(playlist)
+        setIsLiked(userPlaylists.some((playlist) => playlist.spotifyId === params.id))
+    }, [userPlaylists.length])
+    
+    useEffect(() => {
         headerName.current = playlist.name
         fac.getColorAsync(playlist.image)
             .then(color => {
@@ -45,6 +51,21 @@ export const Playlist = () => {
             dispatch(changePlaylistColor('#000000'))
         }
     }, [])
+
+    function handlePlaylist(){
+        if(isLiked){
+            console.log('hey')
+            dispatch(removeUserPlaylist(params.id))
+        }
+        else{
+            const playlistToAdd = {
+                spotifyId: params.id,
+                name: playlist.name,
+                image:playlist.image
+            }
+            dispatch(addUserPlaylist(playlistToAdd))
+        }
+    }
 
     const playTrack = (trackIdx,isPlaying) =>{
         dispatch(updateTrackIdx('num', trackIdx))
@@ -67,8 +88,8 @@ export const Playlist = () => {
                 <button className='btn-play' onClick={() => dispatch(updatePlayer('isPlaying', !playerSettings.isPlaying))}>
                     {SvgIcon({ iconName: playerSettings.isPlaying ? 'player-pause' : 'player-play' })}
                 </button>
-                <button className='btn-heart'>
-                    {SvgIcon({ iconName: 'heart-no-fill' })}
+                <button className={ isLiked ? 'btn-heart fill' : 'btn-heart'} onClick={handlePlaylist}>
+                    {SvgIcon({ iconName: isLiked? 'heart-fill' : 'heart-no-fill' })}
                 </button>
                 <button className='btn-more'>{SvgIcon({ iconName: 'dots' })}</button>
                 <div ref={headerRef}></div>

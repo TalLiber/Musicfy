@@ -14,7 +14,6 @@ export const PlaylistPreview = ({ track, idx, playTrack, playlistId }) => {
     const currPlatlistId = useSelector(state => state.playlistModule.currPlaylist.id)
 
     useEffect(() => {
-        console.log(track)
     }, [])
 
 

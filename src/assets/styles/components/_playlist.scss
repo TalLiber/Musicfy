@@ -84,6 +84,12 @@
                 height: 40px;
                 color: aliceblue;
             }
+
+            &.fill{
+                svg {
+                    fill: #1fdf64;
+                }
+            }
         }
         
         .btn-more{
