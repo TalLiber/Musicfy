@@ -3,7 +3,7 @@ import EventBus from 'react-native-event-bus'
 
 export const useObserver = () => {
     const containerRef = useRef()
-    const [isVisible, setIsVisible] = useState(false)
+    const isVisible = useRef(false)
 
     const options ={
         root: null,
@@ -11,9 +11,8 @@ export const useObserver = () => {
         threshold: 1.0
     }
     const cb = (entries) => {
-        setIsVisible(entries[0].isIntersecting)
-        EventBus.getInstance().fireEvent("toggleOpacity", entries[0].isIntersecting)
-        
+        EventBus.getInstance().fireEvent("toggleOpacity", isVisible.current ? isVisible.current : entries[0].isIntersecting)
+        isVisible.current = false
     }
 
     useEffect(() => {
@@ -25,7 +24,7 @@ export const useObserver = () => {
         return () => {
             if(containerRef.current) observer.unobserve(containerRef.current)
         }
-    }, [containerRef])
+    }, [containerRef, isVisible.current])
 
-    return [containerRef]
+    return [containerRef, isVisible]
 }

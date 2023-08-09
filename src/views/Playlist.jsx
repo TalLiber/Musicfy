@@ -1,15 +1,15 @@
-import { useEffect, useRef, useState } from 'react'
-import { useNavigate, useParams } from "react-router-dom"
+import { useEffect, useState } from 'react'
+import { useParams } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux'
 import { useHeaderObserver } from '../customHooks/useHeaderObserver'
 import { useObserver } from '../customHooks/useObserver'
-import { addPlaylist, changePlaylistColor, getPlaylistById, removePlaylist, updateTrackIdx } from '../store/actions/playlists.actions'
+import { changePlaylistColor, getPlaylistById, updateTrackIdx } from '../store/actions/playlists.actions'
 import { PlaylistList } from '../cmps/PlaylistList'
 import { updatePlayer } from '../store/actions/player.actions'
 import { FastAverageColor } from 'fast-average-color'
+import { removeUserPlaylist, addUserPlaylist, addUserTrack, removeUserTrack  } from '../store/actions/user.actions'
 
 import SvgIcon from '../cmps/SvgIcon'
-import { removeUserPlaylist, addUserPlaylist  } from '../store/actions/user.actions'
 
 
 export const Playlist = () => {
@@ -17,10 +17,10 @@ export const Playlist = () => {
     const dispatch = useDispatch()
     const playlist = useSelector(state => state.playlistModule.currPlaylist)
     const playerSettings = useSelector(state => state.playerModule)
-    const userPlaylists = useSelector(state => [...state.userModule.loggedInUser.playlist])
+    const userPlaylists = useSelector(state => {return {...state.userModule.loggedInUser}.playlist})
     const params = useParams()
     const [headerRef, headerName] = useHeaderObserver()
-    const [containerRef] = useObserver()
+    const [containerRef, isVisible] = useObserver()
     const [bgc, setBgc] = useState()
     const fac = new FastAverageColor()
     const [isLiked, setIsLiked] = useState(false)
@@ -35,7 +35,8 @@ export const Playlist = () => {
     }, [userPlaylists.length])
     
     useEffect(() => {
-        headerName.current = playlist.name
+        isVisible.current = true
+        if(playlist.spotifyId) headerName.current = playlist.name
         fac.getColorAsync(playlist.image)
             .then(color => {
                 setBgc(color.rgba)
@@ -44,7 +45,7 @@ export const Playlist = () => {
             .catch(e => {
                 console.log(e)
             })
-    },[playlist.name])
+    },[playlist?.name])
 
     useEffect(() => {
         return () => {
@@ -54,7 +55,6 @@ export const Playlist = () => {
 
     function handlePlaylist(){
         if(isLiked){
-            console.log('hey')
             dispatch(removeUserPlaylist(params.id))
         }
         else{
@@ -64,6 +64,15 @@ export const Playlist = () => {
                 image:playlist.image
             }
             dispatch(addUserPlaylist(playlistToAdd))
+        }
+    }
+
+    function handleTrack(isLiked, track) {
+        if(isLiked) {
+            dispatch(removeUserTrack(track.id))
+        }
+        else {
+            dispatch(addUserTrack(track))
         }
     }
 
@@ -95,7 +104,7 @@ export const Playlist = () => {
                 <div ref={headerRef}></div>
             </section>
             <div ref={containerRef}></div>
-            <PlaylistList playlist={playlist} playTrack={playTrack}/>
+            <PlaylistList playlist={playlist} playTrack={playTrack} handleTrack={handleTrack}/>
         </section>
     )
 }

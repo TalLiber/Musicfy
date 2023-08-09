@@ -12,7 +12,7 @@ export const SideNav = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const userPlaylists = useSelector(state => [...state.userModule.loggedInUser.playlist])
+  const userPlaylists = useSelector(state => {return {...state.userModule.loggedInUser}.playlist})
 
   const [selected, setSelected] = useState(null)
 

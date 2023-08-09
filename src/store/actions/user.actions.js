@@ -71,7 +71,31 @@ export function removeUserPlaylist(playlistId) {
         try {
             const user = getState().userModule.loggedInUser
             user.playlist = user.playlist.filter( playlist => playlist.spotifyId !== playlistId )
-            console.log('user.playlist',user.playlist)
+            await userService.update(user)
+            dispatch({ type: 'UPDATE_USER', user})
+        } catch(err) {
+            console.log('err:', err)
+        }
+    }
+}
+
+export function addUserTrack(track) {
+    return async (dispatch, getState) => {
+        try {
+            const user = getState().userModule.loggedInUser
+            user.likedTracks? user.likedTracks.push({...track }) : user.likedTracks = [track]
+            await userService.update(user)
+            dispatch({ type: 'UPDATE_USER', user})
+        } catch(err) {
+            console.log('err:', err)
+        }
+    }
+}
+export function removeUserTrack(trackId) {
+    return async (dispatch, getState) => {
+        try {
+            const user = getState().userModule.loggedInUser
+            user.likedTracks = user.likedTracks.filter( likedTrack => likedTrack.id !== trackId )
             await userService.update(user)
             dispatch({ type: 'UPDATE_USER', user})
         } catch(err) {

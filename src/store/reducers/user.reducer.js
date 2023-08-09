@@ -3,7 +3,8 @@ const INITIAL_STATE = {
     loggedInUser: {
         fullname: '',
         imgUrl: null,
-        playlist: []
+        playlist: [],
+        likedTracks:[],
     }
 }
 

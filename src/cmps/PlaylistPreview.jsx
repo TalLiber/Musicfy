@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom"
 import { useSelector } from 'react-redux'
 
@@ -6,19 +6,28 @@ import { utilService } from '../services/util.service'
 import SvgIcon from '../cmps/SvgIcon'
 
 
-export const PlaylistPreview = ({ track, idx, playTrack, playlistId }) => {
+export const PlaylistPreview = ({ track, idx, playTrack, playlistId, handleTrack }) => {
 
     const navigate = useNavigate()
     const playerSettings = useSelector(state => state.playerModule)
     const currTrack = useSelector(state => state.playlistModule.currPlaylist.tracks[state.playlistModule.currTrackIdx])
     const currPlatlistId = useSelector(state => state.playlistModule.currPlaylist.id)
+    const [isLiked, setIsLiked] = useState(false)
+    const userLikedTracks = useSelector(state => {return {...state.userModule.loggedInUser}.likedTracks})
+
 
     useEffect(() => {
+        setIsLiked(state => state = userLikedTracks?.some(likedTrack=> likedTrack.id === track.id))
     }, [])
+
+    function handleTrackPrev(isLiked, track) {
+        setIsLiked(prevState => prevState = !prevState)
+        handleTrack(isLiked, track)
+    }
 
 
     return (
-        <section className='playlist-preview' onClick={() => console.log(track.title)}>
+        <section className='playlist-preview'>
             <button className='btn-player' onClick={() => playTrack(idx, (playerSettings.isPlaying && currTrack.id === track.id ? false : true))}>
                 {SvgIcon({ iconName: playerSettings.isPlaying && currTrack.id === track.id ? 'player-pause' : 'player-play' })}
             </button>
@@ -39,8 +48,8 @@ export const PlaylistPreview = ({ track, idx, playTrack, playlistId }) => {
                 <p>{utilService.dateAdded(track.addedAt)}</p>
             </section>
             <section className='like-time'>
-                <button className='btn-heart'>
-                        {SvgIcon({ iconName: 'heart-no-fill' })}
+                <button className={ isLiked ? 'btn-heart fill' : 'btn-heart'} onClick={() => handleTrackPrev(isLiked, track)}>
+                    {SvgIcon({ iconName: isLiked? 'heart-fill' : 'heart-no-fill' })}
                 </button>
                 <section className='track-duration'>
                     {utilService.timeFormat(track.formalDuration/600)}

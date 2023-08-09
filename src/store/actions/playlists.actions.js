@@ -61,10 +61,12 @@ export function updateTrackIdx(byType, toUpdate) {
   }
 }
 
-export function getPlaylistById(spotifyId) {
+export function getPlaylistById(spotifyId, sentPlaylist = null) {
   return async (dispatch) => {
     try {
-      const playlist = await playlistService.getById(spotifyId)
+      var playlist
+      sentPlaylist ? playlist = sentPlaylist : 
+      playlist = await playlistService.getById(spotifyId)
       dispatch({ type: 'SET_PLAYLIST', playlist })
     } catch (err) {
       console.log('err:', err)
