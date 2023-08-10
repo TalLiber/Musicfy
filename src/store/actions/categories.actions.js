@@ -18,7 +18,6 @@ export function loadCategories() {
             console.log('getting categories');
             const filterBy = getState().categoryModule.filterBy
             const categories = await categoryService.query(filterBy)
-            console.log('categories:', categories)
             dispatch({ type: 'SET_CATEGORIES', categories })
         } catch (err) {
             console.log('err:', err)

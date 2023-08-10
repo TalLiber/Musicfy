@@ -12,7 +12,7 @@ export const SideNav = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const userPlaylists = useSelector(state => {return {...state.userModule.loggedInUser}.playlist})
+  const userPlaylists = useSelector(state => {return {...state.userModule.loggedInUser}})
 
   const [selected, setSelected] = useState(null)
 
@@ -58,7 +58,7 @@ export const SideNav = () => {
         <hr />
       </section>
       <section className='user-categ-container'>
-        {userPlaylists?.map((categ, idx) => {
+        {userPlaylists.playlist?.map((categ, idx) => {
           return (
             <SideItem categ={categ} selected={selected} directTo={directTo} key={idx} />
           )

@@ -17,7 +17,7 @@ export const Playlist = () => {
     const dispatch = useDispatch()
     const playlist = useSelector(state => state.playlistModule.currPlaylist)
     const playerSettings = useSelector(state => state.playerModule)
-    const userPlaylists = useSelector(state => {return {...state.userModule.loggedInUser}.playlist})
+    const userPlaylists = useSelector(state => {return {...state.userModule.loggedInUser}})
     const params = useParams()
     const [headerRef, headerName] = useHeaderObserver()
     const [containerRef, isVisible] = useObserver()
@@ -31,8 +31,8 @@ export const Playlist = () => {
     }, [params.id])
     
     useEffect(() => {
-        setIsLiked(userPlaylists.some((playlist) => playlist.spotifyId === params.id))
-    }, [userPlaylists.length])
+        setIsLiked(userPlaylists.playlist.some((playlist) => playlist.spotifyId === params.id))
+    }, [userPlaylists.playlist.length])
     
     useEffect(() => {
         isVisible.current = true
