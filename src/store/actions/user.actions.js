@@ -1,4 +1,5 @@
 import { userService } from '../../services/user.service'
+import { removePlaylist } from './playlists.actions'
 
 export function login(userCred) {
 
@@ -58,7 +59,9 @@ export function addUserPlaylist(playlist) {
     return async (dispatch, getState) => {
         try {
             const user = getState().userModule.loggedInUser
-            const idx = user.playlist.findIndex(currplaylist => currplaylist.id === playlist.id)
+            var idx
+            playlist.id ? idx = user.playlist.findIndex(currplaylist => currplaylist.id === playlist.id) 
+                : idx = user.playlist.findIndex(currplaylist => currplaylist.spotifyId === playlist.spotifyId)
             if ( idx === -1) user.playlist.push({...playlist })
             else user.playlist[idx] = playlist
             await userService.update(user)
@@ -72,7 +75,8 @@ export function removeUserPlaylist(playlistId) {
     return async (dispatch, getState) => {
         try {
             const user = getState().userModule.loggedInUser
-            user.playlist = user.playlist.filter( playlist => playlist.spotifyId !== playlistId )
+            user.playlist = user.playlist.filter( playlist => playlist.spotifyId !== playlistId && playlist.id !== playlistId.slice(5,playlistId.length))
+            if (playlistId.includes('1234s')) await dispatch(removePlaylist(playlistId.slice(5,playlistId.length)))
             await userService.update(user)
             dispatch({ type: 'UPDATE_USER', user})
         } catch(err) {

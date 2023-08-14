@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux'
 import { useHeaderObserver } from '../customHooks/useHeaderObserver'
 import { useObserver } from '../customHooks/useObserver'
@@ -15,7 +15,7 @@ import SvgIcon from '../cmps/SvgIcon'
 export const Playlist = () => {
     
     const dispatch = useDispatch()
-    const playlist = useSelector(state => state.playlistModule.currPlaylist)
+    const playlist = useSelector(state => {return {...state.playlistModule.currPlaylist}})
     const playerSettings = useSelector(state => state.playerModule)
     const userPlaylists = useSelector(state => {return {...state.userModule.loggedInUser}})
     const params = useParams()
@@ -24,6 +24,7 @@ export const Playlist = () => {
     const [bgc, setBgc] = useState()
     const fac = new FastAverageColor()
     const [isLiked, setIsLiked] = useState(false)
+    const navigate = useNavigate()
     
 
     useEffect(() => {
@@ -32,7 +33,7 @@ export const Playlist = () => {
     
     useEffect(() => {
         setIsLiked(userPlaylists.playlist.some((playlist) => playlist.spotifyId === params.id || playlist.spotifyId + playlist.id === params.id))
-    }, [userPlaylists.playlist.length])
+    }, [userPlaylists.playlist.length, playlist.name])
     
     useEffect(() => {
         if (!playlist.image){
@@ -105,7 +106,7 @@ export const Playlist = () => {
                 <button className={ isLiked ? 'btn-heart fill' : 'btn-heart'} onClick={handlePlaylist}>
                     {SvgIcon({ iconName: isLiked? 'heart-fill' : 'heart-no-fill' })}
                 </button>
-                <button className='btn-more'>{SvgIcon({ iconName: 'dots' })}</button>
+                <button className='btn-more' onClick={()=> navigate(`/create/${playlist.spotifyId + playlist._id}`)}>{SvgIcon({ iconName: 'dots' })}</button>
                 <div ref={headerRef}></div>
             </section>
             <div ref={containerRef}></div>

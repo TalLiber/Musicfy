@@ -12,7 +12,7 @@
         align-items: end;
 
         & input{
-            background-color: $clr3;
+            background-color: transparent;
             color: $clr1;
             border: none;
             width: 100%;
@@ -20,7 +20,7 @@
 
         .playlist-name{
             font-size: 4.5rem;
-            font-weight: 900px;
+            margin-block-end: 1px;
         }
 
         .header-top{

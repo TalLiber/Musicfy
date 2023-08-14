@@ -34,7 +34,6 @@ export function removePlaylist(playlistId) {
     try {
       const playlists = await playlistService.remove(playlistId)
       dispatch({ type: 'REMOVE_PLAYLIST', playlistId })
-      return 'hello'
     } catch (err) {
       console.log('err:', err)
     }
@@ -83,7 +82,6 @@ export function getYoutubeId(keyword) {
       const youtubeId = await playlistService.getYoutubeId(keyword)
       dispatch({ type: 'SET_YOUTUBE_ID', youtubeId })
       playlistService.save(getState().playlistModule.currPlaylist)
-      console.log('getState',getState().playlistModule.currPlaylist);
     } catch (err) {
       console.log('err:', err)
     }

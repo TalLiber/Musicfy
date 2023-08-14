@@ -8,6 +8,7 @@ import { PlaylistList } from '../cmps/PlaylistList'
 import { updatePlayer } from '../store/actions/player.actions'
 import { FastAverageColor } from 'fast-average-color'
 import { removeUserPlaylist, addUserPlaylist, addUserTrack, removeUserTrack  } from '../store/actions/user.actions'
+import { ImageUpload } from '../cmps/ImageUpload'
 
 import SvgIcon from '../cmps/SvgIcon'
 
@@ -25,16 +26,16 @@ export const EditPlaylist = () => {
     const fac = new FastAverageColor()
     const [isLiked, setIsLiked] = useState(false)
     const [playlistValue, setPlaylistValue] = useState(playlist)
-    const history = useNavigate();
+    const navigate = useNavigate()
     
 
     useEffect(() => {
         if (params.id) dispatch(getPlaylistById('1234s' + params.id))
         else dispatch(getEmptyPlaylist())
-    }, [])
+    }, [params.id])
 
     useEffect(() =>{
-        if (playlist._id) history('/create/' + playlist._id)
+        if (playlist._id) navigate('/create/' + playlist._id)
     },[playlist._id])
     
     useEffect(() => {
@@ -43,10 +44,14 @@ export const EditPlaylist = () => {
     
     useEffect(() => {
         setPlaylistValue(playlist)
-        if (playlist.image === null) return
+        if (playlist.image === null){
+            dispatch(changePlaylistColor('#000000'))
+            setBgc('#000000')
+            return
+        } 
         isVisible.current = true
         if(playlist.spotifyId) headerName.current = playlist.name
-        fac.getColorAsync(playlist?.image)
+        fac.getColorAsync(playlist.image)
             .then(color => {
                 setBgc(color.rgba)
                 dispatch(changePlaylistColor(color.hexa))
@@ -90,10 +95,16 @@ export const EditPlaylist = () => {
         dispatch(updatePlayer('isPlaying', isPlaying))
     }
 
-    async function handlePlaylist(ev){
+    function handlePlaylist(ev){
         setPlaylistValue((prevState) => {
             prevState[ev.target.id] = ev.target.value
             prevState._id = playlist._id
+            return prevState
+        })
+    }
+    async function updatePlaylistImg(imgUrl){
+        setPlaylistValue((prevState) => {
+            prevState.image = imgUrl
             dispatch(updatePlaylist(prevState))
             return prevState
         })
@@ -101,25 +112,25 @@ export const EditPlaylist = () => {
     // if (playlist.spotifyId !== 1234) return <div>Loading...</div>
     return (
         <section className="edit">
-            {/* <section className='playlist-header' style={{ backgroundColor: bgc || '#000000'}}> */}
-            <section className='playlist-header' style={{ backgroundColor: '#000000'}}>
+            <section className='playlist-header' style={{ backgroundColor: bgc || '#000000'}}>
+            {/* <section className='playlist-header' style={{ backgroundColor: '#000000'}}> */}
                 <div className='img-container'>
-                    <img src={playlist.image} alt="" />
+                    <ImageUpload updatePlaylistImg = {updatePlaylistImg} />
                 </div>
                 <section className='playlist-info'>
                     <p>Playlist</p>
-                    <input type='text' id='name' className='playlist-name' value={playlistValue.name} placeholder='Playlist name' onChange={handlePlaylist}/>
-                    {/* <input type='text' className='playlist-disc' value={playlist.description} placeholder='Add discription' onBlur={updatePlaylist}/> */}
+                    <input type='text' id='name' className='playlist-name' value={playlistValue.name} placeholder='Playlist name' onChange={handlePlaylist} onBlur={() => dispatch(updatePlaylist(playlistValue))} />
+                    <input type='text' id='description' className='playlist-disc' value={playlistValue.description} placeholder='Add discription' onChange={handlePlaylist} onBlur={() => dispatch(updatePlaylist(playlistValue))} />
                 </section>
             </section>
-            {/* <section className='playlist-action' style={{ backgroundColor: bgc || '#000000' }}> */}
-            <section className='playlist-action' style={{ backgroundColor: '#000000' }}>
+            <section className='playlist-action' style={{ backgroundColor: bgc || '#000000' }}>
+            {/* <section className='playlist-action' style={{ backgroundColor: '#000000' }}> */}
                 <button className='btn-play' onClick={() => dispatch(updatePlayer('isPlaying', !playerSettings.isPlaying))}>
                     {SvgIcon({ iconName: playerSettings.isPlaying ? 'player-pause' : 'player-play' })}
                 </button>
-                <button className={ isLiked ? 'btn-heart fill' : 'btn-heart'} onClick={handlePlaylist}>
+                {/* <button className={ isLiked ? 'btn-heart fill' : 'btn-heart'} onClick={handlePlaylist}>
                     {SvgIcon({ iconName: isLiked? 'heart-fill' : 'heart-no-fill' })}
-                </button>
+                </button> */}
                 <button className='btn-more'>{SvgIcon({ iconName: 'dots' })}</button>
                 <div ref={headerRef}></div>
             </section>
