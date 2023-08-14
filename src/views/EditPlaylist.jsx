@@ -115,7 +115,7 @@ export const EditPlaylist = () => {
             <section className='playlist-header' style={{ backgroundColor: bgc || '#000000'}}>
             {/* <section className='playlist-header' style={{ backgroundColor: '#000000'}}> */}
                 <div className='img-container'>
-                    <ImageUpload updatePlaylistImg = {updatePlaylistImg} />
+                    <ImageUpload updatePlaylistImg = {updatePlaylistImg} playlistImg = {playlist.image} />
                 </div>
                 <section className='playlist-info'>
                     <p>Playlist</p>

@@ -1,8 +1,13 @@
+import { useEffect } from 'react'
 import { useRef, useState } from 'react'
 
-export const ImageUpload = ({ updatePlaylistImg }) => {
-  const [selectedImage, setSelectedImage] = useState(null);
+export const ImageUpload = ({ updatePlaylistImg, playlistImg }) => {
+  const [selectedImage, setSelectedImage] = useState(null)
   const changeImg = useRef(null)
+
+  useEffect(() => {
+    setSelectedImage(playlistImg)
+  },[playlistImg])
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0]
@@ -23,7 +28,7 @@ export const ImageUpload = ({ updatePlaylistImg }) => {
       } catch (error) {
         console.error('Error uploading image:', error);
       }
-      setSelectedImage(file)
+      setSelectedImage(data.secure_url)
     }
   };
 
@@ -36,7 +41,7 @@ export const ImageUpload = ({ updatePlaylistImg }) => {
   };
 
   return (
-    <div className='image-upload' ref={changeImg}>
+    <div className='image-upload' ref={changeImg} style={{border:selectedImage?'none':''}}>
       {!selectedImage && 
         <input
           type="file"
@@ -46,7 +51,7 @@ export const ImageUpload = ({ updatePlaylistImg }) => {
       }
       {selectedImage && (
           <img className='image' onClick={handleUpload}
-            src={URL.createObjectURL(selectedImage)}
+            src={selectedImage}
             alt="Selected"
             title='Change by clicking again'
           />
