@@ -12,7 +12,7 @@ export const SideItem = ({ categ, selected, directTo }) => {
     return categ.icon === selected ? selected + '-full' : categ.icon
   }
   return (
-    <div onClick={() => directTo(categ.path || `/Playlist/${categ._id || categ.spotifyId}`)} className={getClass()}>
+    <div onClick={() => directTo(categ.path || `/Playlist/${categ._id || (categ.spotifyId === '1234s' ? (categ.spotifyId+categ.id) : categ.spotifyId)}`)} className={getClass()}>
       {categ.icon && <i className='side-icon'>{SvgIcon({ iconName: getIcon() })}</i>}
       <p>{categ.name}</p>
     </div>

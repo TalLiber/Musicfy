@@ -9,6 +9,7 @@ import {Playlist} from './views/Playlist'
 import {Category} from './views/Category'
 import { Login } from './views/Login'
 import { Signup } from './views/Signup'
+import { EditPlaylist } from "./views/EditPlaylist";
 
 
 const routes = [
@@ -36,6 +37,14 @@ const routes = [
     {
       path: 'Category/:id',
       element: <Category/>
+    },
+    {
+      path: 'create',
+      element: <EditPlaylist/>
+    },
+    {
+      path: 'create/:id',
+      element: <EditPlaylist/>
     },
   ]
  },

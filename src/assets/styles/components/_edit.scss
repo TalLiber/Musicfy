@@ -1,0 +1,109 @@
+.edit{
+    margin-top: 64px;
+    .playlist-header{
+        height: 30vh;
+        max-height: 336px;
+        min-height: 276px;
+        display: flex;
+        flex-direction: row;
+        padding: 32px;
+        padding-bottom: 24px;
+        padding-top: 0px;
+        align-items: end;
+
+        & input{
+            background-color: $clr3;
+            color: $clr1;
+            border: none;
+            width: 100%;
+        }
+
+        .playlist-name{
+            font-size: 4.5rem;
+            font-weight: 900px;
+        }
+
+        .header-top{
+            height: 64px;
+            display: block;
+        }
+
+        .playlist-info{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .playlist-disc{
+            color: rgba(255, 255, 255, 0.698);
+        }
+
+        .img-container{
+            height: 232px;
+            min-width: 232px;
+            width: 232px;
+            margin-inline-end: 24px;
+            display: flex;
+            align-items: center;
+            & img{
+                box-shadow: 0 4px 60px rgba(0,0,0,.5);
+                height: 100%;
+                width: 100%;
+                object-fit: cover;
+                object-position: center;
+            }
+        }
+    }
+    .playlist-action{
+
+        & > *{
+            margin-right: 20px;
+        }
+
+        filter: brightness(80%);
+        height: 104px;
+        padding: 24px 32px;
+        display: flex;
+        flex-direction: row;
+        .btn-play{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 56px;
+            height: 56px;
+            border: 0;
+            border-radius: 500px;
+            background-color: #1fdf64;
+
+            svg{
+                margin-top: 3px;
+                width: 25px;
+                height: 25px;
+            }
+            
+        }
+        
+        .btn-heart{
+            background-color: transparent;
+            border: 0;
+            
+            svg{
+                margin-top: 3px;
+                width: 40px;
+                height: 40px;
+                color: aliceblue;
+            }
+
+            &.fill{
+                svg {
+                    fill: #1fdf64;
+                }
+            }
+        }
+        
+        .btn-more{
+            background-color: transparent;
+            border: 0;
+            color: aliceblue;
+        }
+    }
+}

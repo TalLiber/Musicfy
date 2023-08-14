@@ -33,10 +33,10 @@ export const SideNav = () => {
   ]
 
   const directTo = (path) => {
-    if (path === '/create') {
-      addUserPlaylist()
-      path = '/'
-    }
+    // if (path === '/create') {
+    //   addUserPlaylist()
+    //   path = '/'
+    // }
     navigate(path)
   }
 

@@ -1,5 +1,7 @@
 import { categoryService } from '../../services/category.service.js'
 import { playlistService } from '../../services/playlist.service.js'
+import { addUserPlaylist, getLoggedinUser } from './user.actions.js'
+import { userService } from '../../services/user.service.js'
 
 export function loadPlaylists() {
   return async (dispatch, getState) => {
@@ -95,5 +97,35 @@ export function changePlaylistColor(color) {
     } catch (err) {
       console.log('err:', err)
     }
+  }
+}
+
+export function getEmptyPlaylist() {
+  return async (dispatch) => {
+    var playlist = playlistService.getEmptyPlaylist()
+    playlist = await playlistService.save(playlist)
+    const userPlaylist = {
+      spotifyId: '1234s',
+      id: playlist._id,
+      name: playlist.name,
+      image:playlist.image
+    }
+    await dispatch(addUserPlaylist(userPlaylist))
+    dispatch({ type: 'SET_PLAYLIST', playlist })
+
+  }
+}
+
+export function updatePlaylist(updatedPlaylist) {
+  return async (dispatch) => {
+    const playlist = await playlistService.save(updatedPlaylist)
+    const userPlaylist = {
+      spotifyId: '1234s',
+      id: playlist._id,
+      name: playlist.name,
+      image:playlist.image
+    }
+    await dispatch(addUserPlaylist(userPlaylist))
+    dispatch({type: 'SET_PLAYLIST', playlist})
   }
 }

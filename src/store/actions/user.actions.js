@@ -58,7 +58,9 @@ export function addUserPlaylist(playlist) {
     return async (dispatch, getState) => {
         try {
             const user = getState().userModule.loggedInUser
-            user.playlist.push({...playlist })
+            const idx = user.playlist.findIndex(currplaylist => currplaylist.id === playlist.id)
+            if ( idx === -1) user.playlist.push({...playlist })
+            else user.playlist[idx] = playlist
             await userService.update(user)
             dispatch({ type: 'UPDATE_USER', user})
         } catch(err) {

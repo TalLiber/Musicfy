@@ -4,6 +4,7 @@ import { updateTrackIdx, getYoutubeId } from '../store/actions/playlists.actions
 import { updatePlayer, updateCurrTime, toggleProp, shuffleIdxs } from '../store/actions/player.actions'
 
 import SvgIcon from './SvgIcon'
+import { useLocation } from "react-router-dom"
 
 export const MediaPlayer = () => {
 
@@ -14,6 +15,7 @@ export const MediaPlayer = () => {
   const playerSettings = useSelector(state => state.playerModule)
   const intervalIdRef = useRef()
   const player = useRef(null)
+  const Location = useLocation()
 
   const dispatch = useDispatch()
 
@@ -21,12 +23,12 @@ export const MediaPlayer = () => {
     if(!currTrack || !currPlaylist.spotifyId) return
     if (!player.current) startIframe()
     else loadNewVideo()
-  }, [currTrack.youtubeId])
+  }, [currTrack?.youtubeId])
 
   useEffect(() => {
-    if (currTrack.youtubeId) return
-    dispatch(getYoutubeId(`${currTrack.title}- ${currTrack.artists[0]}`))
-  }, [currTrack.title])
+    if (currTrack?.youtubeId || Location.pathname.includes('create') ) return
+    dispatch(getYoutubeId(`${currTrack?.title}- ${currTrack?.artists[0]}`))
+  }, [currTrack?.title])
 
   useEffect(() => {
     if (!player.current) return
@@ -50,7 +52,7 @@ export const MediaPlayer = () => {
   }, [playerSettings.currTime])
 
   function loadNewVideo() {
-    player.current.cueVideoById(currTrack.youtubeId, 0)
+    player.current.cueVideoById(currTrack?.youtubeId, 0)
     clearInterval(intervalIdRef.current)
     dispatch(updatePlayer('currTime', 0))
     if (playerSettings.isPlaying) {
@@ -74,7 +76,7 @@ export const MediaPlayer = () => {
   function loadVideo() {
 
     player.current = new window.YT.Player(`playerRef`, {
-      videoId: currTrack.youtubeId,
+      videoId: currTrack?.youtubeId,
       height: '0',
       width: '0',
       events: {
@@ -189,10 +191,13 @@ export const MediaPlayer = () => {
   return (
     <div className="player-container">
       <div className="track-container">
-        <img src={currTrack.imgUrl} />
+        <img src={currTrack?.imgUrl} />
         <div className="track-details">
-          <p className="track-title">{currTrack.title}</p>
-          <p className="track-artist">{currTrack.artists[0]}</p>
+          <p className="track-title">{currTrack?.title}</p>
+          {
+            currTrack?.tracks &&
+            <p className="track-artist">{currTrack?.artists[0]}</p>
+          }
         </div>
         <i>{SvgIcon({ iconName: 'heart-empty' })}</i>
       </div>

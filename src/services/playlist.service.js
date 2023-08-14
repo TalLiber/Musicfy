@@ -78,11 +78,12 @@ function getCategories() {
 
 function getEmptyPlaylist() {
   return {
-    name: 'My Playlist #2',
+    name: 'My Playlist',
     description: '',
     owner: 'user',
-    imgUrl: '',
+    image: null,
     tracks: [],
+    spotifyId:'1234s'
   }
 }
 
