@@ -31,7 +31,7 @@ export const Home = () => {
         getCategories({txt:"HomePage"})
     },[])
     
-    const getCategories = async (filterBy) => {
+    const getCategories = (filterBy) => {
         dispatch(setFilterBy(filterBy))
         dispatch(loadCategories())
     }
@@ -42,7 +42,7 @@ export const Home = () => {
         <div className='home-container'>
             <div ref={containerRef}></div>
             {categories.map((category,idx) => {
-                return <HomeList id={category.id} playlists={category.items} idx={idx} key={idx} width={dimensions.width}/>
+                return <HomeList id={category.spotifyId} playlists={category.items} idx={idx} key={idx} width={dimensions.width}/>
             })}
         </div>
     )

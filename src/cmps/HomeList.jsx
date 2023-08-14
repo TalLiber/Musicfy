@@ -7,9 +7,9 @@ export const HomeList = ({playlists,idx, width,id}) => {
     const [playlistSlice,setPlaylistSlice] = useState(6)
     const navigate = useNavigate()
 
-    const onMoveToPlaylist = (idx) => {
-        console.log(idx)
-    }
+    useEffect(() => {
+        // console.log('playlists', playlists)
+    },[]) 
 
     useEffect(() =>{
         if (width <= 770) setPlaylistSlice(2)
@@ -30,7 +30,7 @@ export const HomeList = ({playlists,idx, width,id}) => {
             </div>
             <div className='home-list-grid'>
             {playlists.slice(0,playlistSlice).map((playlist,idx) => {
-                return <HomePreview key={idx} playlist = {playlist}/>
+                return <HomePreview key={idx} playlistData = {playlist}/>
             })}
             </div>
         </div>

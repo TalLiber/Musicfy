@@ -1,4 +1,4 @@
-.playlist{
+.edit{
     margin-top: 64px;
     .playlist-header{
         height: 30vh;
@@ -11,9 +11,16 @@
         padding-top: 0px;
         align-items: end;
 
+        & input{
+            background-color: transparent;
+            color: $clr1;
+            border: none;
+            width: 100%;
+        }
+
         .playlist-name{
             font-size: 4.5rem;
-            font-weight: 900px;
+            margin-block-end: 1px;
         }
 
         .header-top{
@@ -32,6 +39,7 @@
 
         .img-container{
             height: 232px;
+            min-width: 232px;
             width: 232px;
             margin-inline-end: 24px;
             display: flex;

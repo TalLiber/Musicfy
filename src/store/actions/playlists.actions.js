@@ -1,5 +1,7 @@
 import { categoryService } from '../../services/category.service.js'
 import { playlistService } from '../../services/playlist.service.js'
+import { addUserPlaylist, getLoggedinUser } from './user.actions.js'
+import { userService } from '../../services/user.service.js'
 
 export function loadPlaylists() {
   return async (dispatch, getState) => {
@@ -32,7 +34,6 @@ export function removePlaylist(playlistId) {
     try {
       const playlists = await playlistService.remove(playlistId)
       dispatch({ type: 'REMOVE_PLAYLIST', playlistId })
-      return 'hello'
     } catch (err) {
       console.log('err:', err)
     }
@@ -61,10 +62,12 @@ export function updateTrackIdx(byType, toUpdate) {
   }
 }
 
-export function getPlaylistById(spotifyId) {
+export function getPlaylistById(spotifyId, sentPlaylist = null) {
   return async (dispatch) => {
     try {
-      const playlist = await playlistService.getById(spotifyId)
+      var playlist
+      sentPlaylist ? playlist = sentPlaylist : 
+      playlist = await playlistService.getById(spotifyId)
       dispatch({ type: 'SET_PLAYLIST', playlist })
     } catch (err) {
       console.log('err:', err)
@@ -79,7 +82,6 @@ export function getYoutubeId(keyword) {
       const youtubeId = await playlistService.getYoutubeId(keyword)
       dispatch({ type: 'SET_YOUTUBE_ID', youtubeId })
       playlistService.save(getState().playlistModule.currPlaylist)
-      console.log('getState',getState().playlistModule.currPlaylist);
     } catch (err) {
       console.log('err:', err)
     }
@@ -93,5 +95,35 @@ export function changePlaylistColor(color) {
     } catch (err) {
       console.log('err:', err)
     }
+  }
+}
+
+export function getEmptyPlaylist() {
+  return async (dispatch) => {
+    var playlist = playlistService.getEmptyPlaylist()
+    playlist = await playlistService.save(playlist)
+    const userPlaylist = {
+      spotifyId: '1234s',
+      id: playlist._id,
+      name: playlist.name,
+      image:playlist.image
+    }
+    await dispatch(addUserPlaylist(userPlaylist))
+    dispatch({ type: 'SET_PLAYLIST', playlist })
+
+  }
+}
+
+export function updatePlaylist(updatedPlaylist) {
+  return async (dispatch) => {
+    const playlist = await playlistService.save(updatedPlaylist)
+    const userPlaylist = {
+      spotifyId: '1234s',
+      id: playlist._id,
+      name: playlist.name,
+      image:playlist.image
+    }
+    await dispatch(addUserPlaylist(userPlaylist))
+    dispatch({type: 'SET_PLAYLIST', playlist})
   }
 }

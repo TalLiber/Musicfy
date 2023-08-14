@@ -8,6 +8,11 @@ const INITIAL_STATE = {
 export function categoryReducer(state = INITIAL_STATE, action) {
     // debugger
     switch (action.type) {
+        case 'SET_CATEGORIES':
+            return {
+                ...state,
+                categories: [...action.categories]
+            }
         case 'SET_CATEGORY_PLAYLISTS':
             return {
                 ...state,

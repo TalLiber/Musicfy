@@ -39,7 +39,6 @@ export const Header = (props) => {
             else {
                 setOpacityLevel("ff")
                 setHeaderBgc(prevState => {
-                    console.log(prevState.slice(0,7))
                     return prevState.slice(0,7) + 'ff'
                 })
             }

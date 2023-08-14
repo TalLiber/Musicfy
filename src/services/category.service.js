@@ -26,7 +26,8 @@ async function query(filterBy = {}) {
     // return httpService.get(STORAGE_KEY, filterBy)
     var categories
     if (filterBy.txt = "HomePage") {
-        categories = await httpService.get('playlist',filterBy)
+        // categories = await storageService.query("HomePage_db")
+        categories = await httpService.get('category')
         return categories
     }
 

@@ -1,6 +1,6 @@
 [
     {
-        "id":"0JQ5DAqbMKFCbimwdOYlsl",
+        "spotifyId":"0JQ5DAqbMKFCbimwdOYlsl",
         "name": "Focus",
         "imgUrl": "https://t.scdn.co/media/original/genre-images-square-274x274_5e50d72b846a198fcd2ca9b3aef5f0c8_274x274.jpg",
         "backgroundColor": "#503750",    
@@ -694,7 +694,7 @@
         
     },
     {
-        "id": "0JQ5DAqbMKFEC4WFtoNRpw",
+        "spotifyId": "0JQ5DAqbMKFEC4WFtoNRpw",
         "name": "Pop",
         "imgUrl": "https://t.scdn.co/media/derived/pop-274x274_447148649685019f5e2a03a39e78ba52_0_0_274_274.jpg",
         "backgroundColor": "#f037a5",
