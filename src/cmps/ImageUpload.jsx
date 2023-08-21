@@ -25,10 +25,10 @@ export const ImageUpload = ({ updatePlaylistImg, playlistImg }) => {
 
         const data = await response.json()
         updatePlaylistImg(data.secure_url)
+        setSelectedImage(data.secure_url)
       } catch (error) {
         console.error('Error uploading image:', error);
       }
-      setSelectedImage(data.secure_url)
     }
   };
 
@@ -36,7 +36,7 @@ export const ImageUpload = ({ updatePlaylistImg, playlistImg }) => {
     if (selectedImage) {
       setSelectedImage(null)
       await updatePlaylistImg(null)
-      setTimeout(() => { changeImg.current.children[0].click() }, 100)
+      setTimeout(() => { changeImg.current.children[0].click() }, 500)
     }
   };
 
