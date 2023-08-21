@@ -2,11 +2,11 @@ import { useEffect } from 'react'
 import { useRef, useState } from 'react'
 
 export const ImageUpload = ({ updatePlaylistImg, playlistImg }) => {
-  const [selectedImage, setSelectedImage] = useState(null)
+  const [selectedImage, setSelectedImage] = useState('https://res.cloudinary.com/dtaiyvzq5/image/upload/v1692020104/m2pslfiyjn8tgx9hs5pw.png')
   const changeImg = useRef(null)
 
   useEffect(() => {
-    setSelectedImage(playlistImg)
+    setSelectedImage(playlistImg || 'https://res.cloudinary.com/dtaiyvzq5/image/upload/v1692020104/m2pslfiyjn8tgx9hs5pw.png')
   },[playlistImg])
 
   const handleImageChange = async (e) => {
@@ -51,8 +51,8 @@ export const ImageUpload = ({ updatePlaylistImg, playlistImg }) => {
       }
       {selectedImage && (
           <img className='image' onClick={handleUpload}
-            src={selectedImage}
-            alt="Selected"
+            src={selectedImage }
+            alt="select"
             title='Change by clicking again'
           />
       )}
