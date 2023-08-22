@@ -139,10 +139,9 @@
     }
 
     @include for-mobile-layout {
-        width: 85%;
+        grid-template-areas: '1 2';
         grid-template-columns: 60% 1fr;
         margin-inline: 20px;
-        padding-inline-start: 0;
 
         .track-img {
             // margin-inline-start: 15px;
@@ -161,8 +160,6 @@
 
         .like-time {
             flex-direction: row-reverse;
-            margin-inline-end: auto;
-            align-items: center;
 
             .btn-heart {
                 margin-inline-start: 0;
