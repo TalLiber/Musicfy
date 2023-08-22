@@ -1,22 +1,30 @@
-.playlist-list{
+.playlist-list {
     display: flex;
     flex-direction: column;
 
-    .playlist-list-table{
-        .table-header{
+    .playlist-list-table {
+        .table-header {
             padding: 0 32px;
             color: #b3b3b3;
             height: 36px;
             display: grid;
             grid-template-areas: '1 2 3 4 5';
-            grid-template-columns: 16px 6fr 4fr 3fr minmax(120px,1fr);
+            grid-template-columns: 16px 6fr 4fr 3fr minmax(120px, 1fr);
             grid-gap: 16px;
             align-content: center;
             border-bottom: #b3b3b330 solid 0.8px;
             margin-block-end: 11px;
 
-            &>:last-child{
+            &>:last-child {
                 padding-left: 80px;
+            }
+        }
+    }
+
+    @include for-mobile-layout {
+        .playlist-list-table {
+            .table-header {
+                display: none;
             }
         }
     }

@@ -23,4 +23,14 @@
     .player-container {
         grid-area: player;
     }
+
+    @include for-mobile-layout {
+        grid-template-columns: 1fr;
+        grid-template-areas: 'main' 'main' 'player';
+        overflow: hidden;
+
+        .header-container{
+            left: 0;
+        }
+    }
 }

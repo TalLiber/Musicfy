@@ -27,7 +27,7 @@ export const PlaylistPreview = ({ track, idx, playTrack, playlistId, handleTrack
 
 
     return (
-        <section className='playlist-preview'>
+        <section className='playlist-preview' onClick={() => playTrack(idx, (playerSettings.isPlaying && currTrack.id === track.id ? false : true))}>
             <button className='btn-player' onClick={() => playTrack(idx, (playerSettings.isPlaying && currTrack.id === track.id ? false : true))}>
                 {SvgIcon({ iconName: playerSettings.isPlaying && currTrack.id === track.id ? 'player-pause' : 'player-play' })}
             </button>

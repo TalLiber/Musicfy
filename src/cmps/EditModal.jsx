@@ -10,6 +10,10 @@ export const EditModal = ({updatePlaylistImg, savePlaylist, setIsModalOpen}) => 
     const [playlistValue, setPlaylistValue] = useState(playlist)
     const [isDone, setIsDone] = useState(true)
 
+    useEffect(()=>{
+        setPlaylistValue(playlist)
+    },[playlist.image])
+
     function handlePlaylist(ev){
         if (!isDone) return
         setPlaylistValue((prevState) => {
@@ -25,9 +29,6 @@ export const EditModal = ({updatePlaylistImg, savePlaylist, setIsModalOpen}) => 
         setIsModalOpen(false)
     }
 
-    useEffect(()=>{
-        setPlaylistValue(playlist)
-    },[playlist.image])
 
     return (
         <section className='edit-modal'>

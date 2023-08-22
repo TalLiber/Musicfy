@@ -17,18 +17,15 @@ import SvgIcon from '../cmps/SvgIcon'
 export const EditPlaylist = () => {
     
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const params = useParams()
+    const fac = new FastAverageColor()
     const playlist = useSelector(state => {return {...state.playlistModule.currPlaylist}})
     const playerSettings = useSelector(state => state.playerModule)
-    const userPlaylists = useSelector(state => {return {...state.userModule.loggedInUser}})
-    const params = useParams()
+    const [bgc, setBgc] = useState()
+    const [isModaOpen, setIsModalOpen] = useState(false)
     const [headerRef, headerName] = useHeaderObserver()
     const [containerRef, isVisible] = useObserver()
-    const [bgc, setBgc] = useState()
-    const fac = new FastAverageColor()
-    const [isLiked, setIsLiked] = useState(false)
-    const [playlistValue, setPlaylistValue] = useState(playlist)
-    const navigate = useNavigate()
-    const [isModaOpen, setIsModalOpen] = useState(false)
     
 
     useEffect(() => {
@@ -41,11 +38,6 @@ export const EditPlaylist = () => {
     },[playlist._id])
     
     useEffect(() => {
-        setIsLiked(userPlaylists.playlist.some((playlist) => playlist.spotifyId === params.id))
-    }, [userPlaylists.playlist.length])
-    
-    useEffect(() => {
-        setPlaylistValue(playlist)
         if (playlist.image === null){
             dispatch(changePlaylistColor('#000000'))
             setBgc('#000000')
@@ -61,27 +53,13 @@ export const EditPlaylist = () => {
             .catch(e => {
                 console.log(e)
             })
-    },[playlist.name,playlist.image,playlist.tracks,playlist.description])
+    },[playlist.image])
 
     useEffect(() => {
         return () => {
             dispatch(changePlaylistColor('#000000'))
         }
     }, [])
-
-    function handlePlaylist(){
-        if(isLiked){
-            dispatch(removeUserPlaylist(params.id))
-        }
-        else{
-            const playlistToAdd = {
-                spotifyId: params.id,
-                name: playlist.name,
-                image:playlist.image
-            }
-            dispatch(addUserPlaylist(playlistToAdd))
-        }
-    }
 
     function handleTrack(isLiked, track) {
         if(isLiked) {
@@ -97,25 +75,15 @@ export const EditPlaylist = () => {
         dispatch(updatePlayer('isPlaying', isPlaying))
     }
 
-    function handlePlaylist(ev){
-        setPlaylistValue((prevState) => {
-            prevState[ev.target.id] = ev.target.value
-            prevState._id = playlist._id
-            return prevState
-        })
-    }
     async function updatePlaylistImg(imgUrl){
-        setPlaylistValue((prevState) => {
-            prevState.image = imgUrl
-            dispatch(updatePlaylist(prevState))
-            return prevState
-        })
+        const updatedPlaylist = {...playlist, image:imgUrl}
+        savePlaylist(updatedPlaylist)
     }
 
     function savePlaylist(playlist){
         dispatch(updatePlaylist(playlist))
     }
-    // if (playlist.spotifyId !== 1234) return <div>Loading...</div>
+
     return (
         <section className="edit">
             {
@@ -128,8 +96,6 @@ export const EditPlaylist = () => {
                 </div>
                 <section className='playlist-info' onClick={() => setIsModalOpen(true)}>
                     <p>Playlist</p>
-                    {/* <input type='text' id='name' className='playlist-name' value={playlistValue.name} placeholder='Playlist name' onChange={handlePlaylist} onBlur={() => dispatch(updatePlaylist(playlistValue))} />
-                    <input type='text' id='description' className='playlist-disc' value={playlistValue.description} placeholder='Add discription' onChange={handlePlaylist} onBlur={() => dispatch(updatePlaylist(playlistValue))} /> */}
                     <h1 className='playlist-name'>{playlist.name}</h1>
                     <p className='playlist-disc'>{playlist.description}</p>
                 </section>
