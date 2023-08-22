@@ -9,6 +9,7 @@ import { updatePlayer } from '../store/actions/player.actions'
 import { FastAverageColor } from 'fast-average-color'
 import { removeUserPlaylist, addUserPlaylist, addUserTrack, removeUserTrack  } from '../store/actions/user.actions'
 import { ImageUpload } from '../cmps/ImageUpload'
+import { EditModal } from '../cmps/EditModal'
 
 import SvgIcon from '../cmps/SvgIcon'
 
@@ -27,6 +28,7 @@ export const EditPlaylist = () => {
     const [isLiked, setIsLiked] = useState(false)
     const [playlistValue, setPlaylistValue] = useState(playlist)
     const navigate = useNavigate()
+    const [isModaOpen, setIsModalOpen] = useState(false)
     
 
     useEffect(() => {
@@ -109,28 +111,33 @@ export const EditPlaylist = () => {
             return prevState
         })
     }
+
+    function savePlaylist(playlist){
+        dispatch(updatePlaylist(playlist))
+    }
     // if (playlist.spotifyId !== 1234) return <div>Loading...</div>
     return (
         <section className="edit">
+            {
+                isModaOpen &&
+                <EditModal savePlaylist={savePlaylist} updatePlaylistImg = {updatePlaylistImg} setIsModalOpen={setIsModalOpen}/>
+            }
             <section className='playlist-header' style={{ backgroundColor: bgc || '#000000'}}>
-            {/* <section className='playlist-header' style={{ backgroundColor: '#000000'}}> */}
                 <div className='img-container'>
-                    <ImageUpload updatePlaylistImg = {updatePlaylistImg} />
+                    <ImageUpload updatePlaylistImg = {updatePlaylistImg} playlistImg = {playlist.image} />
                 </div>
-                <section className='playlist-info'>
+                <section className='playlist-info' onClick={() => setIsModalOpen(true)}>
                     <p>Playlist</p>
-                    <input type='text' id='name' className='playlist-name' value={playlistValue.name} placeholder='Playlist name' onChange={handlePlaylist} onBlur={() => dispatch(updatePlaylist(playlistValue))} />
-                    <input type='text' id='description' className='playlist-disc' value={playlistValue.description} placeholder='Add discription' onChange={handlePlaylist} onBlur={() => dispatch(updatePlaylist(playlistValue))} />
+                    {/* <input type='text' id='name' className='playlist-name' value={playlistValue.name} placeholder='Playlist name' onChange={handlePlaylist} onBlur={() => dispatch(updatePlaylist(playlistValue))} />
+                    <input type='text' id='description' className='playlist-disc' value={playlistValue.description} placeholder='Add discription' onChange={handlePlaylist} onBlur={() => dispatch(updatePlaylist(playlistValue))} /> */}
+                    <h1 className='playlist-name'>{playlist.name}</h1>
+                    <p className='playlist-disc'>{playlist.description}</p>
                 </section>
             </section>
             <section className='playlist-action' style={{ backgroundColor: bgc || '#000000' }}>
-            {/* <section className='playlist-action' style={{ backgroundColor: '#000000' }}> */}
                 <button className='btn-play' onClick={() => dispatch(updatePlayer('isPlaying', !playerSettings.isPlaying))}>
                     {SvgIcon({ iconName: playerSettings.isPlaying ? 'player-pause' : 'player-play' })}
                 </button>
-                {/* <button className={ isLiked ? 'btn-heart fill' : 'btn-heart'} onClick={handlePlaylist}>
-                    {SvgIcon({ iconName: isLiked? 'heart-fill' : 'heart-no-fill' })}
-                </button> */}
                 <button className='btn-more'>{SvgIcon({ iconName: 'dots' })}</button>
                 <div ref={headerRef}></div>
             </section>

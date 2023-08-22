@@ -1,5 +1,6 @@
 .edit{
     margin-top: 64px;
+    position: relative;
     .playlist-header{
         height: 30vh;
         max-height: 336px;
@@ -31,6 +32,7 @@
         .playlist-info{
             display: flex;
             flex-direction: column;
+            cursor: pointer;
         }
 
         .playlist-disc{
