@@ -92,6 +92,9 @@ export const Header = (props) => {
         setIsModalOpen(state => state = !state)
     }
 
+    function handleInput(ev) {
+        console.log(ev.target.value);
+    }
     return (
         <section className='header-container flex' style={{'backgroundColor':!isSearch? headerBgc : "#000000ff"}}>
             <div className='action flex'>
@@ -112,7 +115,7 @@ export const Header = (props) => {
                 { isSearch &&
                     <div className={isFocus?' search-box focus': 'search-box'}>
                         {SvgIcon({iconName: 'search'})}
-                        <input type="text" onFocus={()=>setIsFocus(true)} onBlur={()=>setIsFocus(false)} placeholder='What do you want to listen to?' />
+                        <input type="text" onInput={handleInput} onFocus={()=>setIsFocus(true)} onBlur={()=>setIsFocus(false)} placeholder='What do you want to listen to?' />
                     </div>
                 }
             </section>
