@@ -1,25 +1,25 @@
-.home-preview{
+.home-preview {
     padding: 16px;
     width: 100%;
     background-color: #181818;
     border-radius: 5px;
     aspect-ratio: 1.5/1;
 
-    h1{
+    h1 {
         overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
     }
 
-    .img-preview{
+    .img-preview {
         border: 1px solid black;
         border-radius: 5px;
         margin-bottom: 16px;
         width: 100%;
     }
 
-    p{
+    p {
         color: #a7a7a7;
         overflow: hidden;
         display: -webkit-box;
@@ -27,8 +27,18 @@
         -webkit-box-orient: vertical;
     }
 
-    &:hover{
+    &:hover {
         cursor: pointer;
         background-color: #282828;
+    }
+
+    @include for-mobile-layout {
+        aspect-ratio: 1/1.2;
+        height: 100%;
+
+        p {
+            display: none;
+        }
+
     }
 }

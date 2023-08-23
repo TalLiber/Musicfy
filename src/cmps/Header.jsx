@@ -9,7 +9,7 @@ import { UserModule } from './UserModal'
 
 import SvgIcon from './SvgIcon'
 
-export const Header = (props) => {
+export const Header = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -19,25 +19,33 @@ export const Header = (props) => {
     const currUser = useSelector(state => state.userModule.loggedInUser)
     const [isPrev,setIsPrev] = useState()
     const [isNext,setIsNext] = useState()
-    const [currPath,setCurrpath] = useState()
     const [isSearch, setIsSearch] = useState()
     const [isPlaylist, setIsPlaylist] = useState()
-    const [opacityLevel,setOpacityLevel] = useState("80")
     const [headerBgc, setHeaderBgc] = useState("#00000080")
     const [headerName, setHeaderName] = useState('')
     const [isFocus, setIsFocus] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [width, setWidth] = useState(window.innerWidth)
+
+    const handleResize = () => {
+        setWidth(window.innerWidth)
+    }
+
+    useEffect(() => {
+      window.addEventListener("resize", handleResize)
+
+      return () => {window.removeEventListener("resize", handleResize)}
+
+    }, [])
 
     useEffect(() => {
         EventBus.getInstance().addListener("toggleOpacity",  (data) =>{
             if(data){
-                setOpacityLevel("80")
                 setHeaderBgc(prevState=> {
                     return prevState.slice(0,7) + '80'
                 })
             } 
             else {
-                setOpacityLevel("ff")
                 setHeaderBgc(prevState => {
                     return prevState.slice(0,7) + 'ff'
                 })
@@ -48,7 +56,6 @@ export const Header = (props) => {
     },[])
 
     useEffect(() => {
-        setCurrpath(location.pathname)
         location.pathname.includes('Playlist')? setIsPlaylist(true) : setIsPlaylist(false)
         location.pathname.includes('search')? setIsSearch(true) : setIsSearch(false)
     },[location.pathname])
@@ -97,21 +104,21 @@ export const Header = (props) => {
     }
     return (
         <section className='header-container flex' style={{'backgroundColor':!isSearch? headerBgc : "#000000ff"}}>
-            <div className='action flex'>
+            {(width > 550 || (!headerName && !isSearch)) && <div className='action flex'>
                 <button className='btn-action' disabled={isPrev} onClick={() => handleClick(-1)}>
                     {SvgIcon({ iconName: 'prev' })}
                 </button>
                 <button className='btn-action' disabled={!isNext} onClick={() => handleClick(1)}>
                     {SvgIcon({ iconName: 'next' })}
                 </button>
-            </div>
+            </div>}
             <section className='content-container'>
                 { isPlaylist && 
                     <button className='btn-play' hidden={!headerName} onClick={() => dispatch(updatePlayer('isPlaying', !playerSettings.isPlaying))}>
                         {SvgIcon({ iconName: playerSettings.isPlaying ? 'player-pause' : 'player-play' })}
                     </button>
                 }
-                <div>{headerName}</div>
+                <div className='header-name'>{headerName}</div>
                 { isSearch &&
                     <div className={isFocus?' search-box focus': 'search-box'}>
                         {SvgIcon({iconName: 'search'})}

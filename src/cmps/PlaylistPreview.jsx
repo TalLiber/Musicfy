@@ -27,11 +27,11 @@ export const PlaylistPreview = ({ track, idx, playTrack, playlistId, handleTrack
 
 
     return (
-        <section className='playlist-preview' onClick={() => playTrack(idx, (playerSettings.isPlaying && currTrack.id === track.id ? false : true))}>
+        <section className='playlist-preview' >
             <button className='btn-player' onClick={() => playTrack(idx, (playerSettings.isPlaying && currTrack.id === track.id ? false : true))}>
                 {SvgIcon({ iconName: playerSettings.isPlaying && currTrack.id === track.id ? 'player-pause' : 'player-play' })}
             </button>
-            <section className='track-title'>
+            <section className='track-title' onClick={() => playTrack(idx, (playerSettings.isPlaying && currTrack.id === track.id ? false : true))}>
                 <div className='track-img'>
                     <img src={track.imgUrl} alt="" />
                 </div>

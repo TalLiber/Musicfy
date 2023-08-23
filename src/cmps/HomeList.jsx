@@ -12,7 +12,8 @@ export const HomeList = ({playlists,idx, width,id}) => {
     },[]) 
 
     useEffect(() =>{
-        if (width <= 770) setPlaylistSlice(2)
+        if (width <= 550) setPlaylistSlice(9)
+        else if(width > 550 && width <= 770) setPlaylistSlice(2)
         else if(width > 770 && width < 975) setPlaylistSlice(3)
         else if(width >= 975 && width < 1300) setPlaylistSlice(4)
         else if(width >= 1300 && width < 1500) setPlaylistSlice(5)

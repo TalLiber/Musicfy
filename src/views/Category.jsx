@@ -23,7 +23,6 @@ export const Category = () => {
     useEffect(() => {
         getCategory()
         const currCategory = categories.find(cate=> cate.id === params.id)
-        console.log('currCategory',currCategory)
         setCategory(currCategory)
         setHeaderName.current = currCategory.name
         setCmpStyle({'backgroundColor':currCategory.backgroundColor})
