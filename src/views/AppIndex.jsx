@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom'
 import { Header } from '../cmps/Header'
 import { SideNav } from '../cmps/SideNav'
 import { MediaPlayer } from '../cmps/MediaPlayer'
+import { MobileNavBar } from './MobileNavBar'
 
 export const AppIndex = () => {
  return (
@@ -14,6 +15,7 @@ export const AppIndex = () => {
       <Outlet/>
     </section>
     <MediaPlayer/>
+    <MobileNavBar/>
   </section>
  )
 }

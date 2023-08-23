@@ -13,7 +13,6 @@
 
         .playlist-name{
             font-size: 4.5rem;
-            font-weight: 900px;
         }
 
         .header-top{
@@ -104,8 +103,8 @@
         width: 100vw;
         .playlist-header{
             padding-inline: 0;
-            padding-block-start: 50px;
-            height: 65vh;
+            padding-block-start: 58px;
+            height: 66vh;
             max-height: none;
             flex-direction: column;
             align-items: center;
@@ -115,6 +114,7 @@
                 position: absolute;
                 text-align: center;
                 bottom: 0;
+                margin-block-end: 10px;
             }
             
             .img-container{
@@ -124,7 +124,6 @@
             }
             .playlist-name{
                 font-size: 2.5rem;
-                font-weight: 900px;
             }
             .playlist-disc{
                 padding-inline-start: 15%;
@@ -133,7 +132,7 @@
         }
 
         .playlist-action{
-            height: 80px;
+            height: 77px;
             padding-block-start: 15px;
             padding-inline-start: 10px;
         }

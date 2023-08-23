@@ -39,6 +39,14 @@
         font-weight: 700;
         align-items: center;
         gap: 8px;
+        
+        .header-name{
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            max-width: 70%;
+        }
 
         .search-box {
             display: flex;
@@ -108,15 +116,15 @@
     }
 
     .login-container {
+        display: flex;
         &>* {
             background-color: transparent;
             border: 0px;
             transition-duration: 33ms;
             font-weight: 700;
             font-size: 1rem;
-
         }
-
+        
         .btn-login {
             font-family: Circular;
             color: $bg-base;
@@ -167,11 +175,12 @@
     }
 
     @include for-mobile-layout {
+        padding-inline: 16px;
         height: 60px;
 
-        .action {
-            display: none;
-        }
+        // .action {
+        //     display: none;
+        // }
 
         .content-container {
             .btn-play {
@@ -186,6 +195,14 @@
                     width: 15px;
                     height: 15px;
                 }
+
+            }
+        }
+
+        .login-container{
+            &>* {
+                font-size: 0.8rem;
+                width: max-content;
 
             }
         }

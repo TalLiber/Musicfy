@@ -1,12 +1,12 @@
 .home-list{
+    width: 100%;
     margin-bottom: 16px;
-    overflow-y: hidden;
+    overflow: hidden;
     .home-list-grid{
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
         grid-template-rows: 1fr;
         gap: 24px;
-        // grid-auto-rows: 0;
     }
 
     .home-list-header{
@@ -28,6 +28,16 @@
         .btn-header:hover{
             border-bottom: 1px solid #a7a7a7;
         }
+    }
+
+    @include for-mobile-layout {
+        height: 50vh;
+        .home-list-grid{
+            display: flex;
+            overflow-x: scroll;
+            height: 40vh;
+        }
+
     }
 
 }
