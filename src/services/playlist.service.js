@@ -23,6 +23,7 @@ export const playlistService = {
   getCategories,
   getSpotifyItems,
   getYoutubeId,
+  getSearchItems
 }
 window.cs = playlistService
 
@@ -46,6 +47,12 @@ async function query(filterBy = {}) {
 async function getById(spotifyId) {
   // return storageService.get(STORAGE_KEY, playlistId)
   const play = await httpService.get(`playlist/${spotifyId}`)
+  return play
+}
+
+async function getSearchItems(searchKey, searchType) {
+  console.log('searchKey, searchType', searchKey, searchType);
+  const resItems = await httpService.post(`playlist/search`,{searchKey, searchType})
   return play
 }
 

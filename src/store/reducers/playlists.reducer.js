@@ -52,6 +52,8 @@ const INITIAL_STATE = {
   currTrackIdx: 0,
   filterBy: {},
   playlistColor: '#000000',
+  searchKey: '',
+  searchType: 'tracks'
 }
 
 export function playlistReducer(state = INITIAL_STATE, action) {
@@ -132,6 +134,16 @@ export function playlistReducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         filterBy: { ...action.filterBy },
+      }
+    case 'SET_SEARCH_KEY':
+      return {
+        ...state,
+        searchKey: { ...action.searchKey },
+      }
+    case 'SET_SEARCH_TYPE':
+      return {
+        ...state,
+        searchType: { ...action.searchType },
       }
 
     case 'change-playlist-color':

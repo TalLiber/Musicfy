@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import EventBus from 'react-native-event-bus'
 import { useSelector, useDispatch } from "react-redux"
 import { updatePlayer } from '../store/actions/player.actions'
+import { searchItems } from '../store/actions/playlists.actions'
 import { getLoggedinUser, logout} from '../store/actions/user.actions'
 import { UserModule } from './UserModal'
 
@@ -27,6 +28,7 @@ export const Header = (props) => {
     const [headerName, setHeaderName] = useState('')
     const [isFocus, setIsFocus] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [searchType, setSearchType] = useState('artist')
 
     useEffect(() => {
         EventBus.getInstance().addListener("toggleOpacity",  (data) =>{
@@ -93,7 +95,7 @@ export const Header = (props) => {
     }
 
     function handleInput(ev) {
-        console.log(ev.target.value);
+        dispatch(searchItems(ev.target.value, searchType))
     }
     return (
         <section className='header-container flex' style={{'backgroundColor':!isSearch? headerBgc : "#000000ff"}}>
