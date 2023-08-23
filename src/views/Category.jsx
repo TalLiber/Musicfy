@@ -5,10 +5,12 @@ import { HomePreview } from '../cmps/HomePreivew'
 import { useObserver } from '../customHooks/useObserver'
 import { useHeaderObserver } from '../customHooks/useHeaderObserver'
 import { getCategoryPlaylists } from '../store/actions/categories.actions'
+import { playlistService } from '../services/playlist.service'
 
 export const Category = () => {
 
-    const category = useSelector(state => state.categoryModule.catagoryPlaylists)
+    const categoryPlaylist = useSelector(state => state.categoryModule.catagoryPlaylists)
+    const categories = playlistService.getCategories()
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const params = useParams()
@@ -16,18 +18,23 @@ export const Category = () => {
     const [containerRef] = useObserver()
     const [headerRef, setHeaderName] = useHeaderObserver()
     const [searchParams] = useSearchParams()
+    const [category, setCategory] = useState({})
 
     useEffect(() => {
         getCategory()
+        const currCategory = categories.find(cate=> cate.id === params.id)
+        console.log('currCategory',currCategory)
+        setCategory(currCategory)
+        setHeaderName.current = currCategory.name
+        setCmpStyle({'backgroundColor':currCategory.backgroundColor})
     }, [params.id])
+
 
     async function getCategory() {
         dispatch(getCategoryPlaylists(params.id))
-        // setCmpStyle({'backgroundColor':category.backgroundColor})
-        setHeaderName.current = category?.name
     }
 
-    if (!category) return (<div> loading... </div>)
+    if (!categoryPlaylist) return (<div> loading... </div>)
     return (
         <section className='category'>
             <div ref={containerRef}></div>
@@ -37,7 +44,7 @@ export const Category = () => {
             </section>
 
             <section className='category-list'>
-                {category.map(item => {
+                {categoryPlaylist.map(item => {
                     return <HomePreview playlistData={item} key={item.spotifyId} />
                 })}
             </section>
