@@ -14,7 +14,7 @@ export const MobileNavBar = () => {
         <div className='mobile-navbar'>
             <div className='btn-nav' onClick={() => navigate('/')}>{svgIcon({ iconName: 'home'})}</div>
             <div className='btn-nav' onClick={() => navigate('/search')}>{svgIcon({ iconName: 'search'})}</div>
-            <div className='btn-nav' onClick={() => navigate('/')}>{svgIcon({ iconName: 'lib'})}</div>
+            <div className='btn-nav' onClick={() => navigate('/library')}>{svgIcon({ iconName: 'lib'})}</div>
         </div>
     )
 }

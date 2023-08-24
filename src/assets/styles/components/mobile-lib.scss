@@ -1,4 +1,6 @@
-.side-nav-container {
+.mobil-lib{
+    margin-top: 66px;
+    height: 100vh;
     background-color: #000000;
     color: rgb(179, 179, 179);
     padding-top: 22px;
@@ -14,7 +16,7 @@
         margin-bottom: 18px;
     }
     .upper-container {
-        height: 233px;
+        height: 150px;
         display: flex;
         flex-direction: column;
     }
@@ -34,10 +36,6 @@
             justify-content: center;
             align-items: center;
             border-radius: 2px;
-        }
-        &:hover {
-            opacity: 1;
-            transition: opacity 0.2s linear;
         }
         &.heart {
             .side-icon {
@@ -62,14 +60,11 @@
         gap: 10px;
         color: #fff;
         opacity: 0.7;
-        height: 32px;
+        height: 50px;
         cursor: pointer;
-        &:hover {
-            opacity: 1;
-        }
         .img-container{
             max-height: 100%;
-            max-width: 24px;
+            max-width: 50px;
             .side-img{
                 border-radius: 2px;
             }
@@ -104,10 +99,4 @@
     .user-categ-container::-webkit-scrollbar {
         background-color: transparent;
     }
-
-    @include for-mobile-layout {
-        display: none;
-    }
 }
-
-// linear-gradient(135deg,#450af5,#c4efd9)

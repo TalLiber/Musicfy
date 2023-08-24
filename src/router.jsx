@@ -10,6 +10,7 @@ import {Category} from './views/Category'
 import { Login } from './views/Login'
 import { Signup } from './views/Signup'
 import { EditPlaylist } from "./views/EditPlaylist";
+import { MobileLib } from './views/MobileLib'
 
 
 const routes = [
@@ -45,6 +46,10 @@ const routes = [
     {
       path: 'create/:id',
       element: <EditPlaylist/>
+    },
+    {
+      path: 'library',
+      element: <MobileLib/>
     },
   ]
  },

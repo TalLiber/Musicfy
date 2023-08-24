@@ -14,6 +14,9 @@ export const SideItem = ({ categ, selected, directTo }) => {
   return (
     <div onClick={() => directTo(categ.path || `/Playlist/${categ._id || (categ.spotifyId === '1234s' ? (categ.spotifyId+categ.id) : categ.spotifyId)}`)} className={getClass()}>
       {categ.icon && <i className='side-icon'>{SvgIcon({ iconName: getIcon() })}</i>}
+      <div className='img-container'>
+        {categ.image && <img className='side-img' src={categ.image}/>}
+      </div>
       <p>{categ.name}</p>
     </div>
 
