@@ -22,6 +22,11 @@
         .playlist-name{
             font-size: 4.5rem;
             margin-block-end: 1px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            height: fit-content;
         }
 
         .header-top{

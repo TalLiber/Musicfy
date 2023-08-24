@@ -20,7 +20,8 @@ export function addPlaylist() {
   let playlist = playlistService.getEmptyPlaylist()
   return async (dispatch) => {
     try {
-      playlist = await playlistService.save(playlist)
+      const user = getLoggedinUser()
+      if(user._id !== 1234) playlist = await playlistService.save(playlist)
       dispatch({ type: 'ADD_PLAYLIST', playlist })
       return playlist
     } catch (err) {
@@ -32,7 +33,9 @@ export function addPlaylist() {
 export function removePlaylist(playlistId) {
   return async (dispatch) => {
     try {
-      const playlists = await playlistService.remove(playlistId)
+      const user = getLoggedinUser()
+      var playlist
+      if(user._id !== 1234) playlists = await playlistService.remove(playlistId)
       dispatch({ type: 'REMOVE_PLAYLIST', playlistId })
     } catch (err) {
       console.log('err:', err)
@@ -114,7 +117,8 @@ export function changePlaylistColor(color) {
 export function getEmptyPlaylist() {
   return async (dispatch) => {
     var playlist = playlistService.getEmptyPlaylist()
-    playlist = await playlistService.save(playlist)
+    const user = getLoggedinUser()
+    if(user._id !== 1234) playlist = await playlistService.save(playlist)
     const userPlaylist = {
       spotifyId: '1234s',
       id: playlist._id,

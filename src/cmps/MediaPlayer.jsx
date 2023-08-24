@@ -8,10 +8,10 @@ import { useLocation } from "react-router-dom"
 
 export const MediaPlayer = () => {
 
-  const currTrack = useSelector(state => state.playlistModule.currPlaylist.tracks[state.playlistModule.currTrackIdx])
+  const currTrack = useSelector(state => state.playlistModule.currPlaylist?.tracks[state.playlistModule.currTrackIdx])
   const currPlaylist = useSelector(state => state.playlistModule.currPlaylist)
   const currIdx = useSelector(state => state.playlistModule.currTrackIdx)
-  const playlistLength = useSelector(state => state.playlistModule.currPlaylist.tracks.length)
+  const playlistLength = useSelector(state => state.playlistModule.currPlaylist?.tracks.length)
   const playerSettings = useSelector(state => state.playerModule)
   const intervalIdRef = useRef()
   const player = useRef(null)

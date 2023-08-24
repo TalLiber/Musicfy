@@ -32,10 +32,6 @@ export const EditPlaylist = () => {
         if (params.id) dispatch(getPlaylistById('1234s' + params.id))
         else dispatch(getEmptyPlaylist())
     }, [params.id])
-
-    useEffect(() =>{
-        if (playlist._id) navigate('/create/' + playlist._id)
-    },[playlist._id])
     
     useEffect(() => {
         if (playlist.image === null){
@@ -108,7 +104,7 @@ export const EditPlaylist = () => {
                 <div ref={headerRef}></div>
             </section>
             <div ref={containerRef}></div>
-            {playlist.tracks.length > 1 && <PlaylistList playlist={playlist} playTrack={playTrack} handleTrack={handleTrack}/>}
+            {playlist?.tracks?.length > 1 && <PlaylistList playlist={playlist} playTrack={playTrack} handleTrack={handleTrack}/>}
         </section>
     )
 }

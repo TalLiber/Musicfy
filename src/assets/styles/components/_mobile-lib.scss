@@ -1,5 +1,5 @@
 .mobil-lib{
-    margin-top: 66px;
+    margin-top: 30px;
     height: 100vh;
     background-color: #000000;
     color: rgb(179, 179, 179);
@@ -52,6 +52,9 @@
         flex-grow: 1;
         padding-block: 8px;
         overflow-y: scroll;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
     .user-categ {
         font-family: Circular, Circular-heb;
@@ -61,6 +64,7 @@
         color: #fff;
         opacity: 0.7;
         height: 50px;
+        align-items: center;
         cursor: pointer;
         .img-container{
             max-height: 100%;

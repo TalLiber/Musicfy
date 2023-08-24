@@ -88,7 +88,7 @@ function getEmptyPlaylist() {
     name: 'My Playlist',
     description: '',
     owner: 'user',
-    image: null,
+    image: "https://res.cloudinary.com/dtaiyvzq5/image/upload/v1692020104/m2pslfiyjn8tgx9hs5pw.png",
     tracks: [],
     spotifyId:'1234s'
   }

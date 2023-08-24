@@ -126,6 +126,8 @@
         grid-template-columns: 40% 60%;
         grid-template-rows: 1fr;
         position: fixed;
+        right: 0;
+        left: 0;
         bottom: 6rem;
         
         .track-container {
