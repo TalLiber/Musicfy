@@ -1,6 +1,7 @@
-.playlist{
+.playlist {
     margin-top: 64px;
-    .playlist-header{
+
+    .playlist-header {
         height: 30vh;
         max-height: 336px;
         min-height: 276px;
@@ -11,32 +12,33 @@
         padding-top: 0px;
         align-items: end;
 
-        .playlist-name{
+        .playlist-name {
             font-size: 4.5rem;
         }
 
-        .header-top{
+        .header-top {
             height: 64px;
             display: block;
         }
 
-        .playlist-info{
+        .playlist-info {
             display: flex;
             flex-direction: column;
         }
 
-        .playlist-disc{
+        .playlist-disc {
             color: rgba(255, 255, 255, 0.698);
         }
 
-        .img-container{
+        .img-container {
             height: 232px;
             width: 232px;
             margin-inline-end: 24px;
             display: flex;
             align-items: center;
-            & img{
-                box-shadow: 0 4px 60px rgba(0,0,0,.5);
+
+            & img {
+                box-shadow: 0 4px 60px rgba(0, 0, 0, .5);
                 height: 100%;
                 width: 100%;
                 object-fit: cover;
@@ -44,9 +46,10 @@
             }
         }
     }
-    .playlist-action{
 
-        & > *{
+    .playlist-action {
+
+        &>* {
             margin-right: 20px;
         }
 
@@ -55,7 +58,8 @@
         padding: 24px 32px;
         display: flex;
         flex-direction: row;
-        .btn-play{
+
+        .btn-play {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -65,33 +69,33 @@
             border-radius: 500px;
             background-color: #1fdf64;
 
-            svg{
+            svg {
                 margin-top: 3px;
                 width: 25px;
                 height: 25px;
             }
-            
+
         }
-        
-        .btn-heart{
+
+        .btn-heart {
             background-color: transparent;
             border: 0;
-            
-            svg{
+
+            svg {
                 margin-top: 3px;
                 width: 40px;
                 height: 40px;
                 color: aliceblue;
             }
 
-            &.fill{
+            &.fill {
                 svg {
                     fill: #1fdf64;
                 }
             }
         }
-        
-        .btn-more{
+
+        .btn-more {
             background-color: transparent;
             border: 0;
             color: aliceblue;
@@ -101,40 +105,44 @@
     @include for-mobile-layout {
         margin-top: 0;
         width: 100vw;
-        .playlist-header{
+
+        .playlist-header {
             padding-inline: 0;
-            padding-block-start: 58px;
+            padding-block-start: 66px;
+            padding-block-end: 0;
             height: 66vh;
             max-height: none;
             flex-direction: column;
             align-items: center;
             position: relative;
 
-            .playlist-info{
-                position: absolute;
+            .playlist-info {
                 text-align: center;
-                bottom: 0;
-                margin-block-end: 10px;
+                margin-block: auto;
             }
-            
-            .img-container{
+
+            .img-container {
                 margin: 0;
-                width: 300px;
-                height: 300px;
+                max-width: 90%;
+                max-height: 70%;
+                width: auto;
+                height: auto;
             }
-            .playlist-name{
+
+            .playlist-name {
                 font-size: 2.5rem;
             }
-            .playlist-disc{
+
+            .playlist-disc {
                 padding-inline-start: 15%;
                 padding-inline-end: 15%;
             }
         }
 
-        .playlist-action{
+        .playlist-action {
             height: 77px;
-            padding-block-start: 15px;
             padding-inline-start: 10px;
+            align-items: center;
         }
     }
 }

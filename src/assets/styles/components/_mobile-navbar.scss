@@ -2,6 +2,9 @@
     display: none;
     height: 3rem;
     width: 100vw;
+    position: fixed;
+    bottom: 0;
+    background-color: $clr3;
 
     .btn-nav {
         display: flex;
