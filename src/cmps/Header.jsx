@@ -27,6 +27,7 @@ export const Header = () => {
     const [isFocus, setIsFocus] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [width, setWidth] = useState(window.innerWidth)
+    const [searchOption,setSearchOption] = useState('Playlists')
 
     const handleResize = () => {
         setWidth(window.innerWidth)
@@ -104,6 +105,7 @@ export const Header = () => {
     function handleInput(ev) {
         dispatch(searchItems(ev.target.value, searchType))
     }
+    
     return (
         <section className='header-container flex' style={{'backgroundColor':!isSearch? headerBgc : "#000000ff"}}>
             {(width > 550 || (!headerName && !isSearch)) && <div className='action flex'>
@@ -145,7 +147,11 @@ export const Header = () => {
                     </button>
                 </section>
             }
-            {/* <NavLink to="/search">Search</NavLink>   */}
+           {isSearch && <section className='search-bar'>
+                <button className={searchOption === 'Playlists'?'search-action active': 'search-action'} onClick={()=>setSearchOption('Playlists')}>Playlists</button>
+                <button className={searchOption === 'Songs'?'search-action active': 'search-action'} onClick={()=>setSearchOption('Songs')}>Songs</button>
+                <button className={searchOption === 'Artists'?'search-action active': 'search-action'} onClick={()=>setSearchOption('Artists')}>Artists</button>
+            </section>}
         </section>
     )
 }
