@@ -11,10 +11,13 @@
         gap: 8px;
 
         .btn-action {
+            display: flex;
+            justify-content: center;
             display: inline-flex;
             align-items: center;
             height: 32px;
             width: 32px;
+            padding: 0;
             border: 1px solid $bg-base;
             border-radius: 50%;
             background-color: $bg-base;
