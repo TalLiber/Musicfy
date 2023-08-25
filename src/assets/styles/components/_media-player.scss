@@ -129,17 +129,17 @@
         right: 0;
         left: 0;
         bottom: 6rem;
-        
+
         .track-container {
             grid-column: 1;
             grid-row: 1;
             width: 100%;
             margin-block-start: 10px;
-            
+
             & i {
                 display: none;
             }
-            
+
             .track-title {
                 width: 100%;
                 height: 100%;
@@ -150,13 +150,14 @@
                 -webkit-box-orient: vertical;
             }
         }
-        
+
         .player-control {
             grid-column: 2;
             grid-row: 1;
             width: 100%;
             align-self: center;
-            
+            margin-block-start: 10px;
+
             .playback-bar {
                 position: fixed;
                 bottom: 4.3rem;
@@ -230,4 +231,15 @@
         background: #fff;
     }
 
+}
+
+.empty {
+    @include for-mobile-layout {
+        grid-template-columns: 1fr;
+        height: 40px;
+
+        .player-control{
+            grid-column: 1;
+        }
+    }
 }

@@ -39,8 +39,8 @@
         font-weight: 700;
         align-items: center;
         gap: 8px;
-        
-        .header-name{
+
+        .header-name {
             overflow: hidden;
             display: -webkit-box;
             -webkit-line-clamp: 1;
@@ -58,7 +58,7 @@
             background-color: rgb(36, 36, 36);
             align-items: center;
 
-            input {
+            textarea {
                 border-radius: 25px;
                 border: 0;
                 background-color: rgb(36, 36, 36);
@@ -68,7 +68,7 @@
                 color: $clr1;
             }
 
-            input:focus-visible {
+            textarea:focus-visible {
                 outline: none;
             }
 
@@ -118,6 +118,7 @@
 
     .login-container {
         display: flex;
+
         &>* {
             background-color: transparent;
             border: 0px;
@@ -125,7 +126,7 @@
             font-weight: 700;
             font-size: 1rem;
         }
-        
+
         .btn-login {
             font-family: Circular;
             color: $bg-base;
@@ -179,10 +180,6 @@
         padding-inline: 16px;
         height: 60px;
 
-        // .action {
-        //     display: none;
-        // }
-
         .content-container {
             .btn-play {
                 width: 40px;
@@ -198,9 +195,18 @@
                 }
 
             }
+
+            .search-box {
+                textarea {
+                    overflow: hidden;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
+                }
+            }
         }
 
-        .login-container{
+        .login-container {
             &>* {
                 font-size: 0.8rem;
                 width: max-content;

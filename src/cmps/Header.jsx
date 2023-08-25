@@ -93,7 +93,7 @@ export const Header = () => {
     }
 
     function onLogout() {
-        dispatch(dispatch(logout()))
+        dispatch(logout())
     }
 
     function toggleModal(e){
@@ -124,7 +124,7 @@ export const Header = () => {
                 { isSearch &&
                     <div className={isFocus?' search-box focus': 'search-box'}>
                         {SvgIcon({iconName: 'search'})}
-                        <input type="text" onInput={handleInput} onFocus={()=>setIsFocus(true)} onBlur={()=>setIsFocus(false)} placeholder='What do you want to listen to?' />
+                        <textarea cols={1} rows={1} type="text" onInput={handleInput} onFocus={()=>setIsFocus(true)} onBlur={()=>setIsFocus(false)} placeholder='What do you want to listen to?' />
                     </div>
                 }
             </section>

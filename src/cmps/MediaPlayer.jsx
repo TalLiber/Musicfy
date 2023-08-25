@@ -189,7 +189,7 @@ export const MediaPlayer = () => {
     }
   }
   return (
-    <div className="player-container">
+    <div className={ currTrack?.title? 'player-container' : 'player-container empty'}>
       <div className="track-container">
         <img src={currTrack?.imgUrl} />
         <div className="track-details">
@@ -199,7 +199,7 @@ export const MediaPlayer = () => {
             <p className="track-artist">{currTrack?.artists[0]}</p>
           }
         </div>
-        <i>{SvgIcon({ iconName: 'heart-empty' })}</i>
+        { currTrack?.title && <i>{SvgIcon({ iconName: 'heart-empty' })}</i> }
       </div>
       <div className="player-control">
         <div className="control-btns">

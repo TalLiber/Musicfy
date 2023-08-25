@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux'
 import { useHeaderObserver } from '../customHooks/useHeaderObserver'
@@ -7,6 +7,7 @@ import { changePlaylistColor, getPlaylistById, updateTrackIdx } from '../store/a
 import { PlaylistList } from '../cmps/PlaylistList'
 import { updatePlayer } from '../store/actions/player.actions'
 import { FastAverageColor } from 'fast-average-color'
+import EventBus from 'react-native-event-bus'
 import { removeUserPlaylist, addUserPlaylist, addUserTrack, removeUserTrack  } from '../store/actions/user.actions'
 
 import SvgIcon from '../cmps/SvgIcon'
@@ -25,6 +26,7 @@ export const Playlist = () => {
     const fac = new FastAverageColor()
     const [isLiked, setIsLiked] = useState(false)
     const navigate = useNavigate()
+    const [isModalOpen,setIsModalOpen] = useState(false)
     
 
     useEffect(() => {
@@ -34,6 +36,14 @@ export const Playlist = () => {
     useEffect(() => {
         setIsLiked(userPlaylists.playlist.some((playlist) => playlist.spotifyId === params.id || playlist.spotifyId + playlist.id === params.id))
     }, [userPlaylists.playlist.length, playlist.name])
+
+    useEffect(() => {
+        EventBus.getInstance().addListener("closeModal",  () =>{
+            setIsModalOpen(false)
+        })
+
+        return EventBus.getInstance().removeListener("closeModal")
+    },[])
     
     useEffect(() => {
         if (!playlist.image){
@@ -86,6 +96,12 @@ export const Playlist = () => {
         dispatch(updateTrackIdx('num', trackIdx))
         dispatch(updatePlayer('isPlaying', isPlaying))
     }
+
+    function toggleModal(e){
+        e.stopPropagation()
+        setIsModalOpen(state => state = !state)
+    }
+
     if (playlist.spotifyId !== params.id && playlist.spotifyId !== '1234s') return <div>Loading...</div>
     return (
         <section className="playlist">
@@ -106,8 +122,12 @@ export const Playlist = () => {
                 <button className={ isLiked ? 'btn-heart fill' : 'btn-heart'} onClick={handlePlaylist}>
                     {SvgIcon({ iconName: isLiked? 'heart-fill' : 'heart-no-fill' })}
                 </button>
-                <button className='btn-more' onClick={()=> navigate(`/create/${playlist.spotifyId + playlist._id}`)}>{SvgIcon({ iconName: 'dots' })}</button>
+                <button className='btn-more' onClick={toggleModal}>{SvgIcon({ iconName: 'dots' })}</button>
                 <div ref={headerRef}></div>
+                {isModalOpen && <section className='more-modal'>
+                    <div onClick={handlePlaylist}>{ isLiked ? 'Unlike playlist' : 'Like playlist'}</div>
+                    {playlist.spotifyId === '1234s' && <div onClick={()=> navigate(`/create/${playlist.spotifyId + playlist._id}`)}> Edit playlist</div>}
+                </section>}
             </section>
             <div ref={containerRef}></div>
             {playlist.tracks.length > 1 && <PlaylistList playlist={playlist} playTrack={playTrack} handleTrack={handleTrack}/>}

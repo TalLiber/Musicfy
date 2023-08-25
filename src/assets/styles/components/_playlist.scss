@@ -55,6 +55,7 @@
     }
 
     .playlist-action {
+        position: relative;
 
         &>* {
             margin-right: 20px;
@@ -110,6 +111,32 @@
         }
     }
 
+    .more-modal {
+        position: absolute;
+        transform: translate3d(175px, 30px, 0px);
+        max-width: 350px;
+        min-width: 160px;
+        padding: 4px;
+        display: flex;
+        flex-direction: column;
+        background-color: rgb(40, 40, 40);
+        color: rgb(179, 179, 179);
+        box-shadow: 0 16px 24px rgba(0, 0, 0, .3), 0 6px 8px rgba(0, 0, 0, .2);
+
+        &>* {
+
+            border: 0;
+            border-radius: 2px;
+            height: 44px;
+            padding: 12px;
+
+            &:hover {
+                background-color: hsla(0, 0%, 100%, .1);
+                cursor: pointer;
+            }
+        }
+    }
+
     @include for-mobile-layout {
         margin-top: 0;
         width: 100vw;
@@ -151,6 +178,10 @@
             height: 77px;
             padding-inline-start: 10px;
             align-items: center;
+        }
+
+        .more-modal{
+            transform: translate3d(175px, -58px, 0px);
         }
     }
 }

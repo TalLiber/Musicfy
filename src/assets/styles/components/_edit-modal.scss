@@ -89,4 +89,32 @@
         line-height: 1.6;
         padding-block-start: 5px;
     }
+
+    @include for-mobile-layout {
+        transform: none;
+        position: fixed;
+        bottom: 0;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+
+        .contant-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .btn-save {
+            margin-inline-end: auto;
+        }
+
+        & .image-upload {
+            width: 70%;
+            height: 70%;
+            align-self: center;
+        }
+    }
 }

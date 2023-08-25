@@ -28,10 +28,11 @@ export function signup(userCred) {
 
 export function logout() {
 
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
         try {
-            await userService.logout()
-            const user = {
+            var user = getState().userModule.loggedInUser
+            if(user._id !== 1234) await userService.logout()
+            user = {
                 fullname: '',
                 imgUrl: null,
                 playlist: []
@@ -46,9 +47,11 @@ export function logout() {
 export function getLoggedinUser() {
     return async (dispatch) => {
         try {
-            const userId = await userService.getLoggedinUser()
-            const user = await userService.getById(userId._id)
-            if(user) dispatch({ type: 'UPDATE_USER', user})
+            const loggedInUser = await userService.getLoggedinUser()
+            if(loggedInUser?.fullname){
+                const user = await userService.getById(loggedInUser._id)
+                if(user) dispatch({ type: 'UPDATE_USER', user})
+            }
         } catch(err) {
             console.log('err:', err)
         }

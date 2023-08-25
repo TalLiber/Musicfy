@@ -9,7 +9,7 @@ export const UserModule = ({logout}) => {
     const navigate = useNavigate()
 
     return (
-        <section className='user-modal' onClick={() => navigate(`/Playlist/${playlistData.spotifyId}`)}>
+        <section className='user-modal'>
             <div onClick={logout} className='logout'>Log out</div>
         </section>
     ) 

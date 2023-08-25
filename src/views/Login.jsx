@@ -14,7 +14,6 @@ export const Login = () => {
 
 
     useEffect(() => {
-        console.log(currUser)
         if(currUser.fullname) navigate('/')
     }, [currUser.fullname])
 

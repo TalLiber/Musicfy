@@ -113,4 +113,48 @@
             color: aliceblue;
         }
     }
+
+    @include for-mobile-layout {
+        margin-top: 0;
+        width: 100vw;
+
+        .playlist-header {
+            padding-inline: 0;
+            padding-block-start: 66px;
+            padding-block-end: 0;
+            height: 66vh;
+            max-height: none;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+
+            .playlist-info {
+                text-align: center;
+                margin-block: auto;
+            }
+
+            .img-container {
+                margin: 0;
+                max-width: 80%;
+                max-height: 75%;
+                width: auto;
+                height: auto;
+            }
+
+            .playlist-name {
+                font-size: 2.5rem;
+            }
+
+            .playlist-disc {
+                padding-inline-start: 15%;
+                padding-inline-end: 15%;
+            }
+        }
+
+        .playlist-action {
+            height: 77px;
+            padding-inline-start: 10px;
+            align-items: center;
+        }
+    }
 }
