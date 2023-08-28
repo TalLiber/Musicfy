@@ -6,7 +6,7 @@ import { utilService } from '../services/util.service'
 import SvgIcon from '../cmps/SvgIcon'
 
 
-export const PlaylistPreview = ({ track, idx, playTrack, playlistId, handleTrack }) => {
+export const PlaylistPreview = ({ track, idx, playTrack, playlistId, handleTrack, origin }) => {
 
     const navigate = useNavigate()
     const playerSettings = useSelector(state => state.playerModule)
@@ -45,7 +45,7 @@ export const PlaylistPreview = ({ track, idx, playTrack, playlistId, handleTrack
             </section>
 
             <section className='track-date'>
-                <p>{utilService.dateAdded(track.addedAt)}</p>
+                <p>{origin !== 'search' ? utilService.dateAdded(track.addedAt): ''}</p>
             </section>
             <section className='like-time'>
                 <button className={ isLiked ? 'btn-heart fill' : 'btn-heart'} onClick={() => handleTrackPrev(isLiked, track)}>

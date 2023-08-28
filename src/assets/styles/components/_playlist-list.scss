@@ -1,6 +1,7 @@
 .playlist-list {
     display: flex;
     flex-direction: column;
+    margin-block-start: 40px;
 
     .playlist-list-table {
         .table-header {

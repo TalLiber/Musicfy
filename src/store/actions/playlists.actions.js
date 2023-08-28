@@ -93,11 +93,9 @@ export function getYoutubeId(keyword) {
 export function searchItems(searchKey, searchType) {
   return async (dispatch, getState) => {
     try {
-      const resItems = await playlistService.getSearchItems(searchKey, searchType)
-      console.log('resItems',resItems);
-      // const youtubeId = await playlistService.getYoutubeId(keyword)
-      // dispatch({ type: 'SET_YOUTUBE_ID', youtubeId })
-      // playlistService.save(getState().playlistModule.currPlaylist)
+      const searchItems = searchKey ? await playlistService.getSearchItems(searchKey, searchType) : ''
+     
+      dispatch({ type: 'SET_SEARCH_ITEMS', searchItems, searchType })
     } catch (err) {
       console.log('err:', err)
     }

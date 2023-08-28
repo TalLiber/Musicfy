@@ -6,6 +6,7 @@ import { updatePlayer } from '../store/actions/player.actions'
 import { searchItems } from '../store/actions/playlists.actions'
 import { getLoggedinUser, logout} from '../store/actions/user.actions'
 import { UserModule } from './UserModal'
+import { utilService } from '../services/util.service'
 
 
 import SvgIcon from './SvgIcon'
@@ -27,8 +28,9 @@ export const Header = () => {
     const [isFocus, setIsFocus] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [width, setWidth] = useState(window.innerWidth)
-    const [searchOption,setSearchOption] = useState('Playlists')
-
+    const [searchOption,setSearchOption] = useState('album')
+    const [searchKey,setSearchKey] = useState('')
+    
     const handleResize = () => {
         setWidth(window.innerWidth)
     }
@@ -103,9 +105,18 @@ export const Header = () => {
     }
 
     function handleInput(ev) {
-        dispatch(searchItems(ev.target.value, searchType))
+            setSearchKey(ev.target.value)
+            dispatch(searchItems(ev.target.value, searchOption))
+        
+        // utilService.debounce(()=> {
+        //     setSearchKey(ev.target.value)
+        //     dispatch(searchItems(ev.target.value, searchOption))
+        // })
     }
-    
+    function handleSearchOption(option) {
+        setSearchOption(option)
+        dispatch(searchItems(searchKey, option))
+    }
     return (
         <section className='header-container flex' style={{'backgroundColor':!isSearch? headerBgc : "#000000ff"}}>
             {(width > 550 || (!headerName && !isSearch)) && <div className='action flex'>
@@ -147,10 +158,11 @@ export const Header = () => {
                     </button>
                 </section>
             }
-           {isSearch && <section className='search-bar'>
-                <button className={searchOption === 'Playlists'?'search-action active': 'search-action'} onClick={()=>setSearchOption('Playlists')}>Playlists</button>
-                <button className={searchOption === 'Songs'?'search-action active': 'search-action'} onClick={()=>setSearchOption('Songs')}>Songs</button>
-                <button className={searchOption === 'Artists'?'search-action active': 'search-action'} onClick={()=>setSearchOption('Artists')}>Artists</button>
+           {isSearch && searchKey && <section className='search-bar'>
+                <button className={searchOption === 'playlist'?'search-action active': 'search-action'} onClick={()=>handleSearchOption('playlist')}>Playlists</button>
+                <button className={searchOption === 'track'?'search-action active': 'search-action'} onClick={()=>handleSearchOption('track')}>Songs</button>
+                <button className={searchOption === 'artist'?'search-action active': 'search-action'} onClick={()=>setSearchOption('artist')}>Artists</button>
+                <button className={searchOption === 'album'?'search-action active': 'search-action'} onClick={()=>setSearchOption('album')}>Albums</button>
             </section>}
         </section>
     )

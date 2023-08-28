@@ -51,9 +51,9 @@ async function getById(spotifyId) {
 }
 
 async function getSearchItems(searchKey, searchType) {
-  console.log('searchKey, searchType', searchKey, searchType);
   const resItems = await httpService.post(`playlist/search`,{searchKey, searchType})
-  return play
+  console.log(resItems);
+  return resItems
 }
 
 async function remove(playlistId) {
