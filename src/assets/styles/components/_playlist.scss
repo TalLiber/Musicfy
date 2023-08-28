@@ -29,6 +29,7 @@
         .playlist-info {
             display: flex;
             flex-direction: column;
+            cursor: pointer;
         }
 
         .playlist-disc {
@@ -50,6 +51,7 @@
                 width: 100%;
                 object-fit: cover;
                 object-position: center;
+                aspect-ratio: 1;
             }
         }
     }

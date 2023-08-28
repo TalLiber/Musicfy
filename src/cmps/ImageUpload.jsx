@@ -53,7 +53,7 @@ export const ImageUpload = ({ updatePlaylistImg, playlistImg }) => {
           <img className='image' onClick={handleUpload}
             src={selectedImage }
             alt="select"
-            title='Change by clicking again'
+            title='Change image'
           />
       )}
     </div>

@@ -47,6 +47,10 @@
 
         .image-upload {
             grid-area: img;
+            height: 200px;
+            .image{
+                height: 100%;
+            }
         }
 
         .playlist-name,
@@ -113,8 +117,12 @@
 
         & .image-upload {
             width: 70%;
-            height: 70%;
+            height: 70% !important;
             align-self: center;
+
+            .image{
+                max-height: 250px;
+            }
         }
     }
 }

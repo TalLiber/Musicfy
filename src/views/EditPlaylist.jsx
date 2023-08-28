@@ -26,12 +26,18 @@ export const EditPlaylist = () => {
     const [isModaOpen, setIsModalOpen] = useState(false)
     const [headerRef, headerName] = useHeaderObserver()
     const [containerRef, isVisible] = useObserver()
+    const currId = useRef(null)
     
 
     useEffect(() => {
-        if (params.id) dispatch(getPlaylistById('1234s' + params.id))
-        else dispatch(getEmptyPlaylist())
-    }, [params.id])
+        currId.current = playlist._id
+        dispatch(getEmptyPlaylist())
+    }, [])
+
+    useEffect(()=>{
+        if (playlist._id === currId.current) return
+        navigate(`/playlist/${playlist._id}`)
+    },[playlist._id])
     
     useEffect(() => {
         if (playlist.image === null){
