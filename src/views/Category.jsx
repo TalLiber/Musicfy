@@ -7,9 +7,9 @@ import { useHeaderObserver } from '../customHooks/useHeaderObserver'
 import { getCategoryPlaylists } from '../store/actions/categories.actions'
 import { playlistService } from '../services/playlist.service'
 
-export const Category = () => {
+export const Category = ({searchItems, origin}) => {
 
-    const categoryPlaylist = useSelector(state => state.categoryModule.catagoryPlaylists)
+    const categoryPlaylist = origin === 'search' ? searchItems : useSelector(state => state.categoryModule.catagoryPlaylists)
     const categories = playlistService.getCategories()
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -21,6 +21,7 @@ export const Category = () => {
     const [category, setCategory] = useState({})
 
     useEffect(() => {
+        if(origin === 'search') return
         getCategory()
         const currCategory = categories.find(cate=> cate.id === params.id)
         setCategory(currCategory)
@@ -37,10 +38,10 @@ export const Category = () => {
     return (
         <section className='category'>
             <div ref={containerRef}></div>
-            <section className='category-header' style={cmpStyle}>
+            {origin !== 'search' && <section className='category-header' style={cmpStyle}>
                 <h1>{category.name}</h1>
                 <div ref={headerRef}></div>
-            </section>
+            </section>}
 
             <section className='category-list'>
                 {categoryPlaylist.map(item => {

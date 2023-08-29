@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import EventBus from 'react-native-event-bus'
 import { useSelector, useDispatch } from "react-redux"
@@ -22,14 +22,16 @@ export const Header = () => {
     const [isPrev,setIsPrev] = useState()
     const [isNext,setIsNext] = useState()
     const [isSearch, setIsSearch] = useState()
+    const isSearchActive = useSelector(state => state.playlistModule.isSearchActive)
     const [isPlaylist, setIsPlaylist] = useState()
     const [headerBgc, setHeaderBgc] = useState("#00000080")
     const [headerName, setHeaderName] = useState('')
     const [isFocus, setIsFocus] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [width, setWidth] = useState(window.innerWidth)
-    const [searchOption,setSearchOption] = useState('album')
+    const [searchOption,setSearchOption] = useState('track')
     const [searchKey,setSearchKey] = useState('')
+    const timer = useRef()
     
     const handleResize = () => {
         setWidth(window.innerWidth)
@@ -105,14 +107,15 @@ export const Header = () => {
     }
 
     function handleInput(ev) {
+            // setSearchKey(ev.target.value)
+            // dispatch(searchItems(ev.target.value, searchOption))
+        
+        utilService.debounce(()=> {
             setSearchKey(ev.target.value)
             dispatch(searchItems(ev.target.value, searchOption))
-        
-        // utilService.debounce(()=> {
-        //     setSearchKey(ev.target.value)
-        //     dispatch(searchItems(ev.target.value, searchOption))
-        // })
+        })()
     }
+   
     function handleSearchOption(option) {
         setSearchOption(option)
         dispatch(searchItems(searchKey, option))
@@ -158,11 +161,11 @@ export const Header = () => {
                     </button>
                 </section>
             }
-           {isSearch && searchKey && <section className='search-bar'>
+           {isSearchActive && searchKey && <section className='search-bar'>
                 <button className={searchOption === 'playlist'?'search-action active': 'search-action'} onClick={()=>handleSearchOption('playlist')}>Playlists</button>
                 <button className={searchOption === 'track'?'search-action active': 'search-action'} onClick={()=>handleSearchOption('track')}>Songs</button>
-                <button className={searchOption === 'artist'?'search-action active': 'search-action'} onClick={()=>setSearchOption('artist')}>Artists</button>
-                <button className={searchOption === 'album'?'search-action active': 'search-action'} onClick={()=>setSearchOption('album')}>Albums</button>
+                {/* <button className={searchOption === 'artist'?'search-action active': 'search-action'} onClick={()=>setSearchOption('artist')}>Artists</button> */}
+                {/* <button className={searchOption === 'album'?'search-action active': 'search-action'} onClick={()=>setSearchOption('album')}>Albums</button> */}
             </section>}
         </section>
     )

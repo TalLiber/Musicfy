@@ -5,24 +5,46 @@ import { playlistService } from '../services/playlist.service'
 import { useSelector, useDispatch } from "react-redux"
 
 import { PlaylistList } from '../cmps/PlaylistList'
-import { SearchList } from '../cmps/SearchList'
+import { Category } from '../views/Category'
+import { addUserTrack, removeUserTrack } from '../store/actions/user.actions'
+import { updateTrackIdx, changeSearchStatus } from '../store/actions/playlists.actions'
+import { updatePlayer } from '../store/actions/player.actions'
 
 export const Search = () => {
 
   const categories = playlistService.getCategories()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
+  const playlist = useSelector(state => { return { ...state.playlistModule.currPlaylist } })
   const searchItems = useSelector(state => state.playlistModule.searchItems)
   const searchType = useSelector(state => state.playlistModule.searchType)
+  const isSearchActive = useSelector(state => state.playlistModule.isSearchActive)
 
   useEffect(() => {
-    console.log('searchItems', searchItems);
-    console.log('searchType', searchType);
-  }, [searchType, searchItems])
+    console.log('isSearchActive',isSearchActive);
+    return () => {
+      dispatch(changeSearchStatus(false))
+  }
+  }, [])
+
+  function handleTrack(isLiked, track) {
+    if (isLiked) {
+        dispatch(removeUserTrack(track.id))
+    }
+    else {
+        dispatch(addUserTrack(track))
+    }
+}
+
+function playTrack(trackIdx, isPlaying) {
+    dispatch(updateTrackIdx('num', trackIdx))
+    dispatch(updatePlayer('isPlaying', isPlaying))
+}
 
   return (
     <>
-    {!searchItems.length && <section className='search-container'>
+    {!isSearchActive && <section className='search-container'>
       <h3>Browse all</h3>
       <section className='categories-container'>
         {categories.map(categ => {
@@ -36,8 +58,8 @@ export const Search = () => {
         })}
       </section>
     </section>}
-    {searchItems.length && searchType === 'track' && <PlaylistList playlist={searchItems} origin='search'/>}
-    {searchItems.length && searchType === 'playlist' || searchType === 'album' && <SearchList searchItems={searchItems}/>}
+    {isSearchActive && searchType === 'track' && <PlaylistList playlist={playlist} playTrack={playTrack} handleTrack={handleTrack} origin='search'/>}
+    {searchItems.length && searchType === 'playlist' && <Category searchItems={searchItems} origin='search'/>}
     </>
   )
 }
