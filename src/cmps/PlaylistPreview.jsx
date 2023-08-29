@@ -8,19 +8,39 @@ import svgIcon from '../cmps/SvgIcon'
 import { PlaylistModal } from './PlaylistModal'
 
 
-export const PlaylistPreview = ({ track, idx, playTrack, playlistId, handleTrack, origin }) => {
+export const PlaylistPreview = ({ track, idx, playTrack, playlistId, handleTrack, origin, handleRemoveTrack }) => {
 
     const navigate = useNavigate()
     const playerSettings = useSelector(state => state.playerModule)
     const currTrack = useSelector(state => state.playlistModule.currPlaylist.tracks[state.playlistModule.currTrackIdx])
     const currPlatlistId = useSelector(state => state.playlistModule.currPlaylist.id)
+    const currPlatlistSpotifyId = useSelector(state => state.playlistModule.currPlaylist.spotifyId)
     const [isLiked, setIsLiked] = useState(false)
     const userLikedTracks = useSelector(state => { return { ...state.userModule.loggedInUser }.likedTracks })
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isPlaylistOpen, setIsPlaylistOpen] = useState(false)
+
+    const [dimensions, setDimensions] = useState({
+        width: window.innerWidth,
+    });
+
+    const handleResize = () => {
+        setDimensions({
+            width: window.innerWidth,
+        });
+    }
+
+    useEffect(() => {
+      window.addEventListener("resize", handleResize)
+
+      return () => {window.removeEventListener("resize", handleResize)}
+
+    }, [])
 
 
     useEffect(() => {
         setIsLiked(state => state = userLikedTracks?.some(likedTrack => likedTrack.id === track.id))
+        setIsPlaylistOpen(false)
     }, [])
 
     useEffect(() => {
@@ -38,7 +58,14 @@ export const PlaylistPreview = ({ track, idx, playTrack, playlistId, handleTrack
 
     function toggleModal(e) {
         e.stopPropagation()
+        if(!isModalOpen)EventBus.getInstance().fireEvent("closeModal")
         setIsModalOpen(state => state = !state)
+    }
+
+    function handlePlaylistModal(e){
+        e.stopPropagation()
+        if(dimensions.width < 550)setIsPlaylistOpen(prevState=>!prevState)
+
     }
 
     return (
@@ -73,13 +100,19 @@ export const PlaylistPreview = ({ track, idx, playTrack, playlistId, handleTrack
             <section className='track-option' onClick={toggleModal}>
                 {svgIcon({ iconName: 'dots' })}
             </section>
-            {isModalOpen &&<section className='track-modal' onClick={(e)=> e.stopPropagation()}>
+            {isModalOpen && <section className='track-modal' onClick={(e) => e.stopPropagation()}>
                 <button className='like-btn' onClick={() => handleTrackPrev(isLiked, track)}>
                     {!isLiked ? 'Add to Liked Songs' : 'Remove from Liked Songs'}
                 </button>
-                <button className='add-btn'>
+                {currPlatlistSpotifyId === '1234s' &&
+                    <button className='like-btn' onClick={() => handleRemoveTrack(track.id)}>
+                        Remove track from playlist
+                    </button>
+                }
+                <button className={!isPlaylistOpen?'add-btn': 'add-btn close'} onClick={handlePlaylistModal}>
+                    <span> <svg xmlns="http://www.w3.org/2000/svg" height="12" fill='white' viewBox="0 -960 960 960" width="24"><path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" /></svg> </span>
                     Add to playlist
-                    <PlaylistModal />
+                    <PlaylistModal track={track} />
                 </button>
             </section>}
         </section>
