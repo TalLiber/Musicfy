@@ -9,6 +9,7 @@ export const utilService = {
     timeFormat,
     dateAdded
 }
+let timer
 
 function makeId(length = 6) {
     var txt = ''
@@ -47,8 +48,7 @@ function randomPastTime() {
     return Date.now() - pastTime
 }
 
-function debounce(func, timeout = 300){
-    let timer
+function debounce(func, timeout = 1000){
     return (...args) => {
       clearTimeout(timer)
       timer = setTimeout(() => { func.apply(this, args) }, timeout)

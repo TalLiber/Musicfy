@@ -97,10 +97,10 @@ export const Playlist = () => {
         }
     }
 
-    const playTrack = (trackIdx, isPlaying) => {
+    function playTrack(trackIdx, isPlaying) {
         dispatch(updateTrackIdx('num', trackIdx))
         dispatch(updatePlayer('isPlaying', isPlaying))
-    }
+    }  
 
     function toggleModal(e) {
         e.stopPropagation()

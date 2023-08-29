@@ -53,7 +53,8 @@ const INITIAL_STATE = {
   filterBy: {},
   playlistColor: '#000000',
   searchItems: [],
-  searchType: 'track'
+  searchType: 'track',
+  isSearchActive: false
 }
 
 export function playlistReducer(state = INITIAL_STATE, action) {
@@ -139,13 +140,19 @@ export function playlistReducer(state = INITIAL_STATE, action) {
       console.log(action.searchItems, action.searchType);
       return {
         ...state,
-        searchType: action.searchType,
         searchItems: [ ...action.searchItems ],
       }
+
     case 'SET_SEARCH_TYPE':
       return {
         ...state,
-        searchType: { ...action.searchType },
+        searchType: action.searchType,
+      }
+
+    case 'SET_IS_SEARCH_ACTIVE':
+      return {
+        ...state,
+        isSearchActive: action.isSearchActive,
       }
 
     case 'change-playlist-color':

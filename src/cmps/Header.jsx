@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import EventBus from 'react-native-event-bus'
 import { useSelector, useDispatch } from "react-redux"
@@ -28,8 +28,9 @@ export const Header = () => {
     const [isFocus, setIsFocus] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [width, setWidth] = useState(window.innerWidth)
-    const [searchOption,setSearchOption] = useState('album')
+    const [searchOption,setSearchOption] = useState('track')
     const [searchKey,setSearchKey] = useState('')
+    const timer = useRef()
     
     const handleResize = () => {
         setWidth(window.innerWidth)
@@ -105,14 +106,15 @@ export const Header = () => {
     }
 
     function handleInput(ev) {
+            // setSearchKey(ev.target.value)
+            // dispatch(searchItems(ev.target.value, searchOption))
+        
+        utilService.debounce(()=> {
             setSearchKey(ev.target.value)
             dispatch(searchItems(ev.target.value, searchOption))
-        
-        // utilService.debounce(()=> {
-        //     setSearchKey(ev.target.value)
-        //     dispatch(searchItems(ev.target.value, searchOption))
-        // })
+        })()
     }
+   
     function handleSearchOption(option) {
         setSearchOption(option)
         dispatch(searchItems(searchKey, option))

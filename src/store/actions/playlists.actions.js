@@ -93,15 +93,28 @@ export function getYoutubeId(keyword) {
 export function searchItems(searchKey, searchType) {
   return async (dispatch, getState) => {
     try {
-      const searchItems = searchKey ? await playlistService.getSearchItems(searchKey, searchType) : ''
-     
-      dispatch({ type: 'SET_SEARCH_ITEMS', searchItems, searchType })
+    const searchItems = searchKey ? await playlistService.getSearchItems(searchKey, searchType) : ''
+     if(searchType === 'playlist') dispatch({ type: 'SET_SEARCH_ITEMS', searchItems })
+     else dispatch({ type: 'SET_PLAYLIST_TRACKS', tracks: searchItems })
+     dispatch({ type: 'SET_SEARCH_TYPE', searchType })
+     dispatch({ type: 'SET_IS_SEARCH_ACTIVE', isSearchActive: searchItems ? true : false })
+     changeSearchStatus(searchKey ? true : false)
     } catch (err) {
       console.log('err:', err)
     }
   }
 }
 
+export function changeSearchStatus(status) {
+  console.log('status', status);
+  return (dispatch) => {
+    try {
+      dispatch({ type: 'SET_IS_SEARCH_ACTIVE', isSearchActive: status })
+    } catch (err) {
+      console.log('err:', err)
+    }
+  }
+}
 export function changePlaylistColor(color) {
   return (dispatch) => {
     try {
