@@ -93,18 +93,12 @@ export function getYoutubeId(keyword) {
 export function searchItems(searchKey, searchType) {
   return async (dispatch, getState) => {
     try {
-<<<<<<< HEAD
     const searchItems = searchKey ? await playlistService.getSearchItems(searchKey, searchType) : ''
      if(searchType === 'playlist') dispatch({ type: 'SET_SEARCH_ITEMS', searchItems })
      else dispatch({ type: 'SET_PLAYLIST_TRACKS', tracks: searchItems })
      dispatch({ type: 'SET_SEARCH_TYPE', searchType })
      dispatch({ type: 'SET_IS_SEARCH_ACTIVE', isSearchActive: searchItems ? true : false })
      changeSearchStatus(searchKey ? true : false)
-=======
-      const searchItems = searchKey ? await playlistService.getSearchItems(searchKey, searchType) : ''
-
-      dispatch({ type: 'SET_SEARCH_ITEMS', searchItems, searchType })
->>>>>>> f08ddb9c47070b2f0e0ffa90cbcd1a9e240a9613
     } catch (err) {
       console.log('err:', err)
     }
