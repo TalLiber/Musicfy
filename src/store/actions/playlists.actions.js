@@ -138,7 +138,7 @@ export function getEmptyPlaylist(track) {
         image: playlist.image
       }
       await dispatch(addUserPlaylist(userPlaylist))
-      dispatch({ type: 'SET_PLAYLIST', playlist })
+      if(!track) dispatch({ type: 'SET_PLAYLIST', playlist })
     }catch(err){
       console.log(err)
     }
