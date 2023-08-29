@@ -36,7 +36,7 @@ export const EditPlaylist = () => {
 
     useEffect(()=>{
         if (playlist._id === currId.current) return
-        navigate(`/playlist/${playlist._id}`)
+        navigate(`/playlist/${playlist.spotifyId + playlist._id}`)
     },[playlist._id])
     
     useEffect(() => {

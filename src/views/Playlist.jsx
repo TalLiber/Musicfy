@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux'
 import { useHeaderObserver } from '../customHooks/useHeaderObserver'
 import { useObserver } from '../customHooks/useObserver'
-import { changePlaylistColor, getPlaylistById, updateTrackIdx, updatePlaylist } from '../store/actions/playlists.actions'
+import { changePlaylistColor, getPlaylistById, updateTrackIdx, updatePlaylist,removeTrack } from '../store/actions/playlists.actions'
 import { PlaylistList } from '../cmps/PlaylistList'
 import { updatePlayer } from '../store/actions/player.actions'
 import { FastAverageColor } from 'fast-average-color'
@@ -66,7 +66,7 @@ export const Playlist = () => {
             .catch(e => {
                 console.log(e)
             })
-    }, [playlist?.name])
+    }, [playlist?.name, playlist.image])
 
     useEffect(() => {
         return () => {
@@ -116,6 +116,12 @@ export const Playlist = () => {
         dispatch(updatePlaylist(playlist))
     }
 
+    function handleRemoveTrack(trackId){
+        const playlistSpotId = playlist.spotifyId + playlist._id
+        console.log(trackId)
+        dispatch(removeTrack(playlistSpotId,trackId))
+    }
+
     if (playlist.spotifyId !== params.id && playlist.spotifyId !== '1234s') return <div>Loading...</div>
     return (
         <section className="playlist">
@@ -153,7 +159,7 @@ export const Playlist = () => {
                 </section>}
             </section>
             <div ref={containerRef}></div>
-            {playlist.tracks.length > 1 && <PlaylistList playlist={playlist} playTrack={playTrack} handleTrack={handleTrack} />}
+            {(playlist.tracks.length > 0 && playlist.tracks[0].imgUrl) && <PlaylistList playlist={playlist} playTrack={playTrack} handleTrack={handleTrack} handleRemoveTrack ={handleRemoveTrack}/>}
         </section>
     )
 }

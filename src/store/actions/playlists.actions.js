@@ -21,7 +21,7 @@ export function addPlaylist() {
   return async (dispatch) => {
     try {
       const user = getLoggedinUser()
-      if(user._id !== 1234) playlist = await playlistService.save(playlist)
+      if (user._id !== 1234) playlist = await playlistService.save(playlist)
       dispatch({ type: 'ADD_PLAYLIST', playlist })
       return playlist
     } catch (err) {
@@ -35,7 +35,7 @@ export function removePlaylist(playlistId) {
     try {
       const user = getLoggedinUser()
       var playlist
-      if(user._id !== 1234) playlists = await playlistService.remove(playlistId)
+      if (user._id !== 1234) playlists = await playlistService.remove(playlistId)
       dispatch({ type: 'REMOVE_PLAYLIST', playlistId })
     } catch (err) {
       console.log('err:', err)
@@ -69,8 +69,8 @@ export function getPlaylistById(spotifyId, sentPlaylist = null) {
   return async (dispatch) => {
     try {
       var playlist
-      sentPlaylist ? playlist = sentPlaylist : 
-      playlist = await playlistService.getById(spotifyId)
+      sentPlaylist ? playlist = sentPlaylist :
+        playlist = await playlistService.getById(spotifyId)
       dispatch({ type: 'SET_PLAYLIST', playlist })
     } catch (err) {
       console.log('err:', err)
@@ -93,12 +93,18 @@ export function getYoutubeId(keyword) {
 export function searchItems(searchKey, searchType) {
   return async (dispatch, getState) => {
     try {
+<<<<<<< HEAD
     const searchItems = searchKey ? await playlistService.getSearchItems(searchKey, searchType) : ''
      if(searchType === 'playlist') dispatch({ type: 'SET_SEARCH_ITEMS', searchItems })
      else dispatch({ type: 'SET_PLAYLIST_TRACKS', tracks: searchItems })
      dispatch({ type: 'SET_SEARCH_TYPE', searchType })
      dispatch({ type: 'SET_IS_SEARCH_ACTIVE', isSearchActive: searchItems ? true : false })
      changeSearchStatus(searchKey ? true : false)
+=======
+      const searchItems = searchKey ? await playlistService.getSearchItems(searchKey, searchType) : ''
+
+      dispatch({ type: 'SET_SEARCH_ITEMS', searchItems, searchType })
+>>>>>>> f08ddb9c47070b2f0e0ffa90cbcd1a9e240a9613
     } catch (err) {
       console.log('err:', err)
     }
@@ -129,29 +135,66 @@ export function getEmptyPlaylist() {
   return async (dispatch) => {
     var playlist = playlistService.getEmptyPlaylist()
     const user = getLoggedinUser()
-    if(user._id !== 1234) playlist = await playlistService.save(playlist)
-    const userPlaylist = {
-      spotifyId: '1234s',
-      id: playlist._id,
-      name: playlist.name,
-      image:playlist.image
+    try {
+      if (user._id !== 1234) playlist = await playlistService.save(playlist)
+      const userPlaylist = {
+        spotifyId: '1234s',
+        id: playlist._id,
+        name: playlist.name,
+        image: playlist.image
+      }
+      await dispatch(addUserPlaylist(userPlaylist))
+      dispatch({ type: 'SET_PLAYLIST', playlist })
+    }catch(err){
+      console.log(err)
     }
-    await dispatch(addUserPlaylist(userPlaylist))
-    dispatch({ type: 'SET_PLAYLIST', playlist })
 
   }
 }
 
 export function updatePlaylist(updatedPlaylist) {
   return async (dispatch) => {
-    const playlist = await playlistService.save(updatedPlaylist)
-    const userPlaylist = {
-      spotifyId: '1234s',
-      id: playlist._id,
-      name: playlist.name,
-      image:playlist.image
+    try{
+      const playlist = await playlistService.save(updatedPlaylist)
+      const userPlaylist = {
+        spotifyId: '1234s',
+        id: playlist._id,
+        name: playlist.name,
+        image: playlist.image
+      }
+      await dispatch(addUserPlaylist(userPlaylist))
+      dispatch({ type: 'SET_PLAYLIST', playlist })
+    }catch(err){
+      console.log(err)
     }
-    await dispatch(addUserPlaylist(userPlaylist))
-    dispatch({type: 'SET_PLAYLIST', playlist})
   }
+}
+
+export function addTrack(playlistId, track) {
+  return async (dispatch)=>{
+    try{
+      const playlist = await playlistService.getById(playlistId)
+      if (playlist.tracks.length === 1 && !playlist.tracks[0].imgUrl) playlist.tracks.splice(0,1,track)
+      else playlist.tracks.unshift(track)
+      playlistService.save(playlist)
+
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+}
+export function removeTrack(playlistId, trackId) {
+  return async (dispatch)=>{
+    try{
+      const playlist = await playlistService.getById(playlistId)
+      const updatedPlaylist = {...playlist, tracks:playlist.tracks.filter(track => track.id !== trackId)}
+      await playlistService.save(updatedPlaylist)
+      dispatch({ type: 'SET_PLAYLIST', playlist: updatedPlaylist })
+
+    }catch(err){
+      console.log(err)
+    }
+  }
+
 }

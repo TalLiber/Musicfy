@@ -8,6 +8,7 @@
     border-radius: 4px;
     grid-gap: 16px;
     align-items: center;
+    position: relative;
 
     &>:last-child {
         padding-left: 60px;
@@ -136,6 +137,20 @@
         margin-inline-end: 20%;
     }
 
+    .track-option{
+        position: absolute;
+        right: 0;
+        display: none;
+        cursor: pointer;
+        // margin-inline-start: 20px;
+    }
+
+    &:hover{
+        .track-option{
+            display: block;
+        }
+    }
+
     @include for-mobile-layout {
         grid-template-areas: '1 2';
         grid-template-columns: 60% 1fr;
@@ -166,6 +181,7 @@
             .btn-heart {
                 margin-inline: 0;
                 padding: 0;
+                margin-right: 50px;
 
                 svg {
                     height: 30px;
@@ -182,6 +198,12 @@
         .track-date,
         .track-album {
             display: none;
+        }
+
+        .track-option{
+            display: block;
+            right: 15px;
+            padding: 0;
         }
     }
 }
