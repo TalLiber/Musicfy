@@ -64,6 +64,10 @@
         &:hover{
             display: block;
         }
+
+        .create {
+            color: #1fdf64;
+        }
     }
 
     @include for-mobile-layout {

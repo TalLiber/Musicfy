@@ -112,9 +112,9 @@ export function changePlaylistColor(color) {
   }
 }
 
-export function getEmptyPlaylist() {
+export function getEmptyPlaylist(track) {
   return async (dispatch) => {
-    var playlist = playlistService.getEmptyPlaylist()
+    var playlist = playlistService.getEmptyPlaylist(track)
     const user = getLoggedinUser()
     try {
       if (user._id !== 1234) playlist = await playlistService.save(playlist)
