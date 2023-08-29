@@ -22,6 +22,7 @@ export const Header = () => {
     const [isPrev,setIsPrev] = useState()
     const [isNext,setIsNext] = useState()
     const [isSearch, setIsSearch] = useState()
+    const isSearchActive = useSelector(state => state.playlistModule.isSearchActive)
     const [isPlaylist, setIsPlaylist] = useState()
     const [headerBgc, setHeaderBgc] = useState("#00000080")
     const [headerName, setHeaderName] = useState('')
@@ -160,7 +161,7 @@ export const Header = () => {
                     </button>
                 </section>
             }
-           {isSearch && searchKey && <section className='search-bar'>
+           {isSearchActive && searchKey && <section className='search-bar'>
                 <button className={searchOption === 'playlist'?'search-action active': 'search-action'} onClick={()=>handleSearchOption('playlist')}>Playlists</button>
                 <button className={searchOption === 'track'?'search-action active': 'search-action'} onClick={()=>handleSearchOption('track')}>Songs</button>
                 <button className={searchOption === 'artist'?'search-action active': 'search-action'} onClick={()=>setSearchOption('artist')}>Artists</button>

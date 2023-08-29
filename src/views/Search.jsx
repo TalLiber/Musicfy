@@ -23,10 +23,10 @@ export const Search = () => {
 
   useEffect(() => {
     console.log('isSearchActive',isSearchActive);
-  //   return () => {
-  //     dispatch(changeSearchStatus(false))
-  // }
-  }, [isSearchActive])
+    return () => {
+      dispatch(changeSearchStatus(false))
+  }
+  }, [])
 
   function handleTrack(isLiked, track) {
     if (isLiked) {
