@@ -164,8 +164,8 @@ export const Header = () => {
            {isSearchActive && searchKey && <section className='search-bar'>
                 <button className={searchOption === 'playlist'?'search-action active': 'search-action'} onClick={()=>handleSearchOption('playlist')}>Playlists</button>
                 <button className={searchOption === 'track'?'search-action active': 'search-action'} onClick={()=>handleSearchOption('track')}>Songs</button>
-                <button className={searchOption === 'artist'?'search-action active': 'search-action'} onClick={()=>setSearchOption('artist')}>Artists</button>
-                <button className={searchOption === 'album'?'search-action active': 'search-action'} onClick={()=>setSearchOption('album')}>Albums</button>
+                {/* <button className={searchOption === 'artist'?'search-action active': 'search-action'} onClick={()=>setSearchOption('artist')}>Artists</button> */}
+                {/* <button className={searchOption === 'album'?'search-action active': 'search-action'} onClick={()=>setSearchOption('album')}>Albums</button> */}
             </section>}
         </section>
     )
