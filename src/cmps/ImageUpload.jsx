@@ -32,30 +32,18 @@ export const ImageUpload = ({ updatePlaylistImg, playlistImg }) => {
     }
   };
 
-  const handleUpload = async () => {
-    if (selectedImage) {
-      setSelectedImage(null)
-      await updatePlaylistImg(null)
-      setTimeout(() => { changeImg.current.children[0].click() }, 500)
-    }
-  };
-
   return (
     <div className='image-upload' ref={changeImg} style={{border:selectedImage?'none':''}}>
-      {!selectedImage && 
         <input
           type="file"
           accept="image/*"
           onChange={handleImageChange}
         />
-      }
-      {selectedImage && (
-          <img className='image' onClick={handleUpload}
+          <img className='image'
             src={selectedImage }
-            alt="select"
+            alt="https://res.cloudinary.com/dtaiyvzq5/image/upload/v1692020104/m2pslfiyjn8tgx9hs5pw.png"
             title='Change image'
           />
-      )}
     </div>
   )
 }

@@ -66,7 +66,7 @@ export const Playlist = () => {
             .catch(e => {
                 console.log(e)
             })
-    }, [playlist?.name])
+    }, [playlist?.name, playlist.image])
 
     useEffect(() => {
         return () => {

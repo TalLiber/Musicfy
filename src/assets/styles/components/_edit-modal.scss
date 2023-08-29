@@ -51,6 +51,10 @@
             .image{
                 height: 100%;
             }
+            input{
+                height: 200px;
+                width: 180px;
+            }
         }
 
         .playlist-name,
@@ -122,6 +126,11 @@
 
             .image{
                 max-height: 250px;
+            }
+
+            input{
+                height: 250px !important;
+                width: 250px !important;
             }
         }
     }
