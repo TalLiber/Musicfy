@@ -78,13 +78,13 @@ export function getPlaylistById(spotifyId, sentPlaylist = null) {
   }
 }
 
-export function getYoutubeId(keyword) {
+export function getYoutubeId(keyword,origin) {
   return async (dispatch, getState) => {
     try {
-      console.log('getting YoutubeId');
+      const currPlaylist = getState().playlistModule.currPlaylist
       const youtubeId = await playlistService.getYoutubeId(keyword)
       dispatch({ type: 'SET_YOUTUBE_ID', youtubeId })
-      playlistService.save(getState().playlistModule.currPlaylist)
+      if(origin !== '/search') playlistService.save(currPlaylist)
     } catch (err) {
       console.log('err:', err)
     }
@@ -125,9 +125,9 @@ export function changePlaylistColor(color) {
   }
 }
 
-export function getEmptyPlaylist() {
+export function getEmptyPlaylist(track) {
   return async (dispatch) => {
-    var playlist = playlistService.getEmptyPlaylist()
+    var playlist = playlistService.getEmptyPlaylist(track)
     const user = getLoggedinUser()
     try {
       if (user._id !== 1234) playlist = await playlistService.save(playlist)
@@ -138,7 +138,7 @@ export function getEmptyPlaylist() {
         image: playlist.image
       }
       await dispatch(addUserPlaylist(userPlaylist))
-      dispatch({ type: 'SET_PLAYLIST', playlist })
+      if(!track) dispatch({ type: 'SET_PLAYLIST', playlist })
     }catch(err){
       console.log(err)
     }

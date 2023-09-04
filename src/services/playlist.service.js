@@ -83,13 +83,15 @@ function getCategories() {
   return categories
 }
 
-function getEmptyPlaylist() {
+function getEmptyPlaylist(track) {
+  var tracks = []
+  if(track)tracks.push(track)
   return {
-    name: 'My Playlist',
+    name: track?.title || 'My Playlist',
     description: '',
     owner: 'user',
-    image: "https://res.cloudinary.com/dtaiyvzq5/image/upload/v1692020104/m2pslfiyjn8tgx9hs5pw.png",
-    tracks: [],
+    image: track?.imgUrl || "https://res.cloudinary.com/dtaiyvzq5/image/upload/v1692020104/m2pslfiyjn8tgx9hs5pw.png",
+    tracks,
     spotifyId:'1234s'
   }
 }
