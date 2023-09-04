@@ -107,9 +107,7 @@ export const Header = () => {
     }
 
     function handleInput(ev) {
-            // setSearchKey(ev.target.value)
-            // dispatch(searchItems(ev.target.value, searchOption))
-        
+     
         utilService.debounce(()=> {
             setSearchKey(ev.target.value)
             dispatch(searchItems(ev.target.value, searchOption))
