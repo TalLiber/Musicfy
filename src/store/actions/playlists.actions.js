@@ -35,7 +35,7 @@ export function removePlaylist(playlistId) {
     try {
       const user = getLoggedinUser()
       var playlist
-      if (user._id !== 1234) playlists = await playlistService.remove(playlistId)
+      if (user._id !== 1234) playlist = await playlistService.remove(playlistId)
       dispatch({ type: 'REMOVE_PLAYLIST', playlistId })
     } catch (err) {
       console.log('err:', err)
@@ -167,6 +167,7 @@ export function updatePlaylist(updatedPlaylist) {
 export function addTrack(playlistId, track) {
   return async (dispatch)=>{
     try{
+      track.addedAt = new Date.now()
       const playlist = await playlistService.getById(playlistId)
       if (playlist.tracks.length === 1 && !playlist.tracks[0].imgUrl) playlist.tracks.splice(0,1,track)
       else playlist.tracks.unshift(track)

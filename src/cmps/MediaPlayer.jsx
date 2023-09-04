@@ -20,7 +20,7 @@ export const MediaPlayer = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if(!currTrack || !currPlaylist.spotifyId) return
+    if(!currTrack) return
     if (!player.current) startIframe()
     else loadNewVideo()
   }, [currTrack?.youtubeId])
