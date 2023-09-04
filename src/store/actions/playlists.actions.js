@@ -78,13 +78,13 @@ export function getPlaylistById(spotifyId, sentPlaylist = null) {
   }
 }
 
-export function getYoutubeId(keyword) {
+export function getYoutubeId(keyword,origin) {
   return async (dispatch, getState) => {
     try {
-      console.log('getting YoutubeId');
+      const currPlaylist = getState().playlistModule.currPlaylist
       const youtubeId = await playlistService.getYoutubeId(keyword)
       dispatch({ type: 'SET_YOUTUBE_ID', youtubeId })
-      playlistService.save(getState().playlistModule.currPlaylist)
+      if(origin !== '/search') playlistService.save(currPlaylist)
     } catch (err) {
       console.log('err:', err)
     }

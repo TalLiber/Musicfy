@@ -26,8 +26,8 @@ export const MediaPlayer = () => {
   }, [currTrack?.youtubeId])
 
   useEffect(() => {
-    if (currTrack?.youtubeId || Location.pathname.includes('create') ) return
-    dispatch(getYoutubeId(`${currTrack?.title}- ${currTrack?.artists[0]}`))
+    if (currTrack?.youtubeId || Location.pathname.includes('create')) return
+    dispatch(getYoutubeId(`${currTrack?.title}- ${currTrack?.artists[0]}`,Location.pathname))
   }, [currTrack?.title])
 
   useEffect(() => {
