@@ -33,6 +33,7 @@
     }
 
     .modal-list {
+        direction: rtl;
         max-height: 132px;
         border-radius: 4px;
         display: flex;
@@ -47,8 +48,13 @@
         display: none;
         z-index: 2;
 
+        &::-webkit-scrollbar{
+            display: none;
+        }
+
         
         .playlist{
+            direction: ltr;
             background-color: rgb(40, 40, 40);
             border-radius: 4px;
             height: 44px;

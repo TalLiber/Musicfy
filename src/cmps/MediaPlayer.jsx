@@ -20,6 +20,8 @@ export const MediaPlayer = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    console.log('currTrack',currTrack)
+    console.log('player.current',player.current)
     if(!currTrack) return
     if (!player.current) startIframe()
     else loadNewVideo()
@@ -52,6 +54,7 @@ export const MediaPlayer = () => {
   }, [playerSettings.currTime])
 
   function loadNewVideo() {
+    if(!player.current.cueVideoById) return
     player.current.cueVideoById(currTrack?.youtubeId, 0)
     clearInterval(intervalIdRef.current)
     dispatch(updatePlayer('currTime', 0))
