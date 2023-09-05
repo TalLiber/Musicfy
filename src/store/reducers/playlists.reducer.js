@@ -50,6 +50,52 @@ const INITIAL_STATE = {
     ],
   },
   currTrackIdx: 0,
+  playerPlaylist: {
+    _id: '37i9dQZF1DX3rxVfibe1L0',
+    tracks: [
+      {
+        id: 'WcIcVapcfsdcfqXw',
+        youtubeId: 'WcIcVapfqXw',
+        addedAt: '2023-05-26T04:00:00Z',
+        title: 'Calm Down (with Selena Gomez)',
+        artists: ['Rema'],
+        album: 'Calm Down (with Selena Gomez)',
+        imgUrl:
+          'https://i.scdn.co/image/ab67616d0000b273a3a7f38ea2033aa501afd4cf',
+      },
+      {
+        id: 'G7KNmdfvadfW9a75Y',
+        youtubeId: 'G7KNmW9a75Y',
+        addedAt: '2023-05-26T04:00:00Z',
+        title: 'Flowers',
+        artists: ['Miley Cyrus'],
+        album: 'Flowers',
+        imgUrl:
+          'https://i.scdn.co/image/ab67616d0000b273f429549123dbe8552764ba1d',
+      },
+      {
+        id: '90RLzVwefwefUuXe4',
+        youtubeId: '90RLzVUuXe4',
+        addedAt: '2023-05-26T04:00:00Z',
+        title: "I'm Good (Blue)",
+        artists: ['David Guetta'],
+        album: "I'm Good (Blue)",
+        imgUrl:
+          'https://i.scdn.co/image/ab67616d0000b273933c036cd61cd40d3f17a9c4',
+      },
+      {
+        id: 'mNEfwefwUkkoUoIA',
+        youtubeId: 'mNEUkkoUoIA',
+        addedAt: '2023-05-26T04:00:00Z',
+        title: "I Ain't Worried",
+        artists: ['OneRepublic'],
+        album:
+          'I Ain’t Worried (Music From The Motion Picture "Top Gun: Maverick")',
+        imgUrl:
+          'https://i.scdn.co/image/ab67616d0000b273ec96e006b8bdfc582610ec13',
+      },
+    ]
+  },
   filterBy: {},
   playlistColor: '#000000',
   searchItems: [],
@@ -68,6 +114,11 @@ export function playlistReducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         currPlaylist: action.playlist,
+      }
+    case 'SET_PLAYER_PLAYLIST':
+      return {
+        ...state,
+        playerPlaylist: {...state.currPlaylist},
       }
     case 'SET_PLAYLIST_DATA':
       return {
@@ -140,7 +191,7 @@ export function playlistReducer(state = INITIAL_STATE, action) {
       console.log(action.searchItems, action.searchType);
       return {
         ...state,
-        searchItems: [ ...action.searchItems ],
+        searchItems: [...action.searchItems],
       }
 
     case 'SET_SEARCH_TYPE':

@@ -19,10 +19,10 @@ export const PlaylistList = ({ playlist, playTrack, handleTrack, origin, handleR
                     <p>{SvgIcon({ iconName: 'clock' })}</p>
                 </section>
                 {playlist.tracks ? playlist.tracks.map((track, idx) => {
-                    return <PlaylistPreview key={idx} track={track} playTrack={playTrack} idx={idx} playlistId={playlist.id} handleTrack={handleTrack} handleRemoveTrack={handleRemoveTrack} />
+                    return <PlaylistPreview key={idx} track={track} playTrack={playTrack} idx={idx} playlistId={playlist._id} handleTrack={handleTrack} handleRemoveTrack={handleRemoveTrack} />
                 }) :
                     playlist.map((track, idx) => {
-                        return <PlaylistPreview key={idx} track={track} playTrack={playTrack} idx={idx} playlistId={playlist.id} handleTrack={handleTrack} origin={origin} />
+                        return <PlaylistPreview key={idx} track={track} playTrack={playTrack} idx={idx} playlistId={playlist._id} handleTrack={handleTrack} origin={origin} />
                     })}
             </div>
         </div>
