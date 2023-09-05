@@ -33,12 +33,6 @@ export const PlaylistPreview = ({ track, idx, playTrack, playlistId, handleTrack
     }
 
     useEffect(() => {
-      console.log('origin',origin);
-
-
-    }, [origin])
-
-    useEffect(() => {
       window.addEventListener("resize", handleResize)
 
       return () => {window.removeEventListener("resize", handleResize)}

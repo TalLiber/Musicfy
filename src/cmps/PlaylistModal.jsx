@@ -17,11 +17,13 @@ export const PlaylistModal = ({track}) => {
       const playlistSpotId = userPlaylists[idx].spotifyId + playlistId
       dispatch(addTrack(playlistSpotId,track))
       EventBus.getInstance().fireEvent("closeModal")
+      EventBus.getInstance().fireEvent("unfreeze")
     }
     
     function createPlaylist() {
       dispatch(getEmptyPlaylist(track))
       EventBus.getInstance().fireEvent("closeModal")
+      EventBus.getInstance().fireEvent("unfreeze")
     }
     
     return (

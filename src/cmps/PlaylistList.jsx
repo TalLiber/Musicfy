@@ -5,13 +5,7 @@ import { PlaylistPreview } from './PlaylistPreview'
 import SvgIcon from '../cmps/SvgIcon'
 
 export const PlaylistList = ({ playlist, playTrack, handleTrack, origin, handleRemoveTrack }) => {
-    useEffect(() => {
-        console.log('origin',origin);
   
-  
-      }, [])
-  
-
     return (
         <div className='playlist-list'>
 
