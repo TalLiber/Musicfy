@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux'
 import { useHeaderObserver } from '../customHooks/useHeaderObserver'
 import { useObserver } from '../customHooks/useObserver'
-import { changePlaylistColor, getPlaylistById, updateTrackIdx, updatePlaylist,removeTrack } from '../store/actions/playlists.actions'
+import { changePlaylistColor, getPlaylistById, updateTrackIdx, updatePlaylist,removeTrack, checkPlayerPlaylist } from '../store/actions/playlists.actions'
 import { PlaylistList } from '../cmps/PlaylistList'
 import { updatePlayer } from '../store/actions/player.actions'
 import { FastAverageColor } from 'fast-average-color'
@@ -22,6 +22,7 @@ export const Playlist = () => {
     const playlist = useSelector(state => { return { ...state.playlistModule.currPlaylist } })
     const playerSettings = useSelector(state => state.playerModule)
     const userPlaylists = useSelector(state => { return { ...state.userModule.loggedInUser } })
+    const playerPlaylistId = useSelector(state => {return state.playlistModule.playerPlaylist._id})
     const params = useParams()
     const [headerRef, headerName] = useHeaderObserver()
     const [containerRef, isVisible] = useObserver()
@@ -98,6 +99,7 @@ export const Playlist = () => {
     }
 
     function playTrack(trackIdx, isPlaying) {
+        dispatch(checkPlayerPlaylist())
         dispatch(updateTrackIdx('num', trackIdx))
         dispatch(updatePlayer('isPlaying', isPlaying))
     }  
@@ -146,7 +148,7 @@ export const Playlist = () => {
             </section>
             <section className='playlist-action' style={{ backgroundColor: bgc || '' }}>
                 <button className='btn-play' onClick={() => dispatch(updatePlayer('isPlaying', !playerSettings.isPlaying))}>
-                    {SvgIcon({ iconName: playerSettings.isPlaying ? 'player-pause' : 'player-play' })}
+                    {SvgIcon({ iconName: playerSettings.isPlaying && playerPlaylistId === playlist._id ? 'player-pause' : 'player-play' })}
                 </button>
                 <button className={isLiked ? 'btn-heart fill' : 'btn-heart'} onClick={handlePlaylist}>
                     {SvgIcon({ iconName: isLiked ? 'heart-fill' : 'heart-no-fill' })}

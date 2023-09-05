@@ -35,7 +35,7 @@ export function removePlaylist(playlistId) {
     try {
       const user = getLoggedinUser()
       var playlist
-      if (user._id !== 1234) playlists = await playlistService.remove(playlistId)
+      if (user._id !== 1234) playlist = await playlistService.remove(playlistId)
       dispatch({ type: 'REMOVE_PLAYLIST', playlistId })
     } catch (err) {
       console.log('err:', err)
@@ -61,6 +61,21 @@ export function updateTrackIdx(byType, toUpdate) {
       else dispatch({ type: 'UPDATE_CURR_TRACK_IDX_BY_NUM', idx: toUpdate })
     } catch (err) {
       console.log('err:', err)
+    }
+  }
+}
+
+export function checkPlayerPlaylist() {
+  return async (dispatch, getState) => {
+    try {
+      const playerPlaylistId = getState().playlistModule.playerPlaylist._id
+      const playlistId = getState().playlistModule.currPlaylist._id
+      if (playerPlaylistId !== playlistId) {
+        dispatch({type:'SET_PLAYER_PLAYLIST'})
+      }
+
+    } catch (err) {
+      console.log('err:',err);
     }
   }
 }
@@ -167,6 +182,7 @@ export function updatePlaylist(updatedPlaylist) {
 export function addTrack(playlistId, track) {
   return async (dispatch)=>{
     try{
+      track.addedAt = new Date.now()
       const playlist = await playlistService.getById(playlistId)
       if (playlist.tracks.length === 1 && !playlist.tracks[0].imgUrl) playlist.tracks.splice(0,1,track)
       else playlist.tracks.unshift(track)

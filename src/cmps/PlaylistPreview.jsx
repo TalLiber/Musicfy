@@ -12,13 +12,15 @@ export const PlaylistPreview = ({ track, idx, playTrack, playlistId, handleTrack
 
     const navigate = useNavigate()
     const playerSettings = useSelector(state => state.playerModule)
-    const currTrack = useSelector(state => state.playlistModule.currPlaylist.tracks[state.playlistModule.currTrackIdx])
-    const currPlatlistId = useSelector(state => state.playlistModule.currPlaylist.id)
+    const currTrack = useSelector(state => {return {...state.playlistModule.currPlaylist.tracks[state.playlistModule.currTrackIdx]}})
+    const playerPlaylistId = useSelector(state => {return state.playlistModule.playerPlaylist._id})
     const currPlatlistSpotifyId = useSelector(state => state.playlistModule.currPlaylist.spotifyId)
     const [isLiked, setIsLiked] = useState(false)
     const userLikedTracks = useSelector(state => { return { ...state.userModule.loggedInUser }.likedTracks })
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isPlaylistOpen, setIsPlaylistOpen] = useState(false)
+    const [isTrackInPlayer, setIsTrackInPlayer] = useState(false)
+    const [isCurrTrack, setIsCurrTrack] = useState(false)
 
     const [dimensions, setDimensions] = useState({
         width: window.innerWidth,
@@ -42,6 +44,13 @@ export const PlaylistPreview = ({ track, idx, playTrack, playlistId, handleTrack
       return () => {window.removeEventListener("resize", handleResize)}
 
     }, [])
+
+    useEffect(()=>{
+        if (playlistId === playerPlaylistId && currTrack.id === track.id) {
+            setIsTrackInPlayer(true)
+        }else setIsTrackInPlayer(false)
+        
+    },[playerPlaylistId, currTrack.id])
 
 
     useEffect(() => {
@@ -76,15 +85,15 @@ export const PlaylistPreview = ({ track, idx, playTrack, playlistId, handleTrack
 
     return (
         <section className='playlist-preview' >
-            <button className='btn-player' onClick={() => playTrack(idx, (playerSettings.isPlaying && currTrack.id === track.id ? false : true))}>
-                {SvgIcon({ iconName: playerSettings.isPlaying && currTrack.id === track.id ? 'player-pause' : 'player-play' })}
+            <button className='btn-player' onClick={() => playTrack(idx, (playerSettings.isPlaying && isTrackInPlayer ? false : true))}>
+                {SvgIcon({ iconName: playerSettings.isPlaying && isTrackInPlayer ? 'player-pause' : 'player-play' })}
             </button>
-            <section className='track-title' onClick={() => playTrack(idx, (playerSettings.isPlaying && currTrack.id === track.id ? false : true))}>
+            <section className='track-title' onClick={() => playTrack(idx, (playerSettings.isPlaying && isTrackInPlayer ? false : true))}>
                 <div className='track-img'>
                     <img src={track.imgUrl} alt="" />
                 </div>
                 <section className='track-info'>
-                    <h1 className={playlistId === currPlatlistId && currTrack.id === track.id ? 'green-header' : ''} onClick={() => console.log(`track ${track.title}`)}>{track.title}</h1>
+                    <h1 className={isTrackInPlayer ? 'green-header' : ''} onClick={() => console.log(`track ${track.title}`)}>{track.title}</h1>
                     <p onClick={() => console.log(`artist ${track.artists}`)}>{track.artists[0]}</p>
                 </section>
             </section>
@@ -116,7 +125,7 @@ export const PlaylistPreview = ({ track, idx, playTrack, playlistId, handleTrack
                     </button>
                 }
                 <button className={!isPlaylistOpen?'add-btn': 'add-btn close'} onClick={handlePlaylistModal}>
-                    <span> <svg xmlns="http://www.w3.org/2000/svg" height="12" fill='white' viewBox="0 -960 960 960" width="24"><path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" /></svg> </span>
+                    <span > <svg xmlns="http://www.w3.org/2000/svg" height="12" fill='white' viewBox="0 -960 960 960" width="24"><path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" /></svg> </span>
                     Add to playlist
                     <PlaylistModal track={track} />
                 </button>
