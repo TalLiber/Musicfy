@@ -8,7 +8,7 @@ import { useLocation } from "react-router-dom"
 
 export const MediaPlayer = () => {
 
-  const currTrack = useSelector(state => state.playlistModule.currPlaylist?.tracks[state.playlistModule.currTrackIdx])
+  const currTrack = useSelector(state => state.playlistModule.playerPlaylist?.tracks[state.playlistModule.currTrackIdx])
   const currPlaylist = useSelector(state => state.playlistModule.currPlaylist)
   const currIdx = useSelector(state => state.playlistModule.currTrackIdx)
   const playlistLength = useSelector(state => state.playlistModule.currPlaylist?.tracks.length)
@@ -20,8 +20,6 @@ export const MediaPlayer = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log('currTrack',currTrack)
-    console.log('player.current',player.current)
     if(!currTrack) return
     if (!player.current) startIframe()
     else loadNewVideo()

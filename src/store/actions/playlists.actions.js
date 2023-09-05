@@ -65,6 +65,21 @@ export function updateTrackIdx(byType, toUpdate) {
   }
 }
 
+export function checkPlayerPlaylist() {
+  return async (dispatch, getState) => {
+    try {
+      const playerPlaylistId = getState().playlistModule.playerPlaylist._id
+      const playlistId = getState().playlistModule.currPlaylist._id
+      if (playerPlaylistId !== playlistId) {
+        dispatch({type:'SET_PLAYER_PLAYLIST'})
+      }
+
+    } catch (err) {
+      console.log('err:',err);
+    }
+  }
+}
+
 export function getPlaylistById(spotifyId, sentPlaylist = null) {
   return async (dispatch) => {
     try {
